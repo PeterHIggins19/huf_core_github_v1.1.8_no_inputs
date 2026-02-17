@@ -1,0 +1,25 @@
+rank,item_id,regime_id,rho_global_post,rho_global_pre,rho_local_pre,rho_local_post,value,tau,exclusion
+1,Fund=Operating_Fund/Account=Salaries_&_Benefits,Fund=Operating Fund,0.2976123823800321,0.2889874871758898,0.6033787525802923,0.6349821057853947,131828.0,0.005,dual
+2,Fund=Waterworks/Stabilization_Capital_Reserve/Account=Contracted_Municipal_Services,Fund=Waterworks/Stabilization Capital Reserve,0.227990843251639,0.22138360092245907,0.7671954054423629,0.7771852057071617,100989.0,0.005,dual
+3,Fund=Capital_Development_Fund/Account=Capital_Expenditures,Fund=Capital Development Fund,0.17544790406183966,0.17036337171067054,1.0,1.0,77715.0,0.005,dual
+4,Fund=Operating_Fund/Account=Transfers_to_Reserves,Fund=Operating Fund,0.06491899799526811,0.06303762615855422,0.13161664751948665,0.13851037286437487,28756.0,0.005,dual
+5,Fund=Waterworks/Stabilization_Capital_Reserve/Account=Transfers_to_Reserves,Fund=Waterworks/Stabilization Capital Reserve,0.03449809460167241,0.03349832957744009,0.11608702918698817,0.11759862092318112,15281.0,0.005,dual
+6,Fund=Operating_Fund/Account=Contracted_Municipal_Services,Fund=Operating Fund,0.02521040654517871,0.02447980147838973,0.05111152812804658,0.05378861224706058,11167.0,0.005,dual
+7,Fund=Operating_Fund/Account=Utilities,Fund=Operating Fund,0.02059139590745724,0.019994651140359337,0.04174695514067456,0.04393354816024354,9121.0,0.005,dual
+8,Fund=Waterworks/Stabilization_Capital_Reserve/Account=Salaries_&_Benefits,Fund=Waterworks/Stabilization Capital Reserve,0.01744884321551771,0.01694317055847356,0.058715833295349226,0.05948038355574025,7729.0,0.005,dual
+9,Fund=Planning_&_Design/Account=Salaries_&_Benefits,Fund=Planning & Design,0.015466687135400675,0.015018457950071465,0.6654686741136474,0.6771101008104369,6851.0,0.005,dual
+10,Fund=Operating_Fund/Account=Maintenance_&_Repair,Fund=Operating Fund,0.015459914392530116,0.015011881483300158,0.03134339971530966,0.03298508253495754,6848.0,0.005,dual
+11,Fund=Operating_Fund/Account=Contracts_&_Service_Agreements,Fund=Operating Fund,0.015141595477613828,0.014702787545048798,0.030698040579816278,0.03230592122692176,6707.0,0.005,dual
+12,Fund=Building_Fee/Account=Salaries_&_Benefits,Fund=Building Fee,0.013717061893839514,0.013319537367484195,0.6102239630410766,0.622732397253254,6076.0,0.005,dual
+13,Fund=Engineering/Account=Salaries_&_Benefits,Fund=Engineering,0.011978724557062616,0.011631577562849101,0.6560336300692384,0.6792984252976572,5306.0,0.005,dual
+14,Fund=Operating_Fund/Account=Other_Expenditures,Fund=Operating Fund,0.01145270819411584,0.011120805310277702,0.023219197832325626,0.024435356848691532,5073.0,0.005,dual
+15,Fund=Waterworks/Stabilization_Capital_Reserve/Account=Contracts_&_Service_Agreements,Fund=Waterworks/Stabilization Capital Reserve,0.007790911882100092,0.007565128942591829,0.026216630961605664,0.02655800280124979,3451.0,0.005,dual
+16,Fund=Operating_Fund/Account=Operating_Materials_&_Supplies,Fund=Operating Fund,0.006470227022341021,0.006282717922187245,0.013117725406553371,0.013804796516528666,2866.0,0.005,dual
+17,Fund=Operating_Fund/Account=Professional_Supplies,Fund=Operating Fund,0.006343802488757246,0.006159957209122875,0.012861412558414156,0.013535058692060556,2810.0,0.005,dual
+18,Fund=Building_Fee/Account=Contracts_&_Service_Agreements,Fund=Building Fee,0.006190286983691235,0.006010890628973282,0.2753841518529678,0.2810290048170544,2742.0,0.005,dual
+19,Fund=Engineering/Account=Contracts_&_Service_Agreements,Fund=Engineering,0.005655240296917047,0.005491349754040142,0.30971810089020774,0.32070157470234284,2505.0,0.005,dual
+20,Fund=Waterworks/Stabilization_Capital_Reserve/Account=Other_Purchased_Services,Fund=Waterworks/Stabilization Capital Reserve,0.005625891744477957,0.005462851731364485,0.018931279152802467,0.01917778701266719,2492.0,0.005,dual
+21,Fund=Operating_Fund/Account=Insurance,Fund=Operating Fund,0.0054926944680236236,0.00533351455152881,0.011135877848619802,0.01171914512376631,2433.0,0.005,dual
+22,Fund=Planning_&_Design/Account=Contracts_&_Service_Agreements,Fund=Planning & Design,0.005348209286785024,0.005193216593740957,0.23011170471102477,0.2341371812611188,2369.0,0.005,dual
+23,Fund=Building_Fee/Account=Transfers_to_Reserves,Fund=Building Fee,0.002119868518485073,0.0020584340994186405,0.09430551370894848,0.0962385979296915,939.0,0.005,dual
+24,Fund=Planning_&_Design/Account=Transfers_to_Reserves,Fund=Planning & Design,0.002027307699254095,0.0019685557202107976,0.08722680913064594,0.08875271792844436,898.0,0.005,dual

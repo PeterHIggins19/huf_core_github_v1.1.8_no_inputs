@@ -1,0 +1,23 @@
+{
+  "dataset_id": "4830c1b87928bbd4",
+  "units": "k$",
+  "section": "EXPENDITURES",
+  "rows_block": [
+    18,
+    38
+  ],
+  "funds": [
+    "Operating Fund",
+    "Capital Development Fund",
+    "Planning & Design",
+    "Engineering",
+    "Building Fee",
+    "Waterworks/Stabilization Capital Reserve"
+  ],
+  "elements": 67,
+  "regimes": 6,
+  "total_value": 456172.0,
+  "note": "Unity uses the line-item sum across funds. If the sheet TOTAL differs by 1\u20132 units, treat as rounding.",
+  "tau_global": 0.005,
+  "tau_local": 0.02
+}
