@@ -1,24 +1,20 @@
-from __future__ import annotations
+#!/usr/bin/env python
+"""
+Fetch external input data for the HUF-Core examples/cases.
 
-"""scripts/fetch_data.py
-
-Small helper to download public input datasets used by HUF demo cases.
-
-Targets (as of 2026-02-17):
-- Markham budget XLSX (used in cases/municipal_budget)
-- Toronto traffic signals phase-status CSV (used in traffic_phase / traffic_anomaly)
-- Planck 70GHz guide (manual download instructions)
+Windows examples:
+  .venv\\Scripts\\python scripts\\fetch_data.py --toronto --yes
+  .venv\\Scripts\\python scripts\\fetch_data.py --markham --toronto --yes
 
 Notes:
-- The Toronto Open Data portal is CKAN-backed, but the stable Action API base is:
-    https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action
-  You can override it via:
-    * --toronto-ckan <URL>
-    * env var HUF_TORONTO_CKAN=<URL>
+- Toronto fetch uses Toronto Open Data CKAN "action" API to locate the Traffic Signals Timing ZIP and
+  copies the extracted CSV into both traffic cases.
+- Markham fetch downloads a small 2018 budget Excel file used by the Markham demo case.
+- Planck is guided/manual because the files are large.
 """
+from __future__ import annotations
 
 import argparse
-import csv
 import datetime as _dt
 import json
 import os
@@ -26,479 +22,353 @@ import shutil
 import sys
 import tempfile
 import textwrap
-import zipfile
+import urllib.parse
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterable, List, Optional
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
 from urllib.request import Request, urlopen
-
-# Optional: use OS trust store on Windows/macOS if installed.
-try:
-    import truststore  # type: ignore
-
-    truststore.inject_into_ssl()
-except Exception:
-    truststore = None  # noqa: F841
+from zipfile import ZipFile
 
 
 # ----------------------------- Repo paths -----------------------------
 
-REPO_MARKERS = (".git", "pyproject.toml", "setup.cfg", "cases")
-
-
 def _repo_root(start: Optional[Path] = None) -> Path:
-    """Best-effort repo root discovery.
-
-    We walk upward from this script (or provided path) until we find a marker.
-    This makes the script work both inside a git checkout and in unpacked snapshots.
     """
-    here = (start or Path(__file__)).resolve()
-    for p in [here.parent] + list(here.parents):
-        for m in REPO_MARKERS:
-            if (p / m).exists():
-                return p
-    # Fallback: scripts/.. (common layout)
-    return here.parent.parent
-
-
-def _ensure_parent(p: Path) -> None:
-    p.parent.mkdir(parents=True, exist_ok=True)
+    Best-effort repo root discovery, walking upward until we find a marker file.
+    Works even when invoked from arbitrary CWD.
+    """
+    here = (start or Path(__file__).resolve()).parent
+    markers = ("pyproject.toml", ".git", "cases")
+    for p in [here] + list(here.parents):
+        if any((p / m).exists() for m in markers):
+            return p
+    return Path.cwd().resolve()
 
 
 # ----------------------------- Defaults -----------------------------
 
-DEFAULT_MARKHAM_XLSX_URL = (
-    "https://www.markham.ca/wps/wcm/connect/markham/8e2d0d17-6a80-4c7d-bb7c-4d7f6dc7f4b8/2018+Budget.xlsx"
-)
+# Toronto CKAN "action" base. (As of 2026-02-17, this base was confirmed working by the user.)
+DEFAULT_TORONTO_CKAN_BASE = "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action"
+TORONTO_ENV = "HUF_TORONTO_CKAN"
 
-# Toronto CKAN Action API base
-DEFAULT_TORONTO_CKAN_BASE = os.environ.get(
-    "HUF_TORONTO_CKAN", "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action"
-)
+# Markham budget XLSX. The City has moved links over time, so we try a short list.
+DEFAULT_MARKHAM_URLS: List[str] = [
+    # Markham Open Data (often stable):
+    "https://maps.markham.ca/OpenDataSite_Tables/Markham_Consolidated_Budget_By_Dept_and_Funding_Source_2018.xlsx",
+    # Legacy Markham site link (may 404):
+    "https://www.markham.ca/wps/wcm/connect/markham/8e2d0d17-6a80-4c7d-bb7c-4d7f6dc7f4b8/2018+Budget.xlsx",
+]
+MARKHAM_ENV = "HUF_MARKHAM_URL"
 
-# Known stable IDs (used as defaults; the script will fall back to search if they stop working)
-DEFAULT_TORONTO_PACKAGE_ID = "7dda2235-999e-4a17-b228-abd0961e045d"
-DEFAULT_TORONTO_RESOURCE_ID = "02c90a3a-d754-4023-a283-ed5687e87f1f"
+# Destinations (repo-relative)
+MARKHAM_DEST = Path("cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx")
 
-# Search fallback (only used if the known IDs don't work and the user didn't provide ids)
-DEFAULT_TORONTO_QUERY = "traffic signals timing"
+# Toronto traffic CSV is used by two example cases.
+TORONTO_DESTS = [
+    Path("cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv"),
+    Path("cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv"),
+]
 
-# Destinations in-repo
-MARKHAM_DEST = Path("cases/municipal_budget/inputs/markham_2018_budget.xlsx")
+# Toronto dataset search query used against CKAN.
+DEFAULT_TORONTO_PACKAGE_Q = "traffic signals timing"
 
-TORONTO_DEST = Path("cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv")
-TORONTO_DEST_2 = Path("cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv")
-
-PLANCK_DEST = Path("cases/planck/inputs/planck_pr3_70ghz_nside2048.fits")
-
-IRSA_PLANCK70_FITS_URL = (
-    "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/maps/"
-    "LFI_SkyMap_070_2048_R3.01_full.fits"
-)
+# Planck (manual)
+PLANCK_DEST = Path("cases/planck70/inputs/HFI_SkyMap_070_2048_R3.01_full.fits")
 IRSA_PLANCK_PR3_ALLSKY_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/"
+IRSA_PLANCK70_PREVIEW_URL = (
+    "https://irsa.ipac.caltech.edu/applications/planck/#details=imp%3DAll%20Sky%20Maps%20%28PR3%29%26sel%3D"
+    "irsa.ipac.planck%21all_sky_maps%21HFI_SkyMap_070_2048_R3.01_full.fits"
+)
+IRSA_PLANCK70_FITS_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/HFI_SkyMap_070_2048_R3.01_full.fits"
 ESA_PLA_URL = "https://pla.esac.esa.int/"
 
 
-# ----------------------------- HTTP helpers -----------------------------
+# ----------------------------- Helpers -----------------------------
 
-def _normalize_ckan_base(base: str) -> str:
-    base = (base or "").strip().rstrip("/")
-    if not base:
-        return DEFAULT_TORONTO_CKAN_BASE
-
-    # If already includes /api/3/action anywhere, keep up to that segment.
-    needle = "/api/3/action"
-    if needle in base:
-        return base[: base.index(needle) + len(needle)]
-
-    if base.endswith("/api/3/action"):
-        return base
-    if base.endswith("/api/3"):
-        return base + "/action"
-    if base.endswith("/api"):
-        return base + "/3/action"
-
-    # If someone passes a host like https://ckan0... , add the standard suffix.
-    return base + "/api/3/action"
+def _maybe_inject_truststore() -> None:
+    """
+    On Windows, certificate chains can sometimes be awkward in corporate environments.
+    If `truststore` is installed, inject it so urllib uses the OS trust store.
+    """
+    try:
+        import truststore  # type: ignore
+    except Exception:
+        return
+    try:
+        truststore.inject_into_ssl()
+    except Exception:
+        # Non-fatal; continue with default SSL handling.
+        return
 
 
-def _urlopen(req: Request, timeout: int) -> Any:
+def _urlopen(req: Request, timeout: int = 30):
     return urlopen(req, timeout=timeout)
 
 
 def _http_get_json(url: str, timeout: int = 30) -> Dict[str, Any]:
-    req = Request(
-        url,
-        headers={
-            "User-Agent": "huf-fetch-data/1.1 (+https://github.com/)",
-            "Accept": "application/json",
-        },
-    )
+    req = Request(url, headers={"User-Agent": "huf-core-fetch-data/1"})
+    with _urlopen(req, timeout=timeout) as r:
+        data = r.read()
+    return json.loads(data.decode("utf-8"))
+
+
+def _download(url: str, dest: Path, overwrite: bool = False, timeout: int = 60) -> bool:
+    dest = Path(dest)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+
+    if dest.exists() and not overwrite:
+        print(f"[skip] {dest} already exists")
+        return True
+
+    print(f"[get] {url}")
+    req = Request(url, headers={"User-Agent": "huf-core-fetch-data/1"})
     try:
-        with _urlopen(req, timeout=timeout) as r:
-            raw = r.read()
+        with _urlopen(req, timeout=timeout) as r, tempfile.NamedTemporaryFile(delete=False) as tf:
+            shutil.copyfileobj(r, tf)
+            tmp_name = tf.name
+        shutil.move(tmp_name, dest)
+        print(f"[ok ] wrote {dest}")
+        return True
     except HTTPError as e:
-        # Include URL to make debugging CKAN base issues obvious.
-        raise HTTPError(e.url, e.code, f"{e.msg} (while fetching {url})", e.hdrs, e.fp) from e
+        print(f"[err] {e.code} {e.reason} for {url}")
+        return False
     except URLError as e:
-        raise RuntimeError(f"Network error while fetching {url}: {e}") from e
-
-    try:
-        return json.loads(raw.decode("utf-8"))
+        print(f"[err] URL error for {url}: {e.reason}")
+        return False
     except Exception as e:
-        snippet = raw[:200]
-        raise RuntimeError(f"Invalid JSON from {url}. First bytes: {snippet!r}") from e
+        print(f"[err] failed to download {url}: {e}")
+        return False
 
+
+def _download_first(urls: Iterable[str], dest: Path, overwrite: bool = False) -> bool:
+    for u in urls:
+        if _download(u, dest, overwrite=overwrite):
+            return True
+    return False
+
+
+# ----------------------------- Toronto (CKAN) -----------------------------
 
 def _ckan_action(base: str, action: str, **params: Any) -> Dict[str, Any]:
-    base = _normalize_ckan_base(base)
-    qs = urlencode({k: v for k, v in params.items() if v is not None}, doseq=True)
+    base = base.rstrip("/")
+    action = action.lstrip("/")
     url = f"{base}/{action}"
-    if qs:
-        url += f"?{qs}"
+    if params:
+        url = f"{url}?{urllib.parse.urlencode(params)}"
+
     payload = _http_get_json(url)
     if not payload.get("success", False):
-        err = payload.get("error") or payload
-        raise RuntimeError(f"CKAN action failed: {action}: {err}")
+        raise RuntimeError(f"CKAN action failed: {action} payload={payload!r}")
     return payload
 
 
-# ----------------------------- Download helpers -----------------------------
-
-def _download(url: str, dest: Path, overwrite: bool = False) -> None:
-    dest = Path(dest)
-    if dest.exists() and not overwrite:
-        print(f"[skip] {dest} already exists")
-        return
-
-    _ensure_parent(dest)
-    print(f"[get] {url}")
-
-    req = Request(url, headers={"User-Agent": "huf-fetch-data/1.1"})
-    with _urlopen(req, timeout=60) as r, tempfile.NamedTemporaryFile(delete=False) as tf:
-        shutil.copyfileobj(r, tf)
-        tmp = Path(tf.name)
-
-    dest_tmp = dest.with_suffix(dest.suffix + ".tmp")
-    try:
-        shutil.move(str(tmp), str(dest_tmp))
-        shutil.move(str(dest_tmp), str(dest))
-    finally:
-        try:
-            if tmp.exists():
-                tmp.unlink()
-        except Exception:
-            pass
-        try:
-            if dest_tmp.exists():
-                dest_tmp.unlink()
-        except Exception:
-            pass
-
-    print(f"[ok ] wrote {dest}")
-
-
-def _pick_best_csv_from_zip(z: zipfile.ZipFile) -> str:
-    """Heuristic: prefer filenames that look like phase-status, otherwise largest CSV."""
-    csv_names = [n for n in z.namelist() if n.lower().endswith(".csv")]
-    if not csv_names:
-        raise RuntimeError("Zip contains no CSV files.")
-
-    def score(name: str) -> Tuple[int, int]:
-        ln = name.lower()
-        s = 0
-        for token in ("phase", "status", "signal", "timing"):
-            if token in ln:
-                s += 1
-        try:
-            size = z.getinfo(name).file_size
-        except Exception:
-            size = 0
-        return (s, size)
-
-    csv_names.sort(key=score, reverse=True)
-    return csv_names[0]
-
-
-def _validate_toronto_schema(csv_path: Path) -> None:
-    required = {"TCS", "PHASE"}
-    optional = {"PHASE_STATUS_TEXT", "PHASE_CALL_TEXT"}
-
-    with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
-        reader = csv.DictReader(f)
-        cols = {c.strip() for c in (reader.fieldnames or []) if c}
-
-    missing = required - cols
-    if missing:
-        raise RuntimeError(
-            "Toronto CSV missing required columns: "
-            + ", ".join(sorted(missing))
-            + f". Found: {', '.join(sorted(cols))}"
-        )
-
-    print("\nToronto schema expected by HUF traffic adapters:")
-    print("  required columns: TCS, PHASE")
-    if cols & optional:
-        print("  optional columns: " + ", ".join(sorted(cols & optional)))
-    else:
-        print("  optional columns: PHASE_STATUS_TEXT, PHASE_CALL_TEXT")
-    print()
-
-
 def _download_toronto_csv(
-    ckan_base: str,
-    dests: Sequence[Path],
-    *,
-    query: str,
-    package_id: Optional[str] = None,
-    resource_id: Optional[str] = None,
+    base: str,
+    package_q: str,
+    dest_paths: List[Path],
     assume_yes: bool = False,
     overwrite: bool = False,
 ) -> None:
-    base = _normalize_ckan_base(ckan_base)
+    root = _repo_root()
 
-    # If user didn't provide ids, use known stable defaults.
-    if package_id is None:
-        package_id = DEFAULT_TORONTO_PACKAGE_ID
-    if resource_id is None:
-        resource_id = DEFAULT_TORONTO_RESOURCE_ID
+    # 1) Find a package
+    sr = _ckan_action(base, "package_search", q=package_q, rows=10)
+    results = (sr.get("result") or {}).get("results") or []
+    if not results:
+        raise RuntimeError(f"No CKAN packages matched query: {package_q!r}")
 
-    download_url: Optional[str] = None
+    pkg = results[0]
+    pkg_id = pkg.get("id") or pkg.get("name")
+    if not pkg_id:
+        raise RuntimeError("CKAN package_search result missing id/name")
 
-    # 1) Try direct resource_show first (fast + stable).
-    if resource_id:
-        try:
-            rs = _ckan_action(base, "resource_show", id=resource_id)
-            download_url = rs["result"].get("url") or rs["result"].get("download_url")
-        except Exception as e:
-            print(f"[warn] resource_show failed for {resource_id}: {e}")
+    # 2) Resolve resources
+    show = _ckan_action(base, "package_show", id=pkg_id)
+    resources = (show.get("result") or {}).get("resources") or []
+    if not resources:
+        raise RuntimeError(f"CKAN package had no resources: {pkg_id}")
 
-    # 2) If that failed, try package_show and pick a resource.
-    if download_url is None and package_id:
-        try:
-            pkg = _ckan_action(base, "package_show", id=package_id)["result"]
-            resources = pkg.get("resources") or []
-            # Prefer resources that look like the timing zip / phase status.
-            best = None
-            best_score = -1
-            for r in resources:
-                name = (r.get("name") or "") + " " + (r.get("description") or "")
-                url = (r.get("url") or "")
-                ln = (name + " " + url).lower()
-                s = 0
-                for token in ("timing", "traffic", "signal", "phase", "status", ".zip", "csv"):
-                    if token in ln:
-                        s += 1
-                if s > best_score:
-                    best_score = s
-                    best = r
-            if best:
-                download_url = best.get("url") or best.get("download_url")
-        except Exception as e:
-            print(f"[warn] package_show failed for {package_id}: {e}")
+    # Prefer a zip (traffic signals timing), otherwise any CSV.
+    chosen = None
+    for r in resources:
+        u = (r.get("url") or "").lower()
+        fmt = (r.get("format") or "").lower()
+        name = (r.get("name") or "").lower()
+        if u.endswith(".zip") or fmt == "zip" or "zip" in name:
+            chosen = r
+            break
+    if chosen is None:
+        for r in resources:
+            u = (r.get("url") or "").lower()
+            fmt = (r.get("format") or "").lower()
+            if u.endswith(".csv") or fmt == "csv":
+                chosen = r
+                break
 
-    # 3) If still no URL, fall back to search.
-    if download_url is None:
-        # Try a couple of queries if needed.
-        queries = [query, "traffic-signals-timing", "traffic signal phase status"]
-        pkg_candidates: List[Dict[str, Any]] = []
-        for q in queries:
-            try:
-                sr = _ckan_action(base, "package_search", q=q, rows=10)["result"]
-                pkg_candidates = sr.get("results") or []
-                if pkg_candidates:
-                    break
-            except Exception as e:
-                print(f"[warn] package_search failed for q={q!r}: {e}")
+    if chosen is None:
+        raise RuntimeError("Could not find a ZIP/CSV resource in the CKAN package.")
 
-        if not pkg_candidates:
-            raise RuntimeError(
-                "Could not find Toronto dataset via CKAN search. "
-                f"Check --toronto-ckan (currently {base!r})."
-            )
+    r_url = chosen.get("url")
+    if not r_url:
+        raise RuntimeError("Chosen CKAN resource missing url")
 
-        # Pick package.
-        pkg = pkg_candidates[0]
-        if not assume_yes and len(pkg_candidates) > 1:
-            print("Toronto CKAN search results:")
-            for i, p in enumerate(pkg_candidates[:5], start=1):
-                print(f"  {i}. {p.get('title') or p.get('name')} ({p.get('name')})")
-            try:
-                choice = input("Pick a dataset [1]: ").strip() or "1"
-                idx = max(1, min(int(choice), len(pkg_candidates))) - 1
-                pkg = pkg_candidates[idx]
-            except Exception:
-                pkg = pkg_candidates[0]
-
-        pkg = _ckan_action(base, "package_show", id=pkg.get("name") or pkg.get("id"))["result"]
-        resources = pkg.get("resources") or []
-        if not resources:
-            raise RuntimeError("Selected Toronto package has no resources.")
-
-        # Prefer zip resources then csv.
-        def r_score(r: Dict[str, Any]) -> Tuple[int, int]:
-            url = (r.get("url") or "").lower()
-            name = ((r.get("name") or "") + " " + (r.get("description") or "")).lower()
-            s = 0
-            for token in ("timing", "traffic", "signal", "phase", "status"):
-                if token in name or token in url:
-                    s += 1
-            ext_bonus = 2 if url.endswith(".zip") else (1 if url.endswith(".csv") else 0)
-            return (s + ext_bonus, 0)
-
-        resources.sort(key=r_score, reverse=True)
-        chosen = resources[0]
-        if not assume_yes and len(resources) > 1:
-            print("\nResources:")
-            for i, r in enumerate(resources[:10], start=1):
-                fmt = (r.get("format") or "").strip()
-                print(f"  {i}. {r.get('name') or r.get('id')} [{fmt}]\n     {r.get('url')}")
-            try:
-                choice = input("Pick a resource [1]: ").strip() or "1"
-                idx = max(1, min(int(choice), len(resources))) - 1
-                chosen = resources[idx]
-            except Exception:
-                chosen = resources[0]
-
-        download_url = chosen.get("url") or chosen.get("download_url")
-
-    if not download_url:
-        raise RuntimeError("Could not determine a download URL for Toronto resource.")
-
-    # Download (usually a .zip) to temp, then extract best CSV.
+    # 3) Download (ZIP or CSV) to temp
     with tempfile.TemporaryDirectory() as td:
-        tmp_dir = Path(td)
-        tmp_file = tmp_dir / "toronto_download"
-        _download(download_url, tmp_file, overwrite=True)
+        td_path = Path(td)
+        tmp = td_path / "toronto_resource"
+        if not _download(r_url, tmp, overwrite=True):
+            raise RuntimeError("Toronto download failed")
 
-        csv_src: Optional[Path] = None
-        if zipfile.is_zipfile(tmp_file):
-            with zipfile.ZipFile(tmp_file, "r") as z:
-                best_csv = _pick_best_csv_from_zip(z)
-                csv_src = tmp_dir / Path(best_csv).name
-                with z.open(best_csv, "r") as rf, csv_src.open("wb") as wf:
-                    shutil.copyfileobj(rf, wf)
+        final_csv: Optional[Path] = None
+        if tmp.suffix.lower() == ".zip":
+            with ZipFile(tmp, "r") as z:
+                members = [m for m in z.namelist() if m.lower().endswith(".csv")]
+                if not members:
+                    raise RuntimeError("ZIP did not contain any CSV files.")
+                # choose largest CSV inside
+                members.sort(key=lambda m: z.getinfo(m).file_size, reverse=True)
+                target = members[0]
+                z.extract(target, td_path)
+                final_csv = td_path / target
         else:
-            # If it's already CSV, keep it.
-            csv_src = tmp_file
+            final_csv = tmp
 
-        assert csv_src is not None and csv_src.exists()
+        assert final_csv is not None
 
-        _validate_toronto_schema(csv_src)
-
-        for dest in dests:
-            dest = Path(dest)
+        # 4) Copy into each destination
+        for rel_dest in dest_paths:
+            dest = root / rel_dest
+            dest.parent.mkdir(parents=True, exist_ok=True)
             if dest.exists() and not overwrite:
                 print(f"[skip] {dest} already exists")
                 continue
-            _ensure_parent(dest)
-            shutil.copyfile(csv_src, dest)
+            shutil.copy2(final_csv, dest)
             print(f"[ok ] wrote {dest}")
+
+    # Print a small schema hint (what adapters expect)
+    print("\nToronto schema expected by HUF traffic adapters:")
+    print("  required columns: TCS, PHASE")
+    print("  optional columns: PHASE_STATUS_TEXT, PHASE_CALL_TEXT")
 
 
 # ----------------------------- Planck guide -----------------------------
 
 def _print_planck_guide() -> None:
-    msg = f"""\
-    Planck 70GHz PR3 file is too large / unstable for automated download in some environments.
+    root = _repo_root()
+    dest = root / PLANCK_DEST
 
-    Option A (IRSA mirror direct link):
-      1) Download:
-         {IRSA_PLANCK70_FITS_URL}
-      2) Save it to:
-         {PLANCK_DEST.as_posix()}
+    msg = f"""
+    Planck input is intentionally NOT downloaded automatically.
 
-       Example (PowerShell):
-         curl.exe -L -o "{PLANCK_DEST.as_posix()}" "{IRSA_PLANCK70_FITS_URL}"
+    Why: the LFI 70 GHz PR3 map FITS is large (~480–500MB) and users often choose
+    between ESA PLA and NASA/IPAC IRSA (and sometimes different products/releases).
 
-      IRSA PR3 all-sky maps landing page:
+    Expected local path for this repo:
+      {PLANCK_DEST.as_posix()}
+
+    Option A (NASA/IPAC IRSA) — direct download:
+      1) Open the preview page and click "Download HEALPix FITS file":
+         {IRSA_PLANCK70_PREVIEW_URL}
+      2) Or download directly with curl/wget (resume-friendly):
+
+         curl -L -o "{dest.as_posix()}" "{IRSA_PLANCK70_FITS_URL}"
+
+      IRSA PR3 all-sky maps landing page (includes a generated download script):
          {IRSA_PLANCK_PR3_ALLSKY_URL}
 
     Option B (ESA Planck Legacy Archive):
-      1) Visit:
+      1) Visit PLA and browse/select PR3 products in the Maps section:
          {ESA_PLA_URL}
-      2) Browse/select PR3 products in the Maps section.
 
     After placing the FITS, run:
       pip install -e ".[planck]"
       huf planck --fits "{PLANCK_DEST.as_posix()}" --out out/planck70 --retained-target 0.97 --nside-out 64
     """
+
     print(textwrap.dedent(msg).strip() + "\n")
 
 
 # ----------------------------- CLI -----------------------------
 
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(
-        prog="fetch_data",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        description=textwrap.dedent(
-            """\
-            Fetch public input datasets for HUF cases.
+    _maybe_inject_truststore()
 
-            By default, this script writes into the repo's cases/*/inputs/ folders.
-            """
-        ),
+    ap = argparse.ArgumentParser(description="Fetch external data needed by HUF-Core example cases.")
+    ap.add_argument("--yes", action="store_true", help="Assume 'yes' for any prompts (non-interactive).")
+    ap.add_argument("--overwrite", action="store_true", help="Overwrite existing files.")
+
+    ap.add_argument("--markham", action="store_true", help="Fetch Markham 2018 budget Excel input.")
+    ap.add_argument(
+        "--markham-url",
+        default=os.environ.get(MARKHAM_ENV, ""),
+        help=f"Override Markham XLSX URL (or set env var {MARKHAM_ENV}).",
     )
 
-    parser.add_argument("--markham", action="store_true", help="Download Markham 2018 budget XLSX.")
-    parser.add_argument("--toronto", action="store_true", help="Download Toronto traffic signal phase-status CSV.")
-    parser.add_argument("--planck-guide", action="store_true", help="Print guided/manual download steps for Planck.")
-
-    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing files.")
-    parser.add_argument("--yes", action="store_true", help="Non-interactive: pick first/best options.")
-
-    # Markham
-    parser.add_argument("--markham-url", default=DEFAULT_MARKHAM_XLSX_URL, help="Override Markham XLSX URL.")
-
-    # Toronto
-    parser.add_argument(
+    ap.add_argument("--toronto", action="store_true", help="Fetch Toronto traffic-signal timing/phase status CSV.")
+    ap.add_argument(
         "--toronto-ckan",
-        default=DEFAULT_TORONTO_CKAN_BASE,
-        help="Toronto CKAN Action API base URL (or set env var HUF_TORONTO_CKAN).",
+        default=os.environ.get(TORONTO_ENV, DEFAULT_TORONTO_CKAN_BASE),
+        help=f"Toronto CKAN action base (or set env var {TORONTO_ENV}).",
     )
-    parser.add_argument("--toronto-query", default=DEFAULT_TORONTO_QUERY, help="Search query for the Toronto dataset.")
-    parser.add_argument(
-        "--toronto-package",
-        default=DEFAULT_TORONTO_PACKAGE_ID,
-        help="Toronto CKAN package id/name (default is a known stable dataset id).",
-    )
-    parser.add_argument(
-        "--toronto-resource",
-        default=DEFAULT_TORONTO_RESOURCE_ID,
-        help="Toronto CKAN resource id (default is a known stable resource id).",
+    ap.add_argument(
+        "--toronto-package-q",
+        default=DEFAULT_TORONTO_PACKAGE_Q,
+        help="CKAN package_search query string used to locate the dataset.",
     )
 
-    args = parser.parse_args(argv)
+    ap.add_argument("--planck-guide", action="store_true", help="Print Planck manual download instructions.")
 
-    if not (args.markham or args.toronto or args.planck_guide):
-        parser.print_help()
-        return 0
+    args = ap.parse_args(argv)
 
+    # Normalize to repo root for relative paths.
     os.chdir(_repo_root())
 
-    if args.markham:
-        _download(args.markham_url, MARKHAM_DEST, overwrite=args.overwrite)
+    wanted_any = args.markham or args.toronto or args.planck_guide
+    if not wanted_any:
+        ap.print_help()
+        return 0
 
-    if args.toronto:
-        _download_toronto_csv(
-            args.toronto_ckan,
-            [TORONTO_DEST, TORONTO_DEST_2],
-            query=args.toronto_query,
-            package_id=args.toronto_package,
-            resource_id=args.toronto_resource,
-            assume_yes=args.yes,
-            overwrite=args.overwrite,
-        )
+    errors: List[str] = []
 
     if args.planck_guide:
         _print_planck_guide()
 
-    if args.markham or args.toronto:
-        today = _dt.date.today().isoformat()
-        print(f"\nDone. (Fetched on {today})")
+    if args.toronto:
+        try:
+            _download_toronto_csv(
+                args.toronto_ckan,
+                args.toronto_package_q,
+                dest_paths=TORONTO_DESTS,
+                assume_yes=args.yes,
+                overwrite=args.overwrite,
+            )
+        except Exception as e:
+            errors.append(f"Toronto fetch failed: {e}")
 
+    if args.markham:
+        # URL selection: explicit override first, otherwise try default list.
+        urls = [args.markham_url] if args.markham_url else []
+        urls += DEFAULT_MARKHAM_URLS
+        ok = _download_first(urls, _repo_root() / MARKHAM_DEST, overwrite=args.overwrite)
+        if not ok:
+            errors.append(
+                "Markham fetch failed (all candidate URLs returned errors). "
+                f"Provide a working URL via --markham-url or env var {MARKHAM_ENV}."
+            )
+            print(
+                "\nManual Markham workaround:\n"
+                f"  1) Download the Markham 2018 budget XLSX from Markham Open Data.\n"
+                f"  2) Save it to:\n"
+                f"     {MARKHAM_DEST.as_posix()}\n"
+            )
+
+    if errors:
+        print("\nNOTE: data fetch reported errors:")
+        for e in errors:
+            print(f"  - {e}")
+        return 1
+
+    print(f"\nDone. (Fetched on {_dt.date.today().isoformat()})")
     return 0
 
 
