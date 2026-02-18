@@ -49,6 +49,11 @@ def _repo_root(start: Optional[Path] = None) -> Path:
 
 # Toronto CKAN "action" base. (As of 2026-02-17, this base was confirmed working by the user.)
 DEFAULT_TORONTO_CKAN_BASE = "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action"
+TORONTO_CKAN_BASE_FALLBACKS = [
+    DEFAULT_TORONTO_CKAN_BASE,
+    'https://open.toronto.ca/api/3/action',
+]
+
 TORONTO_ENV = "HUF_TORONTO_CKAN"
 
 # Markham budget XLSX. The City has moved links over time, so we try a short list.
