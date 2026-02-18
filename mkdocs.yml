@@ -10,6 +10,7 @@ nav:
       - Data Sources & Fetching: data_sources.md
       - Cases: cases.md
       - Troubleshooting: troubleshooting.md
+      - Vector DB Coherence: vector_db_coherence.md
   - Background:
       - What is HUF?: The_Higgins_Unity_Framework.md
       - Theory Notes: theory_notes.md
