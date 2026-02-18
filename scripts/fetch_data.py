@@ -71,12 +71,29 @@ PLANCK_DEST = Path("cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits")
 
 # ----------------------------- IO helpers -----------------------------
 
+import ssl
+from urllib.error import URLError
+
+def _urlopen(req: Request, *, timeout: int):
+    """urlopen wrapper with a certifi fallback (helps on Windows / locked-down cert stores)."""
+    try:
+        return urlopen(req, timeout=timeout)
+    except URLError as e:
+        reason = getattr(e, "reason", None)
+        if isinstance(reason, ssl.SSLCertVerificationError):
+            try:
+                import certifi  # optional; install via: python -m pip install certifi
+                ctx = ssl.create_default_context(cafile=certifi.where())
+                return urlopen(req, timeout=timeout, context=ctx)
+            except Exception:
+                raise
+        raise
+
 def _http_get_json(url: str, timeout: int = 60) -> Dict[str, Any]:
     req = Request(url, headers={"User-Agent": "huf-fetch-data/1.1"})
-    with urlopen(req, timeout=timeout) as r:
+    with _urlopen(req, timeout=timeout) as r:
         data = r.read().decode("utf-8")
     return json.loads(data)
-
 
 def _download(url: str, dest: Path, *, timeout: int = 300, overwrite: bool = False) -> None:
     dest = Path(dest)
@@ -88,24 +105,18 @@ def _download(url: str, dest: Path, *, timeout: int = 300, overwrite: bool = Fal
     req = Request(url, headers={"User-Agent": "huf-fetch-data/1.1"})
 
     print(f"[get] {url}")
-    try:
-        with urlopen(req, timeout=timeout) as r, open(dest, "wb") as f:
-            shutil.copyfileobj(r, f, length=1024 * 1024)
-    except (HTTPError, URLError) as e:
-        raise RuntimeError(f"Download failed: {url} ({e})") from e
-
+    with _urlopen(req, timeout=timeout) as r, open(dest, "wb") as f:
+        shutil.copyfileobj(r, f)
     print(f"[ok ] wrote {dest}")
-
-
-def _repo_root() -> Path:
-    # script lives at repo_root/scripts/fetch_data.py
-    return Path(__file__).resolve().parents[1]
-
 
 # ----------------------------- CKAN helpers (Toronto) -----------------------------
 
 def _ckan_action(base: str, action: str, **params: Any) -> Dict[str, Any]:
     base = base.rstrip("/")
+    # Normalize base URLs: accept "https://open.toronto.ca" or ".../api/3/action".
+    if not re.search(r"/api/3/action/?$", base):
+        base = base + "/api/3/action"
+
     url = f"{base}/{action}"
     if params:
         url += "?" + urlencode(params)

@@ -8,34 +8,7 @@ HUF reference cases ship **artifacts** (CSV/JSONL/plots) but **do not bundle lar
 
 ## What is (and isn’t) synthetic
 - **Worked cases (Planck / Markham / Toronto)**: **real** public data.
-- **Unit tests / toy examples**: may generate **small synthetic** vectors strictly for smoke-testing core logic. These are always labeled as toy/test data and never presented as “real runs.”
-
----
-
-## One command for civic data (Markham + Toronto)
-
-From the repo root:
-
-```bash
-make fetch-data
-# or: python scripts/fetch_data.py --markham --toronto
-```
-### Non-interactive Toronto fetch (`--yes`)
-
-If you want a **non-interactive** run (e.g., CI or scripted demos), use `--yes` to auto-select the top matching Toronto resource:
-
-```bash
-make fetch-toronto-yes
-# or:
-python scripts/fetch_data.py --toronto --yes
-```
-
-If the auto-selected resource isn’t the dataset you want, rerun without `--yes` to pick from the list interactively.
-
-
-This downloads the **Markham** workbook and a **Toronto** traffic phase-status CSV into the expected `cases/*/inputs/` paths.
-
-Planck remains manual (see below) because the FITS file is large.
+- **Toy examples** (if any): small synthetic vectors strictly for smoke-testing core logic, always labeled.
 
 ---
 
@@ -57,13 +30,6 @@ Planck remains manual (see below) because the FITS file is large.
 **Notes:**
 - This FITS is large (~480–500 MB). It is intentionally excluded from distributions.
 - The HUF Planck adapter expects **NESTED** ordering and uses the **I_STOKES** field by default.
-
-Tip: print a guided/manual flow (including a ready-to-run `curl` command) with:
-
-```bash
-make planck-guide
-# or: python scripts/fetch_data.py --planck-guide
-```
 
 ---
 
@@ -97,8 +63,19 @@ make planck-guide
 **Notes:**
 - This input may vary in size depending on the export window. It is intentionally excluded.
 - The Traffic adapters treat **(TCS × PHASE_BAND)** as verifiable finite elements and can optionally restrict to anomaly subsets.
-- The automated fetcher uses the portal’s public CKAN Action API endpoint:
-  - https://open.toronto.ca/api/3/action/
+
+---
+
+## Automation helper (GitHub package)
+
+If you are using the separate **GitHub package** distribution, it includes a fetch helper:
+
+```bash
+python scripts/fetch_data.py (from the GitHub package) --markham --toronto
+python scripts/fetch_data.py (from the GitHub package) --planck-guide
+```
+
+The docs-only bundle does not include that script, but the inputs and paths are identical.
 
 ---
 
@@ -121,3 +98,15 @@ cases/
 ```
 
 If you prefer a different location or filename, pass `--csv` / `--xlsx` / `--fits` in the CLI.
+
+
+### Non-interactive Toronto fetch (`--yes`)
+
+If you want a **non-interactive** run (e.g., CI or scripted demos), use `--yes` to auto-select the top matching Toronto resource:
+
+```bash
+python scripts/fetch_data.py (from the GitHub package) --toronto --yes
+```
+
+If the auto-selected resource isn’t the dataset you want, rerun without `--yes` to pick from the list interactively.
+

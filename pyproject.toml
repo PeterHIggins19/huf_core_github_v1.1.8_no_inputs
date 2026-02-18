@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,7 +11,7 @@ requires-python = ">=3.9"
 dependencies = [
   "numpy>=1.24",
   "pandas>=2.0",
-  "openpyxl>=3.1",
+  "openpyxl>=3.1"
 ]
 
 [project.optional-dependencies]
@@ -20,13 +20,3 @@ planck = ["astropy>=6.0", "healpy>=1.17.3"]
 
 [project.scripts]
 huf = "huf_core.cli:main"
-
-# Ship ONLY the real Python package.
-# Keep cases/docs/schemas in the repo, not in the pip package.
-[tool.setuptools]
-include-package-data = false
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["huf_core*"]
-exclude = ["cases*", "schemas*", "GET_STARTED*", "docs*", "tests*", "examples*", "scripts*"]

@@ -1,33 +1,43 @@
-# HUF Theory Notes (Optional)
+# Theory Notes (HUF / UBH)
 
-This file exists only to park *optional* theory so the Handbook + Reference Manual stay operational and short.
+**Updated:** 2026-02-17
 
-## The invariant
+This repo is deliberately **artifact-first**: you can run real datasets and inspect outputs without accepting any theory claims.
 
-HUF treats a system as finite elements with a **unity budget**:
+If you *do* want the formal structure (definitions, taxonomy, and expanded proofs), see:
 
-- **Mass budget**: nonnegative weights that sum to 1 (allocation / frequency / share)
-- **Energy budget**: nonnegative energy-like weights that sum to 1 (power / squared magnitude)
+- **`docs/The_Higgins_Unity_Framework.docx`** (full theoretical handbook)
+- **Handbook** (conceptual + case-study narrative)
 
-The contract requirement is simple:
+---
 
-- Every operation that changes membership or grouping must **renormalize**
-- Every run must emit the mandatory artifacts (or the run is invalid)
+## What HUF is (in one paragraph)
 
-## Why “unity” matters
+HUF is a reproducibility wrapper around a single contract: a **Unity‑Budgeted Hierarchy (UBH)**.  
+A UBH is a hierarchy where each node’s outgoing weights form a *budgeted, normalized distribution* (a “unity” constraint).  
+HUF turns inputs into UBH elements, then emits auditable artifacts (tables, maps, images) plus a stability sweep that shows what structure survives across τ.
 
-Unity is what makes comparisons stable:
+---
 
-- active sets are comparable between runs
-- discards are meaningful (you can say exactly how much budget you threw away)
-- stability packets can quantify brittleness (Jaccard, rank stability)
+## Why “unity budget” matters
 
-## Error metrics
+In practice, a unity budget behaves like a conserved quantity:
+- it forces competing explanations to share the same budget,
+- it makes comparisons across scales meaningful (local vs global),
+- it makes stability sweeps interpretable (what stays when τ tightens?).
 
-HUF always reports **discarded budget**. Domain metrics are pluggable:
+This was originally motivated by loudspeaker dispersion/diffraction work, but the same contract applies anywhere “parts must sum to a whole”.
 
-- Total variation distance (mass-type)
-- RMSE / Parseval-derived energy error (energy-type)
-- Any custom metric computed from the kept set
+---
 
-That’s it. Everything else (category theory, sphere mapping, etc.) is useful background, but it’s not required to *run* HUF.
+## Proof burden and how HUF helps
+
+HUF does not ask you to “believe the proof.”  
+It asks you to:
+1) run the same public dataset,
+2) confirm you get the same artifacts,
+3) inspect the stability packet,
+4) only then argue about interpretation.
+
+That’s why every run writes a `run_stamp.json`.
+

@@ -3,16 +3,20 @@ site_name: HUF Core
 theme:
   name: material
 
-docs_dir: docs
-site_dir: site
+markdown_extensions:
+  - attr_list
+  - admonition
+  - toc:
+      permalink: true
 
 nav:
   - Home: index.md
   - Start Here: start_here.md
+  - Reference Manual: reference_manual.md
+  - Handbook: handbook.md
+  - Data Sources: data_sources.md
+  - Troubleshooting: troubleshooting.md
   - GitHub for Beginners: github_for_beginners.md
   - GUI Quickstart: gui_quickstart.md
-  - Handbook: handbook.md
-  - Reference Manual: reference_manual.md
   - Theory Notes: theory_notes.md
-  - Data Sources: data_sources.md
   - Cases: cases.md

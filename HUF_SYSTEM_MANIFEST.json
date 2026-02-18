@@ -11,9 +11,7 @@
       "markdown": "docs/start_here.md",
       "docx": "docs/start_here.docx",
       "scripts": {
-        "windows": "START_HERE_WINDOWS.bat",
-        "macos": "START_HERE_MAC.command",
-        "linux": "start_here_linux.sh"
+        "note": "Scripts are included in the GitHub package."
       }
     }
   },

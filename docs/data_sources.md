@@ -1,118 +1,100 @@
-# Data sources (real, public)
+# Data Sources
 
-HUF reference cases ship **artifacts** (CSV/JSONL/plots) but **do not bundle large upstream datasets**.
+**Updated:** 2026-02-17
 
-- Keeps downloads small.
-- Avoids redistributing large binaries.
-- Lets you pull the freshest copy directly from the public source.
+HUF ships **code + documentation + small derived artifacts**, but it does **not** ship large public datasets (or huge binaries) inside the repo or release ZIPs.
 
-## What is (and isn’t) synthetic
-- **Worked cases (Planck / Markham / Toronto)**: **real** public data.
-- **Unit tests / toy examples**: may generate **small synthetic** vectors strictly for smoke-testing core logic. These are always labeled as toy/test data and never presented as “real runs.”
+This page tells you exactly where each “real data” demo comes from and how to fetch it.
 
 ---
 
-## One command for civic data (Markham + Toronto)
+## Markham (Ontario) — 2018 Budget Allocation (XLSX)
 
-From the repo root:
+Used by: `huf markham ...`
 
-```bash
-make fetch-data
-# or: python scripts/fetch_data.py --markham --toronto
-```
-### Non-interactive Toronto fetch (`--yes`)
+Public source:
+- City of Markham website (budget document):
+  - `https://www.markham.ca/wps/portal/home/city-hall/budget-and-finance/budget/2018budget/03-2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx`
 
-If you want a **non-interactive** run (e.g., CI or scripted demos), use `--yes` to auto-select the top matching Toronto resource:
-
-```bash
-make fetch-toronto-yes
-# or:
-python scripts/fetch_data.py --toronto --yes
+HUF fetch command:
+```powershell
+.\.venv\Scripts\python scripts\fetch_data.py --markham
 ```
 
-If the auto-selected resource isn’t the dataset you want, rerun without `--yes` to pick from the list interactively.
+Expected local path:
+- `cases\markham2018\inputs\2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx`
 
-
-This downloads the **Markham** workbook and a **Toronto** traffic phase-status CSV into the expected `cases/*/inputs/` paths.
-
-Planck remains manual (see below) because the FITS file is large.
+Notes:
+- If Markham changes the URL, use the Markham site search for the same filename and update `scripts/fetch_data.py` accordingly.
 
 ---
 
-## Planck (ESA / NASA) — PR3 all-sky maps
+## Toronto (Ontario) — Traffic signals timing (ZIP → CSV)
 
-**Case(s):** `cases/planck70/`
+Used by: `huf traffic ...` and `huf traffic-anomaly ...`
 
-**Input expected:**
-- `cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits`
+Public source:
+- City of Toronto Open Data portal (CKAN-backed): `https://open.toronto.ca/`
 
-**Primary source (ESA):**
-- Planck Legacy Archive (PLA): https://pla.esac.esa.int/
-
-**Convenient mirror / direct download (NASA/IPAC IRSA):**
-- PR3 all-sky maps landing page: https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/
-- Preview page (contains a “Download HEALPix FITS file” link): https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/previews/LFI_SkyMap_070_1024_R3.00_full/index.html
-- Direct file URL (large binary): https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/maps/LFI_SkyMap_070_1024_R3.00_full.fits
-
-**Notes:**
-- This FITS is large (~480–500 MB). It is intentionally excluded from distributions.
-- The HUF Planck adapter expects **NESTED** ordering and uses the **I_STOKES** field by default.
-
-Tip: print a guided/manual flow (including a ready-to-run `curl` command) with:
-
-```bash
-make planck-guide
-# or: python scripts/fetch_data.py --planck-guide
+HUF fetch command (non-interactive, recommended):
+```powershell
+.\.venv\Scripts\python scripts\fetch_data.py --toronto --yes
 ```
 
----
+What HUF downloads:
+- A ZIP from Toronto’s CKAN portal (the exact URL may change as resources are updated).
+- The fetch script extracts and normalizes a CSV into the case folders:
+  - `cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv`
+  - `cases\traffic_anomaly\inputs\toronto_traffic_signals_phase_status.csv`
 
-## City of Markham (Ontario) — 2018 corporate-wide budget workbook
-
-**Case(s):** `cases/markham2018/`
-
-**Input expected:**
-- `cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx`
-
-**Source:**
-- Direct XLSX: https://maps.markham.ca/OpenDataSite_Tables/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx
-- Markham Open Data portal: https://data-markham.opendata.arcgis.com/
-
-**Notes:**
-- The Markham adapter traces retained elements back to **sheet + cell references** in the workbook.
+If you prefer manual download:
+1. Go to `https://open.toronto.ca/`
+2. Search for **Traffic signals timing**
+3. Download the ZIP
+4. Extract and place/rename the CSV to the paths above
 
 ---
 
-## City of Toronto (Ontario) — traffic signal phase status
+## Planck (ESA / NASA) — All-sky maps (FITS)
 
-### Toronto Open Data (traffic signals)
+Used by: `huf planck ...`
 
-HUF uses the City of Toronto Open Data portal (CKAN).
+Planck maps are **very large** (hundreds of MB to multiple GB). HUF does not ship them.
 
-CKAN Action API base:
-`https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action`
+### Option A — ESA Planck Legacy Archive (PLA)
+Portal:
+- `https://pla.esac.esa.int/`
 
-HUF fetch helper:
-`python scripts/fetch_data.py --toronto --yes --toronto-ckan "https://ckan0.cf.opendata.inter.prod-toronto.ca/api/3/action"`
+Typical workflow:
+1. Open PLA
+2. Choose the product family (maps / frequency)
+3. Select the release (e.g., PR3)
+4. Download the FITS product(s)
 
----
+### Option B — NASA/IPAC IRSA mirror
+IRSA Planck page:
+- `https://irsa.ipac.caltech.edu/Missions/planck.html`
 
-## Recommended local layout
+Example file used in this repo:
+- 70 GHz (LFI) full-sky map (PR3):
+  - `https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/maps/LFI/LFI_SkyMap_070_1024_R3.00_full.fits`
 
-```text
-cases/
-  planck70/
-    inputs/
-      LFI_SkyMap_070_1024_R3.00_full.fits
-  markham2018/
-    inputs/
-      2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx
-  traffic_phase/
-    inputs/
-      toronto_traffic_signals_phase_status.csv
-  traffic_anomaly/
-    inputs/
-      toronto_traffic_signals_phase_status.csv
+HUF guidance:
+```powershell
+.\.venv\Scripts\python scripts\fetch_data.py --planck-guide
 ```
 
-If you prefer a different location or filename, pass `--csv` / `--xlsx` / `--fits` in the CLI.
+Expected local path:
+- `cases\planck70\inputs\LFI_SkyMap_070_1024_R3.00_full.fits`
+
+---
+
+## Synthetic data policy (what is “toy”)
+
+Small toy datasets may exist for:
+- unit tests
+- “hello world” demonstrations
+- quick CI sanity checks
+
+All “headline” cases described above (Markham / Toronto / Planck) are **real public datasets**.
+

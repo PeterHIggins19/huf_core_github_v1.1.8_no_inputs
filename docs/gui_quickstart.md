@@ -2,6 +2,9 @@
 
 This page is for people who prefer **GUI workflows** (e.g., GitHub Desktop, file explorers, Word/Excel) but still want to **run HUF** and keep **record copies**.
 
+## Note
+This docs-only package does not include the code/CLI. To **run HUF**, download the **GitHub package** release as well.
+
 ## What you can do without Git
 If you don’t want Git at all:
 
