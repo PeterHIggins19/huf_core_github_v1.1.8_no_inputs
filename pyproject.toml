@@ -16,7 +16,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff>=0.4"]
-planck = ["astropy>=6.0", "healpy>=1.17.3"]
+planck = ["astropy>=6.0"]
 
 [project.scripts]
 huf = "huf_core.cli:main"

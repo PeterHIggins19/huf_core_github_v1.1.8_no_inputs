@@ -23,11 +23,11 @@ import sys
 import tempfile
 import textwrap
 import urllib.parse
+import zipfile
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
-from zipfile import ZipFile
 
 
 # ----------------------------- Repo paths -----------------------------
@@ -226,7 +226,7 @@ def _download_toronto_csv(
 
         final_csv: Optional[Path] = None
         if tmp.suffix.lower() == ".zip":
-            with ZipFile(tmp, "r") as z:
+            with zipfile.ZipFile(tmp, "r") as z:
                 members = [m for m in z.namelist() if m.lower().endswith(".csv")]
                 if not members:
                     raise RuntimeError("ZIP did not contain any CSV files.")
