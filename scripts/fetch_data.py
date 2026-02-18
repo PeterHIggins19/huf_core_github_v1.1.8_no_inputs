@@ -21,7 +21,6 @@ Notes:
 - The Toronto portal is CKAN-backed; we use the public Action API (no key required).
 - If the Toronto query returns multiple candidates, you'll be prompted to choose.
 """
-
 from __future__ import annotations
 
 import argparse
@@ -30,15 +29,24 @@ import json
 import os
 import re
 import shutil
-import sys
+import ssl
 import tempfile
 import textwrap
 import zipfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
-from urllib.error import HTTPError, URLError
+from urllib.error import URLError
 from urllib.parse import urlencode, urlparse
 from urllib.request import Request, urlopen
+
+# ----------------------------- Optional TLS helpers -----------------------------
+# If truststore is installed, using it can fix SSL issues on some Windows setups.
+try:
+    import truststore  # type: ignore
+
+    truststore.inject_into_ssl()
+except Exception:
+    pass
 
 # ----------------------------- Defaults -----------------------------
 
@@ -63,16 +71,30 @@ IRSA_PLANCK_PR3_ALLSKY_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_
 ESA_PLA_URL = "https://pla.esac.esa.int/"
 
 # Expected local paths (relative to repo root)
-MARKHAM_DEST = Path("cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx")
+MARKHAM_DEST = Path(
+    "cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx"
+)
 TORONTO_DEST = Path("cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv")
 TORONTO_DEST_2 = Path("cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv")
 PLANCK_DEST = Path("cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits")
 
 
+# ----------------------------- Path helpers -----------------------------
+
+
+def _repo_root() -> Path:
+    """Return the repository root, assuming this file lives at <repo_root>/scripts/fetch_data.py."""
+    return Path(__file__).resolve().parents[1]
+
+
+def _resolve_to_repo(path: Path) -> Path:
+    """Interpret relative paths as repo-root-relative; keep absolute paths as-is."""
+    p = Path(path)
+    return p if p.is_absolute() else (_repo_root() / p)
+
+
 # ----------------------------- IO helpers -----------------------------
 
-import ssl
-from urllib.error import URLError
 
 def _urlopen(req: Request, *, timeout: int):
     """urlopen wrapper with a certifi fallback (helps on Windows / locked-down cert stores)."""
@@ -81,13 +103,16 @@ def _urlopen(req: Request, *, timeout: int):
     except URLError as e:
         reason = getattr(e, "reason", None)
         if isinstance(reason, ssl.SSLCertVerificationError):
+            # Optional fallback: certifi CA bundle
             try:
                 import certifi  # optional; install via: python -m pip install certifi
+
                 ctx = ssl.create_default_context(cafile=certifi.where())
                 return urlopen(req, timeout=timeout, context=ctx)
             except Exception:
                 raise
         raise
+
 
 def _http_get_json(url: str, timeout: int = 60) -> Dict[str, Any]:
     req = Request(url, headers={"User-Agent": "huf-fetch-data/1.1"})
@@ -95,21 +120,25 @@ def _http_get_json(url: str, timeout: int = 60) -> Dict[str, Any]:
         data = r.read().decode("utf-8")
     return json.loads(data)
 
+
 def _download(url: str, dest: Path, *, timeout: int = 300, overwrite: bool = False) -> None:
-    dest = Path(dest)
-    if dest.exists() and not overwrite:
-        print(f"[skip] {dest} already exists")
+    dest_abs = _resolve_to_repo(dest)
+
+    if dest_abs.exists() and not overwrite:
+        print(f"[skip] {dest_abs} already exists")
         return
 
-    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest_abs.parent.mkdir(parents=True, exist_ok=True)
     req = Request(url, headers={"User-Agent": "huf-fetch-data/1.1"})
 
     print(f"[get] {url}")
-    with _urlopen(req, timeout=timeout) as r, open(dest, "wb") as f:
+    with _urlopen(req, timeout=timeout) as r, open(dest_abs, "wb") as f:
         shutil.copyfileobj(r, f)
-    print(f"[ok ] wrote {dest}")
+    print(f"[ok ] wrote {dest_abs}")
+
 
 # ----------------------------- CKAN helpers (Toronto) -----------------------------
+
 
 def _ckan_action(base: str, action: str, **params: Any) -> Dict[str, Any]:
     base = base.rstrip("/")
@@ -120,6 +149,7 @@ def _ckan_action(base: str, action: str, **params: Any) -> Dict[str, Any]:
     url = f"{base}/{action}"
     if params:
         url += "?" + urlencode(params)
+
     payload = _http_get_json(url)
     if not payload.get("success"):
         err = payload.get("error")
@@ -183,22 +213,18 @@ def _download_toronto_csv(
 
     If the chosen resource is a ZIP, we extract the largest CSV inside.
     """
-
     base = base.rstrip("/")
-    root = _repo_root()
 
     # 1) Find package/resource
     pkg: Optional[Dict[str, Any]] = None
     resources: List[Dict[str, Any]] = []
 
     if resource_id:
-        # Need package_show to find resource URL (resource_show exists but not always enabled)
         # Try resource_show; fallback to searching packages.
         try:
             res = _ckan_action(base, "resource_show", id=resource_id)
             resources = [res]
         except Exception:
-            # Fallback: brute search by resource id in a wide query
             sr = _ckan_action(base, "package_search", q=resource_id, rows=10)
             pkgs = sr.get("results", [])
             for p in pkgs:
@@ -258,10 +284,10 @@ def _download_toronto_csv(
         parsed = urlparse(url)
         leaf = Path(parsed.path).name or "download"
         tmp = td_path / leaf
+
         _download(url, tmp, overwrite=True)
 
         # If ZIP, extract CSV.
-        final_csv: Optional[Path] = None
         if tmp.suffix.lower() == ".zip":
             with zipfile.ZipFile(tmp, "r") as z:
                 members = [m for m in z.namelist() if m.lower().endswith(".csv")]
@@ -275,16 +301,14 @@ def _download_toronto_csv(
         else:
             final_csv = tmp
 
-        assert final_csv is not None
-
         for rel_dest in dest_paths:
-            dest = root / rel_dest
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            if dest.exists() and not overwrite:
-                print(f"[skip] {dest} already exists")
+            dest_abs = _resolve_to_repo(rel_dest)
+            dest_abs.parent.mkdir(parents=True, exist_ok=True)
+            if dest_abs.exists() and not overwrite:
+                print(f"[skip] {dest_abs} already exists")
                 continue
-            shutil.copy2(final_csv, dest)
-            print(f"[ok ] wrote {dest}")
+            shutil.copy2(final_csv, dest_abs)
+            print(f"[ok ] wrote {dest_abs}")
 
     # Print a small schema hint (what adapters expect)
     print("\nToronto schema expected by HUF traffic adapters:")
@@ -294,9 +318,9 @@ def _download_toronto_csv(
 
 # ----------------------------- Planck guide -----------------------------
 
+
 def _print_planck_guide() -> None:
-    root = _repo_root()
-    dest = root / PLANCK_DEST
+    dest = _resolve_to_repo(PLANCK_DEST)
 
     msg = f"""
     Planck input is intentionally NOT downloaded automatically.
@@ -330,6 +354,7 @@ def _print_planck_guide() -> None:
 
 
 # ----------------------------- CLI -----------------------------
+
 
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(
@@ -365,8 +390,6 @@ def main(argv: Optional[List[str]] = None) -> int:
     if not (args.markham or args.toronto or args.planck_guide):
         ap.print_help()
         return 0
-
-    os.chdir(_repo_root())
 
     if args.markham:
         _download(args.markham_url, MARKHAM_DEST, overwrite=args.overwrite)
