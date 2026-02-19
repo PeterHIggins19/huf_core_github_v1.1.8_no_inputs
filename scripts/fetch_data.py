@@ -105,6 +105,8 @@ IRSA_PLANCK_PR3_ALLSKY_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_
 IRSA_PLANCK70_PREVIEW_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/previews/LFI_SkyMap_070_1024_R3.00_full/index.html"
 
 
+IRSA_PLANCK70_FITS_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/maps/LFI_SkyMap_070_1024_R3.00_full.fits"
+ESA_PLA_URL = "https://pla.esac.esa.int/"
 def _http_get_json(url: str, timeout: int = 30) -> Dict[str, Any]:
     req = Request(url, headers={"User-Agent": "huf-core-fetch-data/1"})
     with _urlopen(req, timeout=timeout) as r:
@@ -272,6 +274,13 @@ def _print_planck_guide() -> None:
       2) Or download directly with curl/wget (resume-friendly):
 
          curl -L -o "{dest.as_posix()}" "{IRSA_PLANCK70_FITS_URL}"
+
+      3) PowerShell (Windows) BITS download:
+
+         $dest = "{dest.as_posix()}"
+         New-Item -ItemType Directory -Force (Split-Path $dest) | Out-Null
+         $src  = "{IRSA_PLANCK70_FITS_URL}"
+         Start-BitsTransfer -Source $src -Destination $dest
 
       IRSA PR3 all-sky maps landing page (includes a generated download script):
          {IRSA_PLANCK_PR3_ALLSKY_URL}
