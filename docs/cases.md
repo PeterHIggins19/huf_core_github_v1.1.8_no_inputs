@@ -57,6 +57,7 @@ Planck guide (prints download steps, does **not** download automatically):
 ### Toronto traffic phase (CSV)
 - Adapter: `huf traffic ...`
 - Shows: **phase-band compression** (lots of rows → fewer coherent regimes) for operational signals.
+- Best next page: 👉 [Traffic Phase worked example](traffic_phase_worked_example.md)
 
 ### Toronto traffic anomaly (CSV)
 - Adapter: `huf traffic-anomaly ...`
