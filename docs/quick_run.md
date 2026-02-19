@@ -97,3 +97,12 @@ Each run writes artifacts to your `--out` folder, including:
 - `artifact_3_trace_report.jsonl`
 - `artifact_4_error_budget.json`
 - `run_stamp.json`, `meta.json`, `stability_packet.csv`
+
+
+---
+
+## Preview the docs locally
+
+```powershell
+.\.venv\Scripts\python -m mkdocs serve
+```

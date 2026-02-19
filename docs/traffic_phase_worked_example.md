@@ -11,11 +11,17 @@ Goal: show what HUF reveals that a typical “count rows / pivot table” workfl
 
 ---
 
+
+!!! warning "PowerShell vs Python"
+    Commands like `import pandas as pd` must be run in **Python** (a notebook, `python -c`, or the Python REPL),
+    not in PowerShell. If you paste Python into PowerShell you'll get `The term 'import' is not recognized...`.
+
+
 ## 1) Run it
 
 Windows PowerShell (from repo root):
 ```powershell
-huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
+.\.venv\Scripts\huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
 ```
 
 You should see something like:
@@ -250,18 +256,12 @@ This is how you keep the analysis auditable when you change thresholds.
 
 - Want to build your own “outlier report”?
   Use `artifact_2_active_set.csv` as the authoritative retained set, and join to your own intersection metadata.
+
+
 ---
 
-## 10) Rebuild the “outlier lists” automatically
+## Preview the docs locally
 
-If you want the tables on this page to come from **your own run output** (instead of reading the static numbers here), run:
-
-Windows PowerShell (repo root):
 ```powershell
-.\.venv\Scripts\python scripts\inspect_traffic_phase_artifacts.py --out out\traffic_phase --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv
+.\.venv\Scripts\python -m mkdocs serve
 ```
-
-It prints:
-- global band totals (MajorEven / MinorOdd / Other)
-- top intersections by global share (from `artifact_1_coherence_map.csv`)
-- most MinorOdd-heavy + Other-heavy intersections (from `artifact_2_active_set.csv`)

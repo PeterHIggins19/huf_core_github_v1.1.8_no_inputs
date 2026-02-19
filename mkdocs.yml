@@ -1,21 +1,15 @@
 site_name: HUF Core Snapshot
-site_description: "Higgins Unity Framework (HUF) — docs + runnable cases"
-site_url: https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/
-
-repo_name: PeterHIggins19/huf_core_github_v1.1.8_no_inputs
+site_description: Higgins Unity Framework (HUF) — contract + artifacts demos and docs
 repo_url: https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs
-edit_uri: edit/main/docs/
+edit_uri: edit/main/
 
 theme:
   name: material
   features:
-    - navigation.instant
-    - navigation.tracking
+    - navigation.tabs
     - navigation.sections
-    - navigation.expand
     - navigation.top
     - content.code.copy
-    - content.action.edit
     - search.suggest
     - search.highlight
 
@@ -23,39 +17,29 @@ plugins:
   - search
 
 markdown_extensions:
+  - tables
   - admonition
-  - attr_list
-  - toc:
-      permalink: true
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.highlight:
+      anchor_linenums: true
   - pymdownx.tabbed:
       alternate_style: true
-  - pymdownx.inlinehilite
-  - pymdownx.highlight
+  - toc:
+      permalink: true
 
 nav:
   - Home: index.md
-  - Getting Started:
-      - Quick Run (All Cases): quick_run.md
-      - Learning Path: learning_path.md
-      - Start Here (Zero GitHub Knowledge): get_started_zero_github.md
-      - Start Here (Developer): start_here.md
-      - Data Sources & Fetching: data_sources.md
-      - Jupyter demos (optional): jupyter_demos.md
+  - Quick Run: quick_run.md
+  - Start Here (Developer): start_here.md
+  - Start Here (Zero GitHub Knowledge): docs/get_started_zero_github.md
+  - Data Sources & Fetching: data_sources.md
   - Cases:
-      - Included Cases: cases.md
+      - Included cases: docs/cases.md
       - Markham worked example: markham_worked_example.md
       - Traffic Phase worked example: traffic_phase_worked_example.md
-  - Vector DB:
-      - Coherence from retrieval results: vector_db_coherence.md
-  - Reference:
-      - Troubleshooting: troubleshooting.md
-      - Reference Manual: reference_manual.md
-      - GitHub for Beginners: github_for_beginners.md
-  - Background:
-      - The Higgins Unity Framework: The_Higgins_Unity_Framework.md
-      - Theory notes: theory_notes.md
-      - Handbook (markdown): handbook.md
-      - GUI quickstart: gui_quickstart.md
-      - GET_STARTED notes: get_started_readme.md
+  - Vector DB coherence: vector_db_coherence.md
+  - Jupyter demos (optional): jupyter_demos.md
+  - Troubleshooting: docs/troubleshooting.md
+  - Reference manual: docs/reference_manual.md
