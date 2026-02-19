@@ -1,29 +1,48 @@
-# HUF Core Snapshot (docs + cases)
+# HUF Core Snapshot (v1.1.8)
 
-Everything here is **Markdown-first** so links work on GitHub + GitHub Pages.
+This repo is a **runnable snapshot** of the Higgins Unity Framework (HUF) with:
+- working demo cases (Markham, Toronto traffic, Planck),
+- auditable artifacts (`out/*`),
+- a MkDocs site (Material theme).
 
-## Do this first
+## Windows PowerShell quickstart (copy/paste)
 
-- **Quick Run (copy/paste):** `docs/quick_run.md`
-- **Learning Path:** `docs/learning_path.md`
-- **Beginner (no GitHub):** `docs/get_started_zero_github.md`
+From the repo root:
 
-## One‑click starters (run locally from the repo root)
+```powershell
+# 1) Create + activate repo venv (recommended)
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -U pip
+.\.venv\Scripts\python -m pip install -e .
 
-- Windows: `START_HERE_WINDOWS.bat`
-- macOS: `START_HERE_MAC.command`
-- Linux: `start_here_linux.sh`
+# 2) Fetch bundled public datasets (Markham + Toronto)
+.\.venv\Scripts\python scripts\fetch_data.py --markham --toronto --yes
 
-These create a local `.venv/`, install dependencies, and fetch **Markham + Toronto** inputs.
+# 3) Run cases
+.\.venv\Scripts\huf markham --xlsx cases\markham2018\inputs\2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out\markham2018
+.\.venv\Scripts\huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
+.\.venv\Scripts\huf traffic-anomaly --csv cases\traffic_anomaly\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_anomaly --status "Green Termination" --tau-global 0.0005
 
-## Planck is manual (large FITS)
+# 4) Planck (manual download guide)
+.\.venv\Scripts\python scripts\fetch_data.py --planck-guide
+```
 
-See:
-- `docs/data_sources.md` (Planck section)
-- `python scripts/fetch_data.py --planck-guide` (prints exact URLs + expected path)
+## Docs site (local)
 
-## Reference docs
+```powershell
+.\.venv\Scripts\python -m pip install mkdocs mkdocs-material
+mkdocs serve
+```
 
-- `docs/reference_manual.md`
-- `docs/handbook.md`
-- `docs/cases.md`
+Open: http://127.0.0.1:8000/
+
+## Read the artifacts
+
+Start with:
+- `artifact_1_coherence_map.csv` (who dominates)
+- `artifact_2_active_set.csv` (retained items + shares)
+- `artifact_3_trace_report.jsonl` (why)
+
+## Vector DB coherence (optional)
+
+See: `docs/vector_db_coherence.md`
