@@ -1,7 +1,5 @@
-# Data Sources & Fetching (moved)
+# Data Sources & Fetching (legacy path)
 
-This page used to live under `/docs/…`.
+This page exists to keep old links working.
 
-The canonical page is now:
-
-- [Data Sources & Fetching](../data_sources.md)
+**Go here instead:** [Data Sources & Fetching](../data_sources.md)

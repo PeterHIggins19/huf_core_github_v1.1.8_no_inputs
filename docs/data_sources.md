@@ -1,4 +1,3 @@
-\
 # Data Sources & Fetching
 
 This repo ships **small** inputs for Markham and Toronto examples via `scripts/fetch_data.py`.

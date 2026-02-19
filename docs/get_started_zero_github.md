@@ -1,4 +1,3 @@
-\
 # Start Here (Zero GitHub Knowledge)
 
 This page is written for **Windows PowerShell** users who want copy/paste success.
