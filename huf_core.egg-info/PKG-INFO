@@ -13,53 +13,42 @@ Requires-Dist: pytest>=8.0; extra == "dev"
 Requires-Dist: ruff>=0.4; extra == "dev"
 Provides-Extra: planck
 Requires-Dist: astropy>=6.0; extra == "planck"
-Requires-Dist: healpy>=1.17.3; extra == "planck"
 Dynamic: license-file
 
-# HUF System (Markdown-only, docs + cases)
+# HUF Core (docs + runnable cases)
 
-This package is the **HUF system without the GitHub codebase**:
+## Quick start (Windows PowerShell)
 
-## New to GitHub?
+```powershell
+# 1) Create venv + install deps
+python scripts\bootstrap.py
 
-If you’re starting from **zero GitHub knowledge**, begin here:
+# 2) Fetch public inputs (Markham + Toronto)
+.\.venv\Scripts\python scripts\fetch_data.py --markham --toronto --yes
 
-- **Start here (Markdown):** `docs/start_here.md`
-- **Start here (Markdown record copy):** `docs/start_here.md`
+# 3) Run demos
+.\.venv\Scripts\huf markham --xlsx cases\markham2018\inputs\2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out\markham2018
+.\.venv\Scripts\huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
+.\.venv\Scripts\huf traffic-anomaly --csv cases\traffic_anomaly\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_anomaly --status "Green Termination" --tau-global 0.0005
+```
 
-One‑click setup scripts (in repo root):
+## Planck (optional)
 
-- Windows: `START_HERE_WINDOWS.bat`
-- macOS: `START_HERE_MAC.command`
-- Linux: `start_here_linux.sh`
+Planck only needs **astropy** on this branch.
 
-These will create a local Python environment, install dependencies, and fetch **Markham + Toronto** inputs.
-Planck is guided/manual because the FITS files are very large.
+```powershell
+.\.venv\Scripts\python -m pip install astropy
+.\.venv\Scripts\huf planck --fits cases\planck70\inputs\LFI_SkyMap_070_1024_R3.00_full.fits --out out\planck70 --retained-target 0.97 --nside-out 64
+```
 
-1) **Handbook**: `docs/handbook.md`
-2) **Reference Manual**: `docs/reference_manual.md`
-3) **Cases**: `cases/*` (reference artifacts + run stamps + meta)
+## Notes
 
-## Markdown exports (record-keeping)
+- On Windows, `make` is not installed by default. Use the Python scripts above.
+- If you have Anaconda/Miniconda open, prefer explicit venv commands (`.\.venv\Scripts\...`) so you don’t accidentally run `huf.exe` from the conda environment.
 
-For users who aren’t GitHub-native, this release also includes **Markdown** copies of the key docs:
 
-- `docs/handbook.md`
-- `docs/reference_manual.md`
-- `docs/data_sources.md`
-- `docs/gui_quickstart.md`
+## Docs
 
-These are generated from the Markdown sources and intended for record retention and offline sharing.
-
-## GUI Quickstart
-
-If you prefer GUI tools (Word/Excel, GitHub Desktop), start with:
-- `docs/gui_quickstart.md`
-
-## Inputs policy
-Upstream inputs (Planck FITS / Markham workbook / Toronto traffic CSV) are **real public data** but are **not bundled**.
-
-See `DATA_SOURCES.md` for where to download them and the exact expected paths.
-
-## GitHub package (library + CLI)
-The codebase is distributed separately as a “GitHub package” zip (or via the actual repo). Use it if you want to run the demos or build new adapters.
+- Handbook: `docs/handbook.md`
+- Reference manual: `docs/reference_manual.md`
+- Cases: `cases/`

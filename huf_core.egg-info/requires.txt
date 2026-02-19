@@ -8,4 +8,3 @@ ruff>=0.4
 
 [planck]
 astropy>=6.0
-healpy>=1.17.3
