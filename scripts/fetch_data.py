@@ -30,6 +30,28 @@ from urllib.request import Request, urlopen
 from zipfile import ZipFile
 
 
+
+# ----------------------------- TLS helpers -----------------------------
+
+def _maybe_inject_truststore() -> None:
+    """Best-effort TLS trust injection.
+
+    Some Windows environments (corporate proxies, older CA stores) can fail HTTPS validation.
+    If the optional `truststore` package is installed, we let it hook into `ssl` so urllib
+    can validate using the OS trust store. If not installed, this is a no-op.
+
+    Safe to call on all platforms.
+    """
+    try:
+        import truststore  # type: ignore
+    except Exception:
+        return
+    try:
+        truststore.inject_into_ssl()
+    except Exception:
+        # Never fail data fetch just because truststore isn't available.
+        return
+
 # ----------------------------- Repo paths -----------------------------
 
 def _repo_root(start: Optional[Path] = None) -> Path:

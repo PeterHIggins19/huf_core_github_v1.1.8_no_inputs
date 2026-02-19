@@ -71,7 +71,7 @@ def main(argv=None) -> int:
         default=0.0005,
         help="Global exclusion threshold. 0.005 may exclude all elements on the bundled Toronto CSV; 0.0005 is a safer default.",
     )
-    p_an.add_argument("--status", action="append", default=["Green Termination"])
+    p_an.add_argument("--status", action="append", default=None, help="Repeatable. Example: --status \"Green Termination\"")
     p_an.add_argument("--include-call-text", action="store_true")
 
     p_mk = sub.add_parser("markham", help="Run Markham 2018 fund×account expenditure HUF demo.")
@@ -155,7 +155,10 @@ def main(argv=None) -> int:
         return 0
 
     if args.cmd == "traffic-anomaly":
-        elements, meta = traffic_anomaly_elements(args.csv, anomaly_status=args.status, include_call_text=args.include_call_text)
+        statuses = args.status or ["Green Termination"]
+        # de-dup while preserving order
+        statuses = list(dict.fromkeys([str(s).strip() for s in statuses if str(s).strip()]))
+        elements, meta = traffic_anomaly_elements(args.csv, anomaly_status=statuses, include_call_text=args.include_call_text)
         core = HUFCore(elements, dataset_id=meta["dataset_id"])
         cfg = HUFConfig(budget_type="mass", exclusion="global", tau=float(args.tau_global))
         artifacts = core.cycle(cfg)
@@ -166,7 +169,7 @@ def main(argv=None) -> int:
         sp.to_csv(args.out / "stability_packet.csv", index=False)
         (args.out / "meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
 
-        _print_done("traffic-anomaly", args.out, artifacts, extra={"dataset_id": meta.get("dataset_id"), "tau_global": float(args.tau_global), "status": args.status})
+        _print_done("traffic-anomaly", args.out, artifacts, extra={"dataset_id": meta.get("dataset_id"), "tau_global": float(args.tau_global), "status": statuses})
         return 0
 
     if args.cmd == "markham":
