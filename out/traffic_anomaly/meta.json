@@ -1,7 +1,6 @@
 {
-  "dataset_id": "e7be6fd355d02627",
+  "dataset_id": "d3e42ea8279d491f",
   "anomaly_status": [
-    "Green Termination",
     "Green Termination"
   ],
   "include_call_text": false,
