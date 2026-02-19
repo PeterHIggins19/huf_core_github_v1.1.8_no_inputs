@@ -23,11 +23,11 @@ import sys
 import tempfile
 import textwrap
 import urllib.parse
-import zipfile
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+from zipfile import ZipFile
 
 
 # ----------------------------- Repo paths -----------------------------
@@ -78,36 +78,9 @@ TORONTO_DESTS = [
 DEFAULT_TORONTO_PACKAGE_Q = "traffic signals timing"
 
 # Planck (manual)
-PLANCK_DEST = Path("cases/planck70/inputs/HFI_SkyMap_070_2048_R3.01_full.fits")
+PLANCK_DEST = Path("cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits")
 IRSA_PLANCK_PR3_ALLSKY_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/"
-IRSA_PLANCK70_PREVIEW_URL = (
-    "https://irsa.ipac.caltech.edu/applications/planck/#details=imp%3DAll%20Sky%20Maps%20%28PR3%29%26sel%3D"
-    "irsa.ipac.planck%21all_sky_maps%21HFI_SkyMap_070_2048_R3.01_full.fits"
-)
-IRSA_PLANCK70_FITS_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/HFI_SkyMap_070_2048_R3.01_full.fits"
-ESA_PLA_URL = "https://pla.esac.esa.int/"
-
-
-# ----------------------------- Helpers -----------------------------
-
-def _maybe_inject_truststore() -> None:
-    """
-    On Windows, certificate chains can sometimes be awkward in corporate environments.
-    If `truststore` is installed, inject it so urllib uses the OS trust store.
-    """
-    try:
-        import truststore  # type: ignore
-    except Exception:
-        return
-    try:
-        truststore.inject_into_ssl()
-    except Exception:
-        # Non-fatal; continue with default SSL handling.
-        return
-
-
-def _urlopen(req: Request, timeout: int = 30):
-    return urlopen(req, timeout=timeout)
+IRSA_PLANCK70_PREVIEW_URL = "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/previews/LFI_SkyMap_070_1024_R3.00_full/index.html"
 
 
 def _http_get_json(url: str, timeout: int = 30) -> Dict[str, Any]:
@@ -226,7 +199,7 @@ def _download_toronto_csv(
 
         final_csv: Optional[Path] = None
         if tmp.suffix.lower() == ".zip":
-            with zipfile.ZipFile(tmp, "r") as z:
+            with ZipFile(tmp, "r") as z:
                 members = [m for m in z.namelist() if m.lower().endswith(".csv")]
                 if not members:
                     raise RuntimeError("ZIP did not contain any CSV files.")

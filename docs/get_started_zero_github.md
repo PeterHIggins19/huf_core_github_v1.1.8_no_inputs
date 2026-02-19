@@ -79,28 +79,19 @@ python3 scripts/bootstrap.py
 
 ## Fetch the real public data (Markham + Toronto)
 
-### One command
+Windows (PowerShell):
+```powershell
+.\.venv\Scripts\python scripts\fetch_data.py --markham --toronto --yes
+```
 
+macOS/Linux (bash/zsh):
+```bash
+./.venv/bin/python scripts/fetch_data.py --markham --toronto --yes
+```
+
+Makefile (optional convenience on macOS/Linux):
 ```bash
 make fetch-data
-```
-
-or:
-
-```bash
-python scripts/fetch_data.py --markham --toronto
-```
-
-### Toronto non‑interactive (best for demos)
-
-```bash
-make fetch-toronto-yes
-```
-
-or:
-
-```bash
-python scripts/fetch_data.py --toronto --yes
 ```
 
 If the Toronto file chosen is not the one you want, rerun **without** `--yes` and pick from the menu.
@@ -113,14 +104,19 @@ Planck FITS files are very large, so HUF does **not** download them automaticall
 
 Run:
 
-```bash
-make planck-guide
+Windows (PowerShell):
+```powershell
+.\.venv\Scripts\python scripts\fetch_data.py --planck-guide
 ```
 
-or:
-
+macOS/Linux (bash/zsh):
 ```bash
-python scripts/fetch_data.py --planck-guide
+./.venv/bin/python scripts/fetch_data.py --planck-guide
+```
+
+Makefile (optional convenience on macOS/Linux):
+```bash
+make planck-guide
 ```
 
 This prints:

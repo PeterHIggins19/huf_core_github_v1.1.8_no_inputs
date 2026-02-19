@@ -4,18 +4,21 @@ title: HUF Core Snapshot
 
 # Higgins Unity Framework (HUF) — Quick Links
 
-Welcome! This repo keeps documentation in **Markdown** so links are clickable on GitHub and GitHub Pages.
+This repo keeps docs in **Markdown** so links are clickable on GitHub and GitHub Pages.
 
 ## Start (beginner)
 
 - **Learning Path (recommended):** [docs/learning_path.md](docs/learning_path.md)
+- **Quick Run (copy/paste):** [docs/quick_run.md](docs/quick_run.md)
 - **No GitHub knowledge required:** [docs/get_started_zero_github.md](docs/get_started_zero_github.md)
 
-## One‑click starters
+## One‑click starters (run locally)
 
-- **Windows:** [START_HERE_WINDOWS.bat](START_HERE_WINDOWS.bat)
-- **Mac:** [START_HERE_MAC.command](START_HERE_MAC.command)
-- **Linux:** [start_here_linux.sh](start_here_linux.sh)
+> These are meant to run **from your local repo folder** (not from the browser).
+
+- **Windows:** [START_HERE_WINDOWS.bat](START_HERE_WINDOWS.bat) — [view on GitHub](https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/blob/main/START_HERE_WINDOWS.bat)
+- **Mac:** [START_HERE_MAC.command](START_HERE_MAC.command) — [view on GitHub](https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/blob/main/START_HERE_MAC.command)
+- **Linux:** [start_here_linux.sh](start_here_linux.sh) — [view on GitHub](https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/blob/main/start_here_linux.sh)
 
 ## Documentation
 
@@ -26,7 +29,7 @@ Welcome! This repo keeps documentation in **Markdown** so links are clickable on
 - **What is HUF?:** [docs/The_Higgins_Unity_Framework.md](docs/The_Higgins_Unity_Framework.md)
 - **Reference Manual:** [docs/reference_manual.md](docs/reference_manual.md)
 
-## Scripts
+## Scripts (run locally)
 
-- **Fetch inputs:** [scripts/fetch_data.py](scripts/fetch_data.py)
-- **Bootstrap helper:** [scripts/bootstrap.py](scripts/bootstrap.py)
+- **Fetch inputs:** [scripts/fetch_data.py](scripts/fetch_data.py) — [view on GitHub](https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/blob/main/scripts/fetch_data.py)
+- **Bootstrap helper:** [scripts/bootstrap.py](scripts/bootstrap.py) — [view on GitHub](https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/blob/main/scripts/bootstrap.py)

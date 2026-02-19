@@ -4,10 +4,11 @@ If you're new (or not very computer‑savvy), follow this in order:
 
 1. **Start here (no GitHub knowledge required)** → [Get Started (Zero GitHub)](get_started_zero_github.md)  
 2. **Understand what HUF is** → [What is the Higgins Unity Framework?](The_Higgins_Unity_Framework.md)  
-3. **Install & run your first demo** → [Start Here (developer style)](start_here.md)  
-4. **Download civic data (Markham + Toronto)** → [Data Sources & Fetching](data_sources.md)  
-5. **Run cases (examples)** → [Cases](cases.md)  
-6. **If something breaks** → [Troubleshooting](troubleshooting.md)
+3. **Run the demos (copy/paste)** → [Quick Run](quick_run.md)  
+4. **Developer setup (optional)** → [Start Here (Developer)](start_here.md)  
+5. **Download civic data (Markham + Toronto)** → [Data Sources & Fetching](data_sources.md)  
+6. **Run cases (examples)** → [Cases](cases.md)  
+7. **If something breaks** → [Troubleshooting](troubleshooting.md)
 
 ## What you’ll end up with
 
@@ -25,4 +26,4 @@ If you're new (or not very computer‑savvy), follow this in order:
 
 ## Need a “one page” cheat sheet?
 
-Start with [Get Started (Zero GitHub)](get_started_zero_github.md). It’s meant to be printed or followed step‑by‑step.
+Use [Quick Run](quick_run.md).
