@@ -1,27 +1,15 @@
-# NOTE: If your repo already has a MkDocs Pages deploy workflow (e.g. pages.yml),
-# keep ONE deploy workflow to avoid duplicate runs.
-name: build-and-deploy-docs
+name: Docs (MkDocs Material)
 
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - "docs/**"
-      - "mkdocs.yml"
-      - ".github/workflows/docs.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  build:
+  build_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,22 +23,14 @@ jobs:
       - name: Install MkDocs
         run: |
           python -m pip install --upgrade pip
-          pip install mkdocs-material
+          # Pin MkDocs <2 until Material supports MkDocs 2.x
+          pip install "mkdocs<2" "mkdocs-material<10"
 
-      - name: Build site
+      - name: Build (strict)
         run: mkdocs build --strict
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

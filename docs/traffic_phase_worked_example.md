@@ -11,17 +11,11 @@ Goal: show what HUF reveals that a typical “count rows / pivot table” workfl
 
 ---
 
-
-!!! warning "PowerShell vs Python"
-    Commands like `import pandas as pd` must be run in **Python** (a notebook, `python -c`, or the Python REPL),
-    not in PowerShell. If you paste Python into PowerShell you'll get `The term 'import' is not recognized...`.
-
-
 ## 1) Run it
 
 Windows PowerShell (from repo root):
 ```powershell
-.\.venv\Scripts\huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
+huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
 ```
 
 You should see something like:
@@ -256,12 +250,3 @@ This is how you keep the analysis auditable when you change thresholds.
 
 - Want to build your own “outlier report”?
   Use `artifact_2_active_set.csv` as the authoritative retained set, and join to your own intersection metadata.
-
-
----
-
-## Preview the docs locally
-
-```powershell
-.\.venv\Scripts\python -m mkdocs serve
-```

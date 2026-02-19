@@ -61,14 +61,3 @@ If you have `make` installed (common on macOS/Linux):
 ```bash
 make fetch-data
 ```
-
-
----
-
-## Preview the docs locally
-
-If `mkdocs` isn't on your PATH, use:
-
-```powershell
-.\.venv\Scripts\python -m mkdocs serve
-```

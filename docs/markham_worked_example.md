@@ -11,17 +11,11 @@ Goal: show what HUF reveals that a normal “sum + chart” spreadsheet workflow
 
 ---
 
-
-!!! warning "PowerShell vs Python"
-    Commands like `import pandas as pd` must be run in **Python** (a notebook, `python -c`, or the Python REPL),
-    not in PowerShell. If you paste Python into PowerShell you'll get `The term 'import' is not recognized...`.
-
-
 ## 1) Run it
 
 Windows PowerShell (from repo root):
 ```powershell
-.\.venv\Scripts\huf markham --xlsx cases\markham2018\inputs\2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out\markham2018
+huf markham --xlsx cases\markham2018\inputs\2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out\markham2018
 ```
 
 You should see something like:
@@ -186,12 +180,3 @@ print(active.head(10)[["rank","regime_id","item_id","value","rho_global_post","r
 
 - Input workbook: `cases/markham2018/inputs/...xlsx` (bundled)
 - Case folder (GitHub): https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/tree/main/cases/markham2018
-
-
----
-
-## Preview the docs locally
-
-```powershell
-.\.venv\Scripts\python -m mkdocs serve
-```

@@ -1,45 +1,49 @@
 site_name: HUF Core Snapshot
-site_description: Higgins Unity Framework (HUF) — contract + artifacts demos and docs
+site_url: https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/
+
+repo_name: PeterHIggins19/huf_core_github_v1.1.8_no_inputs
 repo_url: https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs
-edit_uri: edit/main/
+edit_uri: edit/main/docs/
+
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
 
 theme:
   name: material
   features:
-    - navigation.tabs
+    - navigation.instant
+    - navigation.tracking
     - navigation.sections
-    - navigation.top
-    - content.code.copy
-    - search.suggest
+    - toc.follow
     - search.highlight
+    - search.suggest
+  icon:
+    repo: fontawesome/brands/github
 
 plugins:
   - search
 
 markdown_extensions:
-  - tables
   - admonition
+  - attr_list
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.inlinehilite
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.tabbed:
-      alternate_style: true
-  - toc:
-      permalink: true
 
 nav:
   - Home: index.md
   - Quick Run: quick_run.md
   - Start Here (Developer): start_here.md
-  - Start Here (Zero GitHub Knowledge): docs/get_started_zero_github.md
+  - Start Here (Zero GitHub Knowledge): get_started_zero_github.md
   - Data Sources & Fetching: data_sources.md
-  - Cases:
-      - Included cases: docs/cases.md
-      - Markham worked example: markham_worked_example.md
-      - Traffic Phase worked example: traffic_phase_worked_example.md
+  - Cases: cases.md
+  - Worked examples:
+      - Markham: markham_worked_example.md
+      - Traffic phase: traffic_phase_worked_example.md
   - Vector DB coherence: vector_db_coherence.md
   - Jupyter demos (optional): jupyter_demos.md
-  - Troubleshooting: docs/troubleshooting.md
-  - Reference manual: docs/reference_manual.md
