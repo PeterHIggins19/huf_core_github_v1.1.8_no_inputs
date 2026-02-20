@@ -1,30 +1,28 @@
 \
-"""scripts/catalog_docs.py
+r"""scripts/catalog_docs.py
 
-Docs hygiene tool (MkDocs + Material).
+Docs hygiene tool (MkDocs + Material), designed for Windows-friendly workflows.
 
-What it does:
-1) Scans docs/ for Markdown files.
-2) Parses mkdocs.yml nav to find which docs are linked in the sidebar.
-3) Writes a persistent catalog under notes/doc_catalog/:
-   - docs_current.json      (all docs currently present)
-   - docs_removed.json      (docs that used to exist, but are now missing)
-   - nav_files.json         (docs referenced by nav)
-   - orphans.json           (docs present but not in nav)
-   - missing_in_docs.json   (docs referenced by nav but missing from docs/)
+Why this exists:
+- Keeps `mkdocs build --strict` bulletproof by making nav / docs drift visible.
+- Prevents accidental loss of pages during overlay merges.
+- Maintains a “removed docs” tombstone list, and auto-recovers if a doc reappears.
 
-Rule the user requested:
-- If a doc reappears, remove it from docs_removed.json.
+What it writes (persisted):
+- notes/doc_catalog/docs_current.json      (all Markdown files currently under docs/)
+- notes/doc_catalog/docs_removed.json      (tombstones: pages that used to exist but are now missing)
+- notes/doc_catalog/nav_files.json         (Markdown files referenced by mkdocs.yml nav)
+- notes/doc_catalog/orphans.json           (docs present but not in nav; excludes '_' snippet files)
+- notes/doc_catalog/missing_in_docs.json   (docs referenced by nav but missing on disk)
 
-Run (Windows-safe):
+Rule:
+- If a doc is in docs_removed.json but reappears under docs/, it is removed from docs_removed.json.
+
+Run (PowerShell, repo venv):
   .\.venv\Scripts\python scripts/catalog_docs.py
 
 Optional:
   .\.venv\Scripts\python scripts/catalog_docs.py --print-suggested-nav
-
-Notes:
-- This does NOT auto-edit your nav; it prints suggested YAML lines.
-- Files starting with "_" are treated as internal snippets and ignored for "orphan" warnings.
 """
 
 from __future__ import annotations
@@ -32,8 +30,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any, Dict, List, Set
 
 import yaml
 
@@ -54,7 +53,6 @@ def first_h1(path: Path) -> str:
 
 
 def scan_docs(docs_dir: Path) -> Dict[str, Dict[str, Any]]:
-    """Return mapping relpath -> metadata for all *.md under docs/."""
     items: Dict[str, Dict[str, Any]] = {}
     for p in sorted(docs_dir.rglob("*.md")):
         if not p.is_file():
@@ -68,32 +66,59 @@ def scan_docs(docs_dir: Path) -> Dict[str, Dict[str, Any]]:
     return items
 
 
-def walk_nav(node: Any, out: Set[str]) -> None:
-    """Collect file paths referenced by MkDocs nav."""
+def _extract_nav_yaml_text(mkdocs_text: str) -> str:
+    """
+    Extract just the `nav:` block from mkdocs.yml.
+
+    This avoids PyYAML failures on Material's python tags like:
+      emoji_index: !!python/name:material.extensions...
+
+    We only need nav, and nav is plain YAML.
+    """
+    lines = mkdocs_text.splitlines()
+    nav_start = None
+    for i, line in enumerate(lines):
+        if re.match(r"^nav:\s*$", line):
+            nav_start = i
+            break
+    if nav_start is None:
+        return "nav: []\n"
+
+    # nav continues until next top-level key at column 0 (e.g., "theme:", "plugins:", etc.)
+    nav_lines = [lines[nav_start]]
+    for j in range(nav_start + 1, len(lines)):
+        line = lines[j]
+        if re.match(r"^[A-Za-z0-9_][A-Za-z0-9_\-]*\s*:\s*$", line) and not line.startswith(" "):
+            break
+        nav_lines.append(line)
+    return "\n".join(nav_lines) + "\n"
+
+
+def _walk_nav(node: Any, out: Set[str]) -> None:
     if node is None:
         return
     if isinstance(node, str):
-        # ignore external links
         if "://" in node:
             return
         out.add(node.replace("\\", "/").lstrip("./"))
         return
     if isinstance(node, list):
         for x in node:
-            walk_nav(x, out)
+            _walk_nav(x, out)
         return
     if isinstance(node, dict):
         for _, v in node.items():
-            walk_nav(v, out)
+            _walk_nav(v, out)
         return
 
 
-def parse_nav(mkdocs_yml: Path) -> Set[str]:
-    data = yaml.safe_load(mkdocs_yml.read_text(encoding="utf-8"))
+def parse_nav_files(mkdocs_yml: Path) -> Set[str]:
+    mk_text = mkdocs_yml.read_text(encoding="utf-8")
+    nav_yaml_text = _extract_nav_yaml_text(mk_text)
+    data = yaml.safe_load(nav_yaml_text) or {}
     nav = data.get("nav", [])
     out: Set[str] = set()
-    walk_nav(nav, out)
-    # keep only .md files (ignore directories and other assets)
+    _walk_nav(nav, out)
     return {p for p in out if p.endswith(".md")}
 
 
@@ -113,8 +138,7 @@ def save_json(path: Path, obj: Any) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--print-suggested-nav", action="store_true",
-                    help="Print suggested YAML leaf lines for orphans (grouped by folder).")
+    ap.add_argument("--print-suggested-nav", action="store_true")
     args = ap.parse_args()
 
     root = Path(__file__).resolve().parents[1]
@@ -126,32 +150,26 @@ def main() -> int:
     current = scan_docs(docs_dir)
     current_set = set(current.keys())
 
-    nav_files = parse_nav(mkdocs_yml)
-    nav_set = set(nav_files)
+    nav_set = set(parse_nav_files(mkdocs_yml))
 
-    # Ignore internal snippets from orphan reporting
     def is_ignored(rel: str) -> bool:
-        name = Path(rel).name
-        return name.startswith("_")
+        return Path(rel).name.startswith("_")
 
     orphans = sorted([p for p in current_set - nav_set if not is_ignored(p)])
     missing_in_docs = sorted([p for p in nav_set - current_set])
 
-    # Persistent removed list management
     prev_current = load_json(catalog_dir / "docs_current.json", {})
     prev_removed = set(load_json(catalog_dir / "docs_removed.json", []))
 
-    # Anything that used to exist but is now gone → removed
+    # track newly removed
     for p in prev_current.keys():
         if p not in current_set:
             prev_removed.add(p)
-
-    # Anything that reappeared → remove from removed
+    # auto-recover if reappears
     for p in list(prev_removed):
         if p in current_set:
             prev_removed.remove(p)
 
-    # Write catalogs
     save_json(catalog_dir / "docs_current.json", current)
     save_json(catalog_dir / "docs_removed.json", sorted(prev_removed))
     save_json(catalog_dir / "nav_files.json", sorted(nav_set))
@@ -183,7 +201,6 @@ def main() -> int:
             title = current.get(p, {}).get("title") or Path(p).stem.replace("_", " ").title()
             print(f"      - {title}: {p}")
 
-    # return nonzero if nav references missing docs (strict would fail)
     return 2 if missing_in_docs else 0
 
 
