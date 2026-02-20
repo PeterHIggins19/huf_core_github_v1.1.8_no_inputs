@@ -80,7 +80,13 @@ In `out/vector_db_demo/`:
 2) `artifact_2_active_set.csv` — retained items with global + local shares (`rho_*`)
 3) `artifact_3_trace_report.jsonl` — per-item reasoning: pre/post mass, exclusions, ranks
 
-Tip: for quick inspection without notebooks, use the helper script:
+Tip: for quick inspection without notebooks, use:
+
+```powershell
+.\.venv\Scripts\python scripts/inspect_huf_artifacts.py --out out/vector_db_demo
+```
+
+(Backward-compatible alias, if present:)
 
 ```powershell
 .\.venv\Scripts\python scripts/inspect_vector_db_artifacts.py --out out/vector_db_demo

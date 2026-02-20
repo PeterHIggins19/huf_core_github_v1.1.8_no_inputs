@@ -53,6 +53,16 @@ Planck guide (prints download steps, does **not** download automatically):
 
 ---
 
+## 60-second long-tail demo
+
+```powershell
+.\.venv\Scripts\python scripts/run_long_tail_demo.py --status "Green Termination"
+```
+
+This runs **Traffic Phase → Traffic Anomaly** and prints “top regimes changed + concentration increased”.
+
+---
+
 ## Traffic Phase vs Traffic Anomaly
 ### A practical “accounting lens” on non-linear + long-tail behavior
 
@@ -65,7 +75,6 @@ If you’re coming from accounting, map it like this:
 
 - **Traffic Phase = the whole ledger.**  
   You look at all transactions and build a stable picture of allocation across cost centers.
-
 - **Traffic Anomaly = a filtered sub-ledger.**  
   For example: *only refunds*, *only manual journal entries*, *only write-offs*, or *only policy exceptions*.
 
@@ -89,6 +98,9 @@ Why this is powerful:
   - and how much mass sits “near tau” (stability sensitivity).
 
 This is the same workflow as: baseline P&L → exception-only P&L → ranked variance review.
+
+For a deeper walkthrough + the “why this works” story, see:
+- **Long tail (accounting lens)** → `docs/long_tail_accounting_lens.md`
 
 ---
 

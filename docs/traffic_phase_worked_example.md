@@ -7,7 +7,10 @@ This page is a **guided artifact-reading flow** for the Traffic Phase case:
 - `cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv`
 
 Goal: show what HUF reveals that a typical “count rows / pivot table” workflow usually hides:
-**a ranked, auditable “where the mass is” map**, **per-intersection signatures**, and **stable compression knobs (tau)**.
+
+- a ranked, auditable “where the mass is” map,
+- per-intersection signatures,
+- stable compression knobs (`tau`).
 
 ---
 
@@ -19,6 +22,12 @@ Windows PowerShell (from repo root):
 .\.venv\Scripts\huf traffic --csv cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_phase
 ```
 
+You should see something like:
+
+- `active_set≈1312`
+- `coherence_rows≈851`
+- `discarded_global≈0.001`
+
 ---
 
 ## 2) What’s in the input
@@ -27,6 +36,11 @@ HUF expects a **Toronto traffic phase status** CSV with at least:
 
 - `TCS` (signal controller / intersection id)
 - `PHASE` (phase number)
+
+For the shipped snapshot, the input contains:
+
+- **66,912** rows (observations)
+- **851** distinct `TCS` values (intersections)
 
 ---
 
@@ -49,6 +63,12 @@ So each intersection becomes a 2–3 element “signature vector”:
 TCS= -> [MajorEven share, MinorOdd share, Other share]
 ```
 
+Why this is useful:
+
+- You can compare **intersections** on the same basis (a 3-number signature)
+- You can rank intersections by **global mass** (how much of the dataset they explain)
+- You can filter tiny within-intersection tails with `--tau-local`
+
 ---
 
 ## 4) The outputs (what to open first)
@@ -56,21 +76,16 @@ TCS= -> [MajorEven share, MinorOdd share, Other share]
 A run writes to `out/traffic_phase/`:
 
 1) `artifact_1_coherence_map.csv` — **Intersection ranking** (one row per `TCS`) + discard reporting  
-2) `artifact_2_active_set.csv` — **Retained elements** (bands that survived tau)  
-3) `artifact_3_trace_report.jsonl` — **Provenance chain** (how each item was formed)  
-4) `artifact_4_error_budget.json` — single-number discard summary  
-5) `stability_packet.csv` — small sweep showing sensitivity to tau
+2) `artifact_2_active_set.csv` — **Retained elements** (per `TCS`, which bands survived tau, with local + global shares)  
+3) `artifact_3_trace_report.jsonl` — **Provenance chain** (item id → regime path → input fingerprint → method)  
+4) `artifact_4_error_budget.json` — single-number summary: **how much budget was discarded**  
+5) `stability_packet.csv` — small sweep showing how stable the result is as you change `tau`
 
 ---
 
 ## 5) Next step: the diagnostic lens (Traffic Anomaly)
 
-Traffic Phase is the **baseline** case. The anomaly case is the **exception** case.
-
-**Accounting analogy:**
-
-- Traffic Phase = whole ledger (stable allocation picture)
-- Traffic Anomaly = filtered sub-ledger (refunds / overrides / exceptions)
+Traffic Phase is the **baseline** case. The anomaly case is the **exception-only** case.
 
 Run it:
 
@@ -81,7 +96,8 @@ Run it:
 What to look for:
 
 - Do the top regimes change (which intersections jump up)?
-- Does concentration increase (fewer regimes explain most mass)?
+- Does concentration increase (fewer regimes/items explain most mass)?
 - Does the long tail shrink or expand inside the exception status?
 
-That’s the “non-linear + long-tail” story: rare events often re-weight the system in ways that a baseline pivot table won’t show clearly.
+For the accounting mapping and “why this is non-linear”, see:
+- **Long tail (accounting lens)** → `docs/long_tail_accounting_lens.md`

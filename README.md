@@ -1,48 +1,83 @@
 # HUF Core Snapshot (v1.1.8)
 
-This repo is a **runnable snapshot** of the Higgins Unity Framework (HUF) with:
-- working demo cases (Markham, Toronto traffic, Planck),
-- auditable artifacts (`out/*`),
-- a MkDocs site (Material theme).
+**HUF is an artifact-first compression + audit framework for long-tail distributions** (budgets, logs, exceptions).
 
-## Windows PowerShell quickstart (copy/paste)
+It produces three “review-first” artifacts on every run:
 
-From the repo root:
+- **Coherence map** (`artifact_1_coherence_map.csv`) — *where the mass is* (ranked regimes)
+- **Active set** (`artifact_2_active_set.csv`) — retained items + global/local shares
+- **Trace report** (`artifact_3_trace_report.jsonl`) — provenance + “why it stayed”
 
-```powershell
-# 1) Create + activate repo venv (recommended)
-python -m venv .venv
-.\.venv\Scripts\python -m pip install -U pip
-.\.venv\Scripts\python -m pip install -e .
+Docs site: https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/
 
-# 2) Fetch bundled public datasets (Markham + Toronto)
-.\.venv\Scripts\python scripts\fetch_data.py --markham --toronto --yes
+---
 
-# 3) Run cases
-.\.venv\Scripts\huf markham --xlsx cases\markham2018\inputs\2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out\markham2018
-.\.venv\Scripts\huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
-.\.venv\Scripts\huf traffic-anomaly --csv cases\traffic_anomaly\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_anomaly --status "Green Termination" --tau-global 0.0005
+## 60-second long-tail demo (Windows/Conda copy/paste)
 
-# 4) Planck (manual download guide)
-.\.venv\Scripts\python scripts\fetch_data.py --planck-guide
-```
+This runs **Traffic Phase** (baseline) then **Traffic Anomaly** (exception-only) and prints:
 
-## Docs site (local)
+- top regimes by `rho_global_post` (top 10)
+- “items to cover 90%”
+- discarded budget
+- “top regimes changed + concentration increased” summary
 
 ```powershell
-.\.venv\Scripts\python -m pip install mkdocs mkdocs-material
-.\.venv\Scripts\python -m mkdocs serve
+python scripts/bootstrap.py
+.\.venv\Scripts\python scripts/fetch_data.py --toronto --yes
+.\.venv\Scripts\python scripts/run_long_tail_demo.py --status "Green Termination"
 ```
 
-Open: http://127.0.0.1:8000/
+Outputs are written to:
 
-## Read the artifacts
+- `out/traffic_phase_demo/`
+- `out/traffic_anomaly_demo/`
+
+Quick inspect any run:
+
+```powershell
+.\.venv\Scripts\python scripts/inspect_huf_artifacts.py --out out/traffic_anomaly_demo
+```
+
+More explanation (accounting lens): `docs/long_tail_accounting_lens.md`
+
+---
+
+## New to GitHub?
+
+If you’re starting from **zero GitHub knowledge**, begin here:
+
+- **Start here (MkDocs page):** `docs/get_started_zero_github.md`
+
+One‑click setup scripts (repo root):
+
+- Windows: `START_HERE_WINDOWS.bat`
+- macOS: `START_HERE_MAC.command`
+- Linux: `start_here_linux.sh`
+
+These create a local Python environment, install dependencies, and can fetch **Markham + Toronto** inputs.
+
+Planck is guided/manual because the FITS files are very large.
+
+---
+
+## What’s in this repo
 
 Start with:
-- `artifact_1_coherence_map.csv` (who dominates)
-- `artifact_2_active_set.csv` (retained items + shares)
-- `artifact_3_trace_report.jsonl` (why)
 
-## Vector DB coherence (optional)
+1) **Handbook**: `docs/handbook.md`  
+2) **Reference Manual**: `docs/reference_manual.md`  
+3) **Cases**: `cases/*`
 
-See: `docs/vector_db_coherence.md`
+### DOCX exports (record-keeping)
+
+For users who aren’t GitHub-native, this release also includes **DOCX** copies of key docs (generated from the Markdown sources):
+
+- `docs/handbook.docx`
+- `docs/reference_manual.docx`
+- `docs/data_sources.docx`
+- `docs/gui_quickstart.docx`
+
+### Inputs policy
+
+Upstream inputs (Planck FITS / Markham workbook / Toronto traffic CSV) are **real public data** and may be **not bundled**.
+See `DATA_SOURCES.md` for download locations and expected paths.
