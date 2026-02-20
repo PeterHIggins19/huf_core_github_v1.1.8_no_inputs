@@ -1,11 +1,11 @@
-"""
+"""scripts/run_vector_db_concentration_delta.py
+
 Run the Vector DB coherence adapter twice (tau A and tau B) and print a one-line
 concentration delta:
 
   Concentration increased: items_to_cover_90pct X -> Y
 
-Script-first, Windows/Conda friendly. Designed to be run from the repo root using
-the repo venv:
+Designed to be run from the repo root using the repo venv:
 
   .\.venv\Scripts\python scripts/run_vector_db_concentration_delta.py --in cases/vector_db/inputs/retrieval.jsonl --out out/vector_db_delta --tau-a 0.005 --tau-b 0.02 --regime-field namespace
 """
@@ -67,7 +67,6 @@ def run_once(in_path: Path, out_dir: Path, tau_global: float, cfg: VectorDBAdapt
 
 
 def _fmt_tau(t: float) -> str:
-    # Folder-safe, stable formatting
     s = f"{t:.6g}"
     return s.replace(".", "p")
 
@@ -102,7 +101,6 @@ def main() -> int:
     k_a = items_to_cover_90pct(out_a / "artifact_2_active_set.csv")
     k_b = items_to_cover_90pct(out_b / "artifact_2_active_set.csv")
 
-    # Smaller k => more concentrated
     if k_b < k_a:
         msg = "Concentration increased"
     elif k_b > k_a:

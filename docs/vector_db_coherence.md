@@ -1,16 +1,30 @@
 # Vector DB coherence (from retrieval results)
 
-This adapter turns **vector retrieval results** into a HUF run so you can audit:
+This adapter turns **retrieval results** into a HUF run so you can audit **composition** (not just “quality”):
 
-- which groups / “regimes” dominate the result set,
-- which items are retained vs discarded (and why),
-- how much probability mass lives in the long tail.
+- **Regime dominance:** which namespace / collection / tenant / source dominates the kept set
+- **Concentration:** do a few items explain most of the kept mass?
+- **Declared discards:** what fell below threshold, and how much mass was discarded (no silent drops)
+- **Trace:** why an item is retained (provenance + reasoning)
 
-It does **not** require a live vector database. You provide a **JSONL export** of retrieval results.
+> No live vector DB required. You provide a JSONL/CSV/TSV export of retrieval results.
+
+**Disambiguation:** this is *not* “ML class imbalance.”  
+Here “long tail” means **mass distribution + exception reweighting** — exactly how logs/ledgers/budgets become more concentrated when you filter to exceptions.
 
 !!! warning "PowerShell vs Python: run commands in the shell"
     If your prompt looks like `>>>`, you are **inside Python**.  
-    Exit back to PowerShell with **`exit()`** or **Ctrl+Z then Enter**, then run the commands below.
+    Exit back to PowerShell with **`exit()`** (or **Ctrl+Z then Enter**), then run the commands below.
+
+---
+
+## Start here
+
+If you want the shortest entry, see:
+
+- **Vector DB coherence adapter (one-page brief)**: `vector_db_coherence_one_pager.md`
+
+If you want the full walkthrough and “what to look for,” you are on the right page.
 
 ---
 
@@ -18,12 +32,35 @@ It does **not** require a live vector database. You provide a **JSONL export** o
 
 Use this when you want to answer questions like:
 
-- “Are my search results dominated by one namespace / one source?”
-- “Do I have a few regimes that explain most of the mass (concentration)?”
-- “What’s in the long tail after I apply a threshold or retained target?”
-- “If I filter to an exception (one namespace), does the ranking change?”
+- “Are results dominated by one namespace / one tenant / one collection?”
+- “Is my retrieval **too concentrated** (a tiny set dominates)?”
+- “After filtering to an exception (one tenant/namespace), did the ranking regime change?”
+- “If I tighten the threshold, does concentration increase?”
 
-This pairs naturally with the **long tail (accounting lens)** idea: baseline result-set → filtered/exception result-set → ranked variance review.
+This pairs naturally with **Traffic Phase vs Traffic Anomaly** (teaches baseline → exception-only → ranked review).  
+It also pairs with **Long tail (accounting lens)**: baseline view → exception view → ranked variance review.
+
+---
+
+## Concepts (the minimum you need)
+
+### Regimes
+A **regime** is the grouping you care about: `namespace`, `collection`, `tenant`, `source`, etc.
+
+You choose it via `--regime-field`.
+
+### Tau (global threshold)
+`--tau-global` sets the discard boundary in the **mass** frame.
+
+- Larger `tau` = stricter threshold = more discards (often *more concentration*)
+- Smaller `tau` = looser threshold = fewer discards (often *less concentration*)
+
+### The proof line: items_to_cover_90pct
+`items_to_cover_90pct = k` means:
+
+> The **top k retained items** explain **90%** of the post-normalized mass.
+
+Smaller `k` ⇒ more concentrated ⇒ a tiny set dominates retrieval.
 
 ---
 
@@ -36,9 +73,9 @@ One JSON object per line.
 - `id` (string): unique item id (document id, chunk id, ticket id, etc.)
 - `score` (number): similarity / relevance score (**higher = better**)
 
-### Optional fields
+### Optional fields (regimes)
 
-You can include any grouping fields you want to treat as regimes, e.g.:
+Include any grouping fields you want to audit by, e.g.:
 
 - `namespace`
 - `collection`
@@ -57,11 +94,9 @@ Example (`cases/vector_db/inputs/retrieval.jsonl`):
 
 ---
 
-## Run (Windows PowerShell)
+## 60-second run (Windows PowerShell)
 
 PowerShell note: use **backticks** for line continuation (not `\`).
-
-This example uses `namespace` as the regime field.
 
 ```powershell
 $py  = ".\.venv\Scripts\python.exe"
@@ -84,28 +119,12 @@ New-Item -ItemType Directory -Force $out | Out-Null
   --tau-global 0.02 `
   --regime-field namespace
 
-dir $out
-```
-
----
-
-## Quick dashboard (no notebooks)
-
-Inspect the output folder:
-
-```powershell
-.\.venv\Scripts\python scripts/inspect_huf_artifacts.py --out out/vector_db_demo
-```
-
-Backward-compatible alias:
-
-```powershell
-.\.venv\Scripts\python scripts/inspect_vector_db_artifacts.py --out out/vector_db_demo
+& $py scripts/inspect_huf_artifacts.py --out $out
 ```
 
 Expected console output looks like:
 
-```
+```text
 [tail] items_to_cover_90pct=3
 
 Top regimes by rho_global_post:
@@ -113,77 +132,122 @@ Top regimes by rho_global_post:
   2. tickets  rho_post=0.380342
 ```
 
-Interpretation (in plain English):
+Interpretation:
 
-- `kb` dominates the result mass (~62%) but `tickets` is still significant (~38%).
-- `items_to_cover_90pct=3` means the **top 3 retained items explain 90%** of the post-normalized mass → **high concentration**.
+- `kb` dominates (~62%) but `tickets` is still significant (~38%).
+- `items_to_cover_90pct=3` ⇒ **high concentration** (top 3 retained items explain 90% of mass).
 
 ---
 
-## Example output interpretation (screenshot-style walkthrough)
+## Two-tau delta (the repeatable headline)
 
-Think of this as “what you’d point at on a screenshot” when teaching someone how to read the artifacts.
+Sometimes you want one line a teammate can repeat:
 
-### Step 0 — sanity check (folder has the contract)
+> **Concentration increased: items_to_cover_90pct X -> Y**
 
-In File Explorer (or `dir`), confirm you see at least:
+Run the same input twice (tau A and tau B):
 
-- `artifact_1_coherence_map.csv`
-- `artifact_2_active_set.csv`
-- `artifact_4_error_budget.json`
+```powershell
+$py  = ".\.venv\Scripts\python.exe"
+$in  = "cases/vector_db/inputs/retrieval.jsonl"
+$out = "out/vector_db_delta"
 
+& $py scripts/run_vector_db_concentration_delta.py `
+  --in $in `
+  --out $out `
+  --tau-a 0.005 `
+  --tau-b 0.02 `
+  --regime-field namespace
+```
+
+Example headline output:
+
+```text
+Concentration increased: items_to_cover_90pct 37 -> 12
+```
+
+Interpretation: fewer retained items explain 90% of post-normalized mass (**more concentrated**).
+
+---
+
+## Artifacts (the contract)
+
+A valid run folder should contain at least:
+
+- `artifact_1_coherence_map.csv` (regime ranking)
+- `artifact_2_active_set.csv` (retained items)
+- `artifact_4_error_budget.json` (declared discards)
+
+Optional but strongly recommended:
+
+- `artifact_3_trace_report.jsonl` (why retained)
+- `meta.json`, `run_stamp.json`
+
+---
+
+## How to read the artifacts (screenshot-style walkthrough)
+
+Think of this as “what you would point at on a screenshot.”
+
+### Step 0 — sanity check
+
+In File Explorer (or `dir`), confirm the contract files exist.  
 If any are missing, treat the run as **not comparable**.
 
-### Step 1 — open `artifact_1_coherence_map.csv` (the regime ranking)
+### Step 1 — `artifact_1_coherence_map.csv` (regime ranking)
 
-Open the CSV in Excel. You’re looking for a table that feels like:
+Open in Excel and sort **descending** by `rho_global_post`.
 
-```
-regime_id          rho_global_post   rho_global_pre   ... (discard columns)
-kb                 0.619658          0.????
-tickets            0.380342          0.????
-...
-```
+You’re looking for rows like:
 
-**What to do (Excel “screenshot steps”):**
+- `regime_id` (e.g., `kb`, `tickets`)
+- `rho_global_post` (post-normalized mass share)
 
-1. Click the header row.
-2. Turn on a filter (Data → Filter).
-3. Sort **descending** by `rho_global_post`.
+What to look for:
 
-**What to look for:**
+- **Dominance:** does the top regime exceed 0.50?
+- **Regime concentration:** do top 2–3 regimes cover most of the mass?
+- **Tail cut:** if discard columns exist, did one regime lose far more than others?
 
-- **Dominance:** does the top regime have >0.50?
-- **Concentration across regimes:** do the top 2–3 regimes cover most of the mass?
-- **Tail cut:** if there’s a discarded column (names vary), did one regime lose a lot more?
+This answers: **“Which groups dominate my retrieval results?”**
 
-This artifact answers: **“Which groups dominate my retrieval results?”**
+### Step 2 — `artifact_2_active_set.csv` (the ranked review list)
 
-### Step 2 — open `artifact_2_active_set.csv` (the retained items)
+Open in Excel and sort **descending** by `rho_global_post`.
 
-Now open the active set. It will feel like:
+What to do:
 
-```
-item_id   regime_id   rho_global_post  rho_local_post  score  ...
-doc_001   kb          0.09             0.15            0.82
-doc_101   tickets     0.08             0.22            0.77
-...
-```
+- Sort by `rho_global_post` ⇒ global “review list”
+- Filter to one `regime_id`, then sort by `rho_local_post` ⇒ top items *within* a regime
 
-**How to read it:**
+This answers: **“Which retained items matter most overall, and within each regime?”**
 
-- Sort by `rho_global_post` → your global “review list”
-- Filter to one `regime_id` and sort by `rho_local_post` → “top hits inside this regime”
+### Step 3 — `artifact_4_error_budget.json` (declared discards)
 
-### Step 3 — the “90% coverage” headline (concentration in one number)
+Open the JSON and look for:
 
-In Excel:
+- `discarded_budget_global` (or similar key)
 
-1. Sort active set by `rho_global_post` descending.
-2. Add a cumulative sum column.
-3. Find the first row where cumulative sum ≥ 0.90.
+This answers: **“How much mass did we discard, explicitly?”**  
+If this is large, your threshold is doing substantial pruning.
 
-That row number is **items_to_cover_90pct**.
+### Step 4 — `artifact_3_trace_report.jsonl` (why retained)
+
+Use this when someone asks:
+
+- “Why did this item make the cut?”
+- “Which fields influenced grouping / trace?”
+
+This is the audit trail.
+
+---
+
+## Common patterns (what you’ll see in real systems)
+
+- **Tenant bleed / namespace monopoly:** one regime quietly dominates most results.
+- **Over-concentration:** `items_to_cover_90pct` becomes very small (risk: staleness of top chunks).
+- **Regime drift:** top regime changes after filtering, or over time (new content, new index behavior).
+- **Tail collapse under strict tau:** tightening `tau` shrinks the review list sharply.
 
 ---
 
@@ -191,14 +255,14 @@ That row number is **items_to_cover_90pct**.
 
 ### “I typed `huf traffic ...` and got `SyntaxError`”
 
-If you see this:
+If you see:
 
 - `>>> huf traffic ...`
 - `SyntaxError: invalid syntax`
 
-…it means you typed a **shell command inside Python**.
+…you typed a **shell command inside Python**.
 
-Fix: exit Python (`exit()`), then run the command in PowerShell:
+Fix: exit Python (`exit()`), then run in PowerShell:
 
 ```powershell
 .\.venv\Scripts\huf traffic --csv cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_phase
@@ -206,25 +270,25 @@ Fix: exit Python (`exit()`), then run the command in PowerShell:
 
 ### “My scores are distances (lower is better)”
 
-HUF assumes higher score = better. If your tool emits distance where lower is better, transform it first, e.g.:
+HUF assumes **higher score = better**. If your tool emits distance where lower is better, transform it *explicitly* before auditing, e.g.:
 
 - `score = 1 / (1 + distance)`
-- or `score = -distance` (if negative values are acceptable for your adapter)
+- or `score = -distance` (only if your adapter allows negatives)
 
-Keep the transform explicit so your audit trail stays honest.
+Keep the transform explicit so the audit trail stays honest.
 
 ---
 
-## Why this fits the HUF model
+## Where this goes next (future interest)
 
-Vector retrieval results are inherently long-tailed:
+If you care about this topic long-term, the natural next steps are:
 
-- a few results get most of the score mass,
-- many results sit near a “maybe” boundary,
-- filtering (namespace, tenant) can reweight the distribution non-linearly.
+- **Multi-run comparisons:** compare yesterday vs today (regime drift, concentration drift).
+- **Per-tenant audit packs:** same query across tenants → detect isolation failures.
+- **Evaluation hooks:** run coherence after each retrieval call in CI (regression detection).
+- **Math appendix mapping:** jump from formula → artifact column (e.g., `rho_global_post`).
 
-HUF makes that auditable by forcing:
+See also:
 
-- a declared unity budget,
-- explicit discards (error budget),
-- and a trace report (provenance).
+- **HUF math form and function** (derivations + column mapping)
+- **Long tail (accounting lens)** (baseline → exception-only → ranked variance review)

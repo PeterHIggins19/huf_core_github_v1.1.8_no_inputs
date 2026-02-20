@@ -1,31 +1,33 @@
-# Vector DB coherence adapter
+# Vector DB coherence adapter (one-page brief)
 
-A **one-page brief** for the Vector DB coherence adapter.
+> **No live vector DB required:** export retrieval results (JSONL/CSV/TSV) and audit **composition**.
 
-> **No live vector DB required:** export your retrieval results (JSONL/CSV/TSV) and audit the result-set **composition**.
+## What you get (in one sentence)
+
+A repeatable audit that shows **which regimes dominate**, **how concentrated the kept set is**, and **what was discarded (declared)**.
 
 ## Canonical links
 
 - **HUF repo:** https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs
 - **Docs:** https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/
+- **Full walkthrough:** `vector_db_coherence.md`
 
-## What the audit answers
+## Proof line (the one number)
 
-- **Dominance:** “Is one namespace / collection / tenant quietly dominating results?”
-- **Concentration:** “Do a few items explain most of the mass?”  
-  Proof line: `items_to_cover_90pct` (smaller ⇒ more concentrated)
-- **Declared discards:** “What fell below threshold, and how much mass was discarded?”
+`items_to_cover_90pct = k`  
+The top **k** retained items explain **90%** of the post-normalized mass.
 
-## Artifacts (what to open first)
+Smaller `k` ⇒ more concentrated ⇒ a tiny set dominates retrieval.
 
-- `artifact_1_coherence_map.csv`  
-  Sort by `rho_global_post` → top regimes (namespaces/collections/tenants) by post-normalized mass.
-- `artifact_2_active_set.csv`  
-  Sort by `rho_global_post` → your ranked review list (the items that matter most overall).
-- `artifact_4_error_budget.json`  
-  Look for `discarded_budget_global` → explicitly declared discard mass.
-- `artifact_3_trace_report.jsonl`  
-  When someone asks “why was this retained?” (provenance + reasoning).
+## Artifacts (open in this order)
+
+1) `artifact_1_coherence_map.csv` — regime ranking  
+   Sort by `rho_global_post` ⇒ which regimes dominate
+2) `artifact_2_active_set.csv` — ranked review list  
+   Sort by `rho_global_post` ⇒ which items matter most overall
+3) `artifact_4_error_budget.json` — declared discards  
+   Look for `discarded_budget_global`
+4) `artifact_3_trace_report.jsonl` — why retained (audit trail)
 
 ## 60-second run (Windows / repo venv)
 
@@ -33,16 +35,6 @@ A **one-page brief** for the Vector DB coherence adapter.
 $py  = ".\.venv\Scripts\python.exe"
 $in  = "cases/vector_db/inputs/retrieval.jsonl"
 $out = "out/vector_db_demo"
-
-New-Item -ItemType Directory -Force (Split-Path $in) | Out-Null
-New-Item -ItemType Directory -Force $out | Out-Null
-
-@'
-{"id":"doc_001","score":0.82,"namespace":"kb","source":"handbook"}
-{"id":"doc_002","score":0.63,"namespace":"kb","source":"manual"}
-{"id":"doc_101","score":0.77,"namespace":"tickets","source":"ops"}
-{"id":"doc_102","score":0.12,"namespace":"tickets","source":"ops"}
-'@ | Set-Content -Encoding utf8 $in
 
 & $py examples/run_vector_db_demo.py `
   --in $in `
@@ -53,12 +45,22 @@ New-Item -ItemType Directory -Force $out | Out-Null
 & $py scripts/inspect_huf_artifacts.py --out $out
 ```
 
-### One-number “proof line”
+## Two-tau headline (optional)
 
-After the run, look for:
+```powershell
+$out = "out/vector_db_delta"
+& $py scripts/run_vector_db_concentration_delta.py `
+  --in $in `
+  --out $out `
+  --tau-a 0.005 `
+  --tau-b 0.02 `
+  --regime-field namespace
+```
 
-- `items_to_cover_90pct=<k>`
+Example:
 
-If `k` is small, **concentration is high**: a small number of retained items explain most of the post-normalized mass.
+```text
+Concentration increased: items_to_cover_90pct 37 -> 12
+```
 
-That’s the retrieval version of: “a few budget lines explain most of the variance.”
+If you want the “how to interpret in Excel” walkthrough, see `vector_db_coherence.md`.
