@@ -17,9 +17,9 @@ This path is designed so the left sidebar is a “do-this-next” guide.
 Choose one:
 
 - Start here (developer): **Start Here → Developer**
-- Start here (beginner): **Start Here → Zero GitHub Knowledge**
+- Start here (beginner): **Start Here → Zero GitHub knowledge**
 
-Goal: you can run `.\.venv\Scripts\huf --help` and you can produce an `out/.../run_stamp.json`.
+Goal: you can run `.\.venv\Scripts\huf --help` and produce an `out/.../run_stamp.json`.
 
 ## Step 2 — Run the “two core” cases
 
@@ -29,25 +29,20 @@ Goal: you can run `.\.venv\Scripts\huf --help` and you can produce an `out/.../r
 2) **Traffic Phase (signal phases)** → then read:
 - **Worked examples → Traffic phase**
 
-These two are the best introductions to how HUF turns a raw table into:
+## Step 3 — Understand the “long tail” story (accounting lens)
 
-- a *coherence map* (regimes),
-- an *active set* (retained items),
-- and a *trace report* (auditable, line-by-line).
+- **Long tail (accounting lens)**
 
-## Step 3 — Try an adapter-style use case
+Then run the 2‑minute demo:
+
+```powershell
+.\.venv\Scripts\python scripts/run_long_tail_demo.py --status "Green Termination"
+```
+
+## Step 4 — Try an adapter-style use case
 
 - **Adapters → Vector DB coherence**
-
-This shows how HUF can “explain” retrieval results by grouping **where the score mass comes from**
-(namespaces, sources, etc.) and what gets excluded by `tau_global`.
-
-## Step 4 — Optional: big-data / scientific demo
-
-- Planck LFI/HFI 70 GHz (optional): see **Start Here → Developer** (Planck section)
 
 ## Step 5 — Optional: notebooks
 
 - **Jupyter demos** (optional)
-
-If you want plots + interactive exploration, notebooks are a nice fit.

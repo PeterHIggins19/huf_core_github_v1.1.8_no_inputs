@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
-"""Inspect HUF artifacts for a quick, copy/paste-friendly console summary.
-
-Usage (Windows PowerShell):
-  .\.venv\Scripts\python scripts\inspect_huf_artifacts.py --out out\traffic_phase
-
-Recommended on Windows: use forward slashes in paths:
-  .\.venv\Scripts\python scripts/inspect_huf_artifacts.py --out out/traffic_phase
-
-What it prints (minimum dashboard):
-  - top 10 regimes by rho_global_post
-  - items_to_cover_90pct (from active set)
-  - discarded budget (from artifact_4_error_budget.json, if present)
-
-It also tolerates UTF-8 BOM in CSV/JSON (common on Windows).
-"""
+"""Inspect HUF artifacts for a quick, copy/paste-friendly console summary."""
 
 from __future__ import annotations
 
@@ -41,7 +27,6 @@ def _find(base: Path, name: str) -> Optional[Path]:
 
 
 def _read_csv(path: Path) -> List[Dict[str, str]]:
-    # utf-8-sig tolerates BOM
     with path.open("r", encoding="utf-8-sig", newline="") as f:
         return list(csv.DictReader(f))
 
@@ -109,26 +94,18 @@ def summarize(out_dir: Path, top_regimes: int = 10) -> Dict[str, object]:
     return res
 
 
-def print_dashboard(summary: Dict[str, object], title: str = "") -> None:
-    if title:
-        print(title)
+def print_dashboard(summary: Dict[str, object]) -> None:
     out_dir = summary.get("out_dir", "")
-    run_id = summary.get("run_id", "")
-    dataset_id = summary.get("dataset_id", "")
     discarded = summary.get("discarded_budget_global", None)
     items90 = summary.get("items_to_cover_90pct", None)
     top_regimes = summary.get("top_regimes", [])
 
     print(f"[out] {out_dir}")
-    if run_id or dataset_id:
-        print(f"[run_stamp] run_id={run_id} dataset_id={dataset_id}")
-
     if discarded is not None:
         try:
             print(f"[error_budget] discarded_budget_global={float(discarded):.6f}")
         except Exception:
             print(f"[error_budget] discarded_budget_global={discarded}")
-
     if items90 is not None:
         print(f"[tail] items_to_cover_90pct={items90}")
 
@@ -143,7 +120,7 @@ def print_dashboard(summary: Dict[str, object], title: str = "") -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", required=True, type=Path, help="Output folder containing HUF artifacts.")
+    ap.add_argument("--out", required=True, type=Path)
     ap.add_argument("--top-regimes", type=int, default=10)
     args = ap.parse_args()
 

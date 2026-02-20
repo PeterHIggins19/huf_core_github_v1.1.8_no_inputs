@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Backward-compatible alias for older docs links.
-
-Prefer:
-  .\.venv\Scripts\python scripts/inspect_huf_artifacts.py --out out/...
-
-This script simply runs the generic inspector.
-"""
+"""Backward-compatible alias for older docs links."""
 
 from __future__ import annotations
 

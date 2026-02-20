@@ -35,21 +35,9 @@ python -m venv .venv
 
 ### 3) Run the demo cases
 
-Markham:
-
 ```powershell
 .\.venv\Scripts\huf markham --xlsx cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out/markham2018
-```
-
-Traffic Phase:
-
-```powershell
 .\.venv\Scripts\huf traffic --csv cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_phase
-```
-
-Traffic Anomaly (diagnostic):
-
-```powershell
 .\.venv\Scripts\huf traffic-anomaly --csv cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_anomaly --status "Green Termination"
 ```
 

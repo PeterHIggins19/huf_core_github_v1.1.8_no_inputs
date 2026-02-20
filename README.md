@@ -1,6 +1,7 @@
 # HUF Core Snapshot (v1.1.8)
 
-**HUF is an artifact-first compression + audit framework for long-tail distributions** (budgets, logs, exceptions).
+**HUF is an artifact-first compression + audit framework for long-tail distributions** (budgets, logs, exceptions).  
+**Not ML class imbalance:** here “long tail” means **mass distribution + exception reweighting** (baseline vs filtered view).
 
 It produces three “review-first” artifacts on every run:
 
@@ -12,14 +13,20 @@ Docs site: https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/
 
 ---
 
-## 60-second long-tail demo (Windows/Conda copy/paste)
+## 2‑minute long-tail demo (Windows/Conda copy/paste)
 
-This runs **Traffic Phase** (baseline) then **Traffic Anomaly** (exception-only) and prints:
+**What this demonstrates:** the same dataset can look “stable” in the baseline view, but become **more concentrated** in an exception-only view — the practical long-tail story.
 
-- top regimes by `rho_global_post` (top 10)
-- “items to cover 90%”
-- discarded budget
-- “top regimes changed + concentration increased” summary
+You will run:
+
+1) **Traffic Phase** (baseline) → writes to `out/traffic_phase_demo/`  
+2) **Traffic Anomaly** (exception-only) → writes to `out/traffic_anomaly_demo/`  
+3) A console summary that prints:
+   - top regimes changed (top 10 by `rho_global_post`)
+   - **PROOF line**: `items_to_cover_90pct baseline -> exception`
+   - discarded budget (if present)
+
+Run these **three commands** from the repo root:
 
 ```powershell
 python scripts/bootstrap.py
@@ -27,57 +34,33 @@ python scripts/bootstrap.py
 .\.venv\Scripts\python scripts/run_long_tail_demo.py --status "Green Termination"
 ```
 
-Outputs are written to:
+After it finishes, look for a line like:
 
-- `out/traffic_phase_demo/`
-- `out/traffic_anomaly_demo/`
+- `PROOF: items_to_cover_90pct 37 -> 12`
 
-Quick inspect any run:
+That’s the “repeatable number” people cite: exception views often tighten into fewer items.
+
+Want the quick dashboard on any folder?
 
 ```powershell
 .\.venv\Scripts\python scripts/inspect_huf_artifacts.py --out out/traffic_anomaly_demo
 ```
 
-More explanation (accounting lens): `docs/long_tail_accounting_lens.md`
+**Why this works (accounting mapping):** baseline P&L → exception-only P&L → ranked variance review.  
+See: `docs/long_tail_accounting_lens.md`
 
 ---
 
-## New to GitHub?
+## Docs site (local)
 
-If you’re starting from **zero GitHub knowledge**, begin here:
+Always run MkDocs via the repo venv:
 
-- **Start here (MkDocs page):** `docs/get_started_zero_github.md`
+```powershell
+.\.venv\Scripts\python -m mkdocs serve
+```
 
-One‑click setup scripts (repo root):
+Strict check:
 
-- Windows: `START_HERE_WINDOWS.bat`
-- macOS: `START_HERE_MAC.command`
-- Linux: `start_here_linux.sh`
-
-These create a local Python environment, install dependencies, and can fetch **Markham + Toronto** inputs.
-
-Planck is guided/manual because the FITS files are very large.
-
----
-
-## What’s in this repo
-
-Start with:
-
-1) **Handbook**: `docs/handbook.md`  
-2) **Reference Manual**: `docs/reference_manual.md`  
-3) **Cases**: `cases/*`
-
-### DOCX exports (record-keeping)
-
-For users who aren’t GitHub-native, this release also includes **DOCX** copies of key docs (generated from the Markdown sources):
-
-- `docs/handbook.docx`
-- `docs/reference_manual.docx`
-- `docs/data_sources.docx`
-- `docs/gui_quickstart.docx`
-
-### Inputs policy
-
-Upstream inputs (Planck FITS / Markham workbook / Toronto traffic CSV) are **real public data** and may be **not bundled**.
-See `DATA_SOURCES.md` for download locations and expected paths.
+```powershell
+.\.venv\Scripts\python -m mkdocs build --strict
+```

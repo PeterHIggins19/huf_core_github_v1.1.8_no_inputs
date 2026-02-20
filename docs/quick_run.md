@@ -1,56 +1,64 @@
 # Quick Run (copy/paste)
 
-This page is the fastest way to get a successful run on **Windows + Conda**.
+Goal: create a local `.venv`, fetch inputs, and run the included demos.
 
-## 1) Bootstrap the repo venv
+> Run these commands from the repo root (the folder that contains `pyproject.toml`).
 
-From the repo root (the folder that contains `pyproject.toml`):
+---
+
+## Windows (PowerShell)
+
+### 1) Bootstrap + install
 
 ```powershell
 python scripts/bootstrap.py
+.\.venv\Scripts\python -m pip install -e .
 ```
 
-Confirm you are using the repo venv:
-
-```powershell
-.\.venv\Scripts\python -V
-.\.venv\Scripts\huf --help
-```
-
-## 2) Fetch inputs (Markham + Toronto)
+### 2) Fetch Markham + Toronto inputs
 
 ```powershell
 .\.venv\Scripts\python scripts/fetch_data.py --markham --toronto --yes
 ```
 
-## 3) Run the two core demos
+### 3) Run the demos
 
 ```powershell
 .\.venv\Scripts\huf markham --xlsx cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out/markham2018
 .\.venv\Scripts\huf traffic --csv cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_phase
+.\.venv\Scripts\huf traffic-anomaly --csv cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_anomaly --status "Green Termination" --tau-global 0.0005
 ```
 
-## 4) Run the diagnostic demo (Traffic Anomaly)
+### 4) Two-minute long-tail demo (recommended)
 
 ```powershell
-.\.venv\Scripts\huf traffic-anomaly --csv cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_anomaly --status "Green Termination"
+.\.venv\Scripts\python scripts/run_long_tail_demo.py --status "Green Termination"
 ```
 
-## 5) Preview the docs site locally
+### 5) Docs site (local)
 
-Always run MkDocs via the repo venv:
+Always:
 
 ```powershell
 .\.venv\Scripts\python -m mkdocs serve
 ```
 
-Optional strict check (useful before a commit):
+Strict check:
 
 ```powershell
 .\.venv\Scripts\python -m mkdocs build --strict
 ```
 
-## Notes
+---
 
-- Prefer **forward slashes** in file paths (`cases/...`, `scripts/fetch_data.py`). Windows PowerShell accepts them and it avoids `\t` / `\f` escape surprises in YAML and other contexts.
-- If `python` is not found, try `py -3 scripts/bootstrap.py` instead.
+## macOS / Linux (bash/zsh)
+
+```bash
+python3 scripts/bootstrap.py
+./.venv/bin/python -m pip install -e .
+./.venv/bin/python scripts/fetch_data.py --markham --toronto --yes
+
+./.venv/bin/huf markham --xlsx cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out/markham2018
+./.venv/bin/huf traffic --csv cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_phase
+./.venv/bin/huf traffic-anomaly --csv cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_anomaly --status "Green Termination" --tau-global 0.0005
+```
