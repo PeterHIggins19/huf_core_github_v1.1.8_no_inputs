@@ -56,7 +56,6 @@ nav:
   - Home: index.md
   - Learning path: learning_path.md
   - Quick run: quick_run.md
-  - Running examples (Windows/macOS/Linux): running_examples.md
   - Start here:
       - Developer: start_here.md
       - Zero GitHub knowledge: get_started_zero_github.md
@@ -66,7 +65,6 @@ nav:
       - Included cases: cases.md
       - Markham worked example: markham_worked_example.md
       - Traffic phase worked example: traffic_phase_worked_example.md
-      - Planck 70 GHz worked example: planck.md
   - Adapters:
       - Vector DB coherence: vector_db_coherence.md
       - Vector DB coherence (one-page brief): vector_db_coherence_one_pager.md
@@ -84,3 +82,5 @@ nav:
       - GitHub for beginners: github_for_beginners.md
       - HUF overview (legacy notes): The_Higgins_Unity_Framework.md
   - Contributing: contributing.md
+  - Partnerships:
+      - Weaviate outreach package: partnerships/weaviate_outreach.md
