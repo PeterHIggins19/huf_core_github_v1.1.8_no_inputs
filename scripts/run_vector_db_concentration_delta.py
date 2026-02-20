@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""
+r"""
 run_vector_db_concentration_delta.py
 
 Run the vector-db demo twice (tau A vs tau B), then print a single-line

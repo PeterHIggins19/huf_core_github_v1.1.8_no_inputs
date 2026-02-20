@@ -1,89 +1,112 @@
-# Planck (LFI 70 GHz) demo
+# Planck 70 GHz worked example
 
-This case demonstrates HUF on a very large **HEALPix all‑sky map** (Planck PR3, LFI 70 GHz). The demo produces the standard HUF artifacts (coherence map, active set, trace report, error budget) so you can inspect **what HUF retained vs. discarded** at the chosen retained‑target.
+This example runs HUF on a real scientific dataset (a Planck 70 GHz sky map in FITS format).
 
-!!! note "Why this is not auto-downloaded"
-    The Planck FITS file is large (~480–500 MB) and some users prefer downloading from ESA’s Planck Legacy Archive vs NASA/IPAC IRSA.
+## Why run this
 
-## 1) Get the FITS input
+- Demonstrates the pipeline on **non‑toy data**.
+- Produces artifacts you can inspect (and plot) to confirm you’re looking at real structure rather than a “demo UI”.
 
-Expected path in this repo:
+## What you need
 
-```
-cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits
-```
+- A working virtual environment (`.venv`) with HUF installed.
+- The FITS input file:
 
-### Option A (recommended on Windows): BITS download
+  - `cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits`
 
-```powershell
-$dest = Join-Path $PWD "cases\planck70\inputs\LFI_SkyMap_070_1024_R3.00_full.fits"
-New-Item -ItemType Directory -Force (Split-Path $dest) | Out-Null
-$src  = "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/maps/LFI_SkyMap_070_1024_R3.00_full.fits"
-Start-BitsTransfer -Source $src -Destination $dest
-```
+- `astropy` (for FITS I/O):
 
-### Option B: curl/wget
-
-```bash
-curl -L -o "cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits"   "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/maps/LFI_SkyMap_070_1024_R3.00_full.fits"
-```
-
-!!! warning "Windows PowerShell curl alias"
-    In **Windows PowerShell**, `curl` is an alias for `Invoke-WebRequest`.
-    Use `curl.exe` (or use BITS above):
+=== "Windows"
 
     ```powershell
-    curl.exe -L -o "cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits"       "https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/maps/LFI_SkyMap_070_1024_R3.00_full.fits"
+    & .\.venv\Scripts\python.exe -m pip install astropy
     ```
 
-Preview page (manual download button):
+=== "macOS / Linux"
 
-- https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/previews/LFI_SkyMap_070_1024_R3.00_full/index.html
+    ```bash
+    ./.venv/bin/python -m pip install astropy
+    ```
 
-## 2) Install Planck extras
+## Run
 
-If you are using the repo venv:
+=== "Windows (PowerShell)"
 
-```powershell
-.\.venv\Scripts\python -m pip install astropy
+    ```powershell
+    .\.venv\Scripts\huf.exe planck `
+      --fits "cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits" `
+      --out "out/planck70" `
+      --retained-target 0.97 `
+      --nside-out 64
+    ```
+
+=== "macOS / Linux (bash/zsh)"
+
+    ```bash
+    ./.venv/bin/huf planck \
+      --fits "cases/planck70/inputs/LFI_SkyMap_070_1024_R3.00_full.fits" \
+      --out "out/planck70" \
+      --retained-target 0.97 \
+      --nside-out 64
+    ```
+
+### What you should see
+
+A successful run prints a short summary like:
+
+```text
+[done] planck -> out\planck70 | active_set=18198 coherence_rows=12 discarded_global=0.0299995
+       dataset_id: 1494a5d87d37b5b3
+       tau: 1.6627253164644175e-06
+       retained_target: 0.97
+       nside_out: 64
 ```
 
-## 3) Run the demo
+## Inspect the artifacts
 
-```powershell
-.\.venv\Scripts\huf planck `
-  --fits cases\planck70\inputs\LFI_SkyMap_070_1024_R3.00_full.fits `
-  --out out\planck70 `
-  --retained-target 0.97 `
-  --nside-out 64
-```
+**Important:** don’t paste raw Python (`import ...`, `print(...)`) directly into PowerShell.
 
-## 4) Read the artifacts
+- In PowerShell you’re still in the shell, not Python.
+- Use the inspection script instead.
 
-The output folder contains:
+=== "Windows (PowerShell)"
 
-- `artifact_1_coherence_map.csv` — regimes and their retained mass/energy (post‑filter)
-- `artifact_2_active_set.csv` — the retained items (ranked)
-- `artifact_3_trace_report.jsonl` — what changed across the pass (debug/audit)
-- `artifact_4_error_budget.json` — global + local discard summary
-- `run_stamp.json`, `meta.json`
+    ```powershell
+    $py = ".\\.venv\\Scripts\\python.exe"
+    & $py scripts/inspect_huf_artifacts.py --out out/planck70
+    ```
 
-### Quick inspection (no notebooks required)
+=== "macOS / Linux (bash/zsh)"
 
-```powershell
-.\.venv\Scripts\python - <<'PY'
-import pandas as pd
-coh = pd.read_csv('out/planck70/artifact_1_coherence_map.csv')
-act = pd.read_csv('out/planck70/artifact_2_active_set.csv').sort_values('rank')
-print('
-Top regimes by rho_global_post:')
-print(coh.sort_values('rho_global_post', ascending=False).head(10).to_string(index=False))
-print('
-Top 10 retained items:')
-print(act[['rank','regime_id','item_id','value','rho_global_post','rho_local_post']].head(10).to_string(index=False))
-PY
-```
+    ```bash
+    ./.venv/bin/python scripts/inspect_huf_artifacts.py --out out/planck70
+    ```
 
-!!! tip "What to look for"
-    * If **one regime dominates** the coherence map, it’s a sign the retained budget is concentrated.
-    * If you want more/less sparsity, adjust `--retained-target` or `--nside-out`.
+What you should see:
+
+- The output folder path
+- A small “tail” headline (e.g., `items_to_cover_90pct=...`)
+- A ranked list of regimes by `rho_global_post`
+
+## Optional plots
+
+If you want charts, install matplotlib and generate plots from the artifact CSVs:
+
+=== "Windows"
+
+    ```powershell
+    & .\.venv\Scripts\python.exe -m pip install matplotlib
+    & .\.venv\Scripts\python.exe scripts/plot_huf_artifacts.py --out out/planck70
+    ```
+
+=== "macOS / Linux"
+
+    ```bash
+    ./.venv/bin/python -m pip install matplotlib
+    ./.venv/bin/python scripts/plot_huf_artifacts.py --out out/planck70
+    ```
+
+This writes images under:
+
+- `out/planck70/plots/`
+

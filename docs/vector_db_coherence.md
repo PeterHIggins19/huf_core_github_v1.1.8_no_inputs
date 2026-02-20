@@ -1,224 +1,233 @@
 # Vector DB coherence (from retrieval results)
 
-This adapter turns **retrieval results** into a HUF run so you can audit **composition** (not just “quality”):
+This adapter analyzes a set of retrieval hits (e.g., from a vector database) and answers:
 
-- **Regime dominance:** which namespace / collection / tenant / source dominates the kept set
-- **Concentration:** do a few items explain most of the kept mass?
-- **Declared discards:** what fell below threshold, and how much mass was discarded (no silent drops)
-- **Trace:** why an item is retained (provenance + reasoning)
+- **Which regimes dominate** the retrieved set? (e.g., `namespace`, `tenant`, `source`, …)
+- **How concentrated** is the set? (e.g., “how many items explain 90% of the mass?”)
 
-> No live vector DB required. You provide a JSONL/CSV/TSV export of retrieval results.
+If you’re coming from outside “advanced computation”: think of this as a **retrieval audit** that turns a pile of ranked results into a small, explainable report.
 
-**Disambiguation:** this is *not* “ML class imbalance.”  
-Here “long tail” means **mass distribution + exception reweighting** — the accounting move: baseline P&L → exception-only P&L → ranked variance review.
-
-!!! warning "PowerShell vs Python: run commands in the shell"
-    If your prompt looks like `>>>`, you are **inside Python**.  
-    Exit back to PowerShell with **`exit()`** (or **Ctrl+Z then Enter**), then run the commands below.
+> If you ever see PowerShell “doing weird things” when you paste commands, start with **[Running examples on Windows/macOS/Linux](running_examples.md)**.
 
 ---
 
-## Start here
+## Why run this
 
-- **One-page brief:** `vector_db_coherence_one_pager.md`
-- **This page:** full walkthrough + “what to look for” + future extension patterns
+Run this when you want to validate that:
 
----
-
-## Concepts
-
-### Regimes
-
-A **regime** is the grouping you care about: `namespace`, `collection`, `tenant`, `source`, etc.
-
-You choose it via `--regime-field`.
-
-### Tau (global threshold)
-
-`--tau-global` sets the discard boundary in the **mass** frame.
-
-- Larger `tau` = stricter threshold = more discards (often *more concentration*)
-- Smaller `tau` = looser threshold = fewer discards (often *less concentration*)
-
-### The proof line: items_to_cover_90pct
-
-`items_to_cover_90pct = k` means:
-
-> The **top k retained items** explain **90%** of the post-normalized mass.
-
-Smaller `k` ⇒ more concentrated ⇒ a tiny set dominates retrieval.
+- Your retrieval isn’t silently dominated by one bucket (a single namespace/tenant/source)
+- Small parameter changes (like `tau`) don’t create unstable, misleading concentration
 
 ---
 
-## Input format (JSONL)
+## Input: retrieval export (`.jsonl`)
 
-One JSON object per line.
+The demo input is a JSON Lines file (one JSON object per line) containing:
 
-### Required fields
+- `id` (string)
+- `score` (float)
+- a **regime field** such as `namespace`
 
-- `id` (string): unique item id (document id, chunk id, ticket id, etc.)
-- `score` (number): similarity / relevance score (**higher = better**)
-
-### Optional fields (regimes)
-
-Include any grouping fields you want to audit by, e.g.:
-
-- `namespace`
-- `collection`
-- `source`
-- `tenant`
-- `index`
-
-Example:
+Example line:
 
 ```json
 {"id":"doc_001","score":0.82,"namespace":"kb","source":"handbook"}
-{"id":"doc_002","score":0.63,"namespace":"kb","source":"manual"}
-{"id":"doc_101","score":0.77,"namespace":"tickets","source":"ops"}
-{"id":"doc_102","score":0.12,"namespace":"tickets","source":"ops"}
 ```
 
 ---
 
-## 60-second run (Windows PowerShell)
+## Run the demo
 
-PowerShell note: use **backticks** for line continuation (not `\`).
+### 1) Set paths
 
-```powershell
-$py  = ".\.venv\Scripts\python.exe"
-$in  = "cases/vector_db/inputs/retrieval.jsonl"
-$out = "out/vector_db_demo"
+=== "Windows (PowerShell)"
 
-New-Item -ItemType Directory -Force (Split-Path $in) | Out-Null
-New-Item -ItemType Directory -Force $out | Out-Null
+    ```powershell
+    $py  = ".\\.venv\\Scripts\\python.exe"
+    $in  = "cases/vector_db/inputs/retrieval.jsonl"
+    $out = "out/vector_db_demo"
+    ```
 
-@'
-{"id":"doc_001","score":0.82,"namespace":"kb","source":"handbook"}
-{"id":"doc_002","score":0.63,"namespace":"kb","source":"manual"}
-{"id":"doc_101","score":0.77,"namespace":"tickets","source":"ops"}
-{"id":"doc_102","score":0.12,"namespace":"tickets","source":"ops"}
-'@ | Set-Content -Encoding utf8 $in
+=== "macOS / Linux (bash/zsh)"
 
-& $py examples/run_vector_db_demo.py `
-  --in $in `
-  --out $out `
-  --tau-global 0.02 `
-  --regime-field namespace
+    ```bash
+    py="./.venv/bin/python"
+    in="cases/vector_db/inputs/retrieval.jsonl"
+    out="out/vector_db_demo"
+    ```
 
-& $py scripts/inspect_huf_artifacts.py --out $out
-```
+### 2) Create a tiny demo input (optional)
 
----
+If you already have a retrieval export, skip this.
 
-## Two-tau delta (the repeatable headline)
+=== "Windows (PowerShell)"
 
-Sometimes you want one line a teammate can repeat:
+    ```powershell
+    New-Item -ItemType Directory -Force (Split-Path $in) | Out-Null
 
-> **Concentration increased: items_to_cover_90pct X -> Y**
+    @'
+    {"id":"doc_001","score":0.82,"namespace":"kb","source":"handbook"}
+    {"id":"doc_002","score":0.63,"namespace":"kb","source":"manual"}
+    {"id":"doc_101","score":0.77,"namespace":"tickets","source":"ops"}
+    {"id":"doc_102","score":0.12,"namespace":"tickets","source":"ops"}
+    '@ | Set-Content -Encoding utf8 $in
+    ```
 
-```powershell
-$py  = ".\.venv\Scripts\python.exe"
-$in  = "cases/vector_db/inputs/retrieval.jsonl"
-$out = "out/vector_db_delta"
+=== "macOS / Linux (bash/zsh)"
 
-& $py scripts/run_vector_db_concentration_delta.py `
-  --in $in `
-  --out $out `
-  --tau-a 0.005 `
-  --tau-b 0.02 `
-  --regime-field namespace
-```
+    ```bash
+    mkdir -p "$(dirname "$in")"
+    cat > "$in" <<'JSONL'
+    {"id":"doc_001","score":0.82,"namespace":"kb","source":"handbook"}
+    {"id":"doc_002","score":0.63,"namespace":"kb","source":"manual"}
+    {"id":"doc_101","score":0.77,"namespace":"tickets","source":"ops"}
+    {"id":"doc_102","score":0.12,"namespace":"tickets","source":"ops"}
+    JSONL
+    ```
 
-Example:
+### 3) Run the example
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    New-Item -ItemType Directory -Force $out | Out-Null
+
+    & $py examples/run_vector_db_demo.py `
+      --in $in `
+      --out $out `
+      --tau-global 0.02 `
+      --regime-field namespace
+    ```
+
+=== "macOS / Linux (bash/zsh)"
+
+    ```bash
+    mkdir -p "$out"
+
+    "$py" examples/run_vector_db_demo.py \
+      --in "$in" \
+      --out "$out" \
+      --tau-global 0.02 \
+      --regime-field namespace
+    ```
+
+### What you should see
 
 ```text
-Concentration increased: items_to_cover_90pct 37 -> 12
+[OK] Wrote artifacts to: out\vector_db_demo
+```
+
+Artifacts are written to:
+
+- `out/vector_db_demo/`
+
+---
+
+## Inspect the artifacts (recommended)
+
+**Why:** this is the fastest way to verify the run produced *real* numbers and to find the CSV files you can open in Excel / pandas.
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    & $py scripts/inspect_huf_artifacts.py --out $out
+    ```
+
+=== "macOS / Linux (bash/zsh)"
+
+    ```bash
+    "$py" scripts/inspect_huf_artifacts.py --out "$out"
+    ```
+
+### Expected output (example)
+
+```text
+[out] ...\out\vector_db_demo
+[tail] items_to_cover_90pct=3
+
+Top regimes by rho_global_post:
+  1. kb       rho_post=0.619658
+  2. tickets  rho_post=0.380342
 ```
 
 ---
 
-## Artifacts (the contract)
+## Compare two tau values (concentration delta)
 
-A valid run folder should contain at least:
+**Why:** check whether your concentration headline is stable.
 
-- `artifact_1_coherence_map.csv` (regime ranking)
-- `artifact_2_active_set.csv` (retained items)
-- `artifact_4_error_budget.json` (declared discards)
+=== "Windows (PowerShell)"
 
-Optional but strongly recommended:
+    ```powershell
+    $out = "out/vector_db_delta"
 
-- `artifact_3_trace_report.jsonl` (why retained)
-- `meta.json`, `run_stamp.json`
+    & $py scripts/run_vector_db_concentration_delta.py `
+      --in $in `
+      --out $out `
+      --tau-a 0.005 `
+      --tau-b 0.02 `
+      --regime-field namespace
+    ```
 
----
+=== "macOS / Linux (bash/zsh)"
 
-## Example output interpretation (screenshot-style)
+    ```bash
+    out="out/vector_db_delta"
 
-Think of this as “what you would circle in a screenshot.”
+    "$py" scripts/run_vector_db_concentration_delta.py \
+      --in "$in" \
+      --out "$out" \
+      --tau-a 0.005 \
+      --tau-b 0.02 \
+      --regime-field namespace
+    ```
 
-### 1) artifact_1_coherence_map.csv (regime ranking)
+What you should see:
 
-Open in Excel and sort **descending** by `rho_global_post`.
+- Two sub‑runs under `out/vector_db_delta/` (one per tau)
+- A headline like:
 
-Look for:
-
-- Top regime > 0.50 (dominance)
-- Top 2–3 regimes cover most of the mass (regime concentration)
-
-### 2) artifact_2_active_set.csv (ranked review list)
-
-Sort **descending** by `rho_global_post`:
-
-- This is your global “review list” (what actually matters).
-
-Then filter by `regime_id` and sort by `rho_local_post`:
-
-- Top items inside a regime.
-
-### 3) artifact_4_error_budget.json (declared discards)
-
-Look for:
-
-- `discarded_budget_global` (or similarly named key)
-
-Large discard means tau is aggressively pruning.
+```text
+Concentration unchanged: items_to_cover_90pct 3 -> 3
+```
 
 ---
 
-## Patterns you’ll care about later (future interest)
+## Plots (optional, but great for presentations)
 
-### Regime drift over time
+If you want charts, install matplotlib:
 
-Run the same query daily and watch:
+=== "Windows"
 
-- top regimes change
-- `items_to_cover_90pct` trend down (concentration risk) or up (dispersion)
+    ```powershell
+    & .\.venv\Scripts\python.exe -m pip install matplotlib
+    ```
 
-### Multi-tenant isolation checks
+=== "macOS / Linux"
 
-Use `--regime-field tenant` and look for:
+    ```bash
+    ./.venv/bin/python -m pip install matplotlib
+    ```
 
-- one tenant dominating another tenant’s query output
+Then generate plots for any output folder:
 
-### CI guardrails
+```bash
+python scripts/plot_huf_artifacts.py --out out/vector_db_demo
+```
 
-After any retrieval pipeline change:
+This writes images under `<out>/plots/`.
 
-- run coherence on a fixed set of queries
-- fail if concentration spikes or a regime monopolizes results
+Example charts (from the tiny demo input):
 
-### Accounting mapping
+![Example: coherence by regime](assets/plots/vector_db_coherence_by_regime.png)
 
-Treat regimes like cost centers:
-
-- baseline P&L = full retrieval results
-- exception-only P&L = tighter tau
-- ranked variance review = active set sorted by `rho_global_post`
+![Example: concentration curve](assets/plots/vector_db_concentration_curve.png)
 
 ---
 
-## Common issues
+## Common pitfalls
 
-### “I typed `huf ...` and got SyntaxError”
+- **PowerShell is not Python.** If you type `import pandas as pd` at `PS C:\...>` it will fail.
+- **`python - <<'PY'` is bash‑only.** On Windows PowerShell, use the here‑string pattern from `running_examples.md`.
+- If you see `Unable to initialize device PRN`, you likely ran `print(...)` in PowerShell instead of Python.
 
-If you see `>>>`, you’re inside Python. Exit with `exit()` and run in PowerShell.
