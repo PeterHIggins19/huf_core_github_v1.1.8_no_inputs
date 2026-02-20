@@ -1,0 +1,152 @@
+{
+  "cases.md": {
+    "path": "cases.md",
+    "title": "Included cases",
+    "sha256": "fecdf24fe00785812b756ab3c8c0add763c427e76bfbc4d071f798e63bae0916"
+  },
+  "cli_huf_reference.md": {
+    "path": "cli_huf_reference.md",
+    "title": "CLI: HUF command lists, labels, terminology",
+    "sha256": "e90cd9cafdf4d8b11203ff421896f6d8daadd095d6c1d81b62c2852b119a54b1"
+  },
+  "contributing.md": {
+    "path": "contributing.md",
+    "title": "Contributing",
+    "sha256": "133f9a8c96c57d2ab41c8f9b2b56e2968f677bdb732efb03d86148f9911347ab"
+  },
+  "data_sources.md": {
+    "path": "data_sources.md",
+    "title": "Data Sources & Fetching",
+    "sha256": "e9b737f2c49373e0a54f9cbc305cbb1320e47a048197276414e4ca87cdc718eb"
+  },
+  "get_started_readme.md": {
+    "path": "get_started_readme.md",
+    "title": "HUF Get Started Package",
+    "sha256": "a411434da595350b4561129b8a6c7ee98fbbcb52352dd0bd82b445035b808ef5"
+  },
+  "get_started_zero_github.md": {
+    "path": "get_started_zero_github.md",
+    "title": "Start Here (Zero GitHub Knowledge)",
+    "sha256": "722e55118bd9994be8273b2b3ba0bd4de1dcf209446c80f12d45a91e3d8472c9"
+  },
+  "github_for_beginners.md": {
+    "path": "github_for_beginners.md",
+    "title": "GitHub for HUF (Beginner, GUI-first)",
+    "sha256": "25fd2d2c66a96fff885b499ea9228c8699d59260d2b8a5d96c1c05a407979ee1"
+  },
+  "gui_quickstart.md": {
+    "path": "gui_quickstart.md",
+    "title": "GUI Quickstart (non‑GitHub‑native users)",
+    "sha256": "5df92666237ee16f7b1092593cb3269bad011df2ff236df81f9bad8e190f81cb"
+  },
+  "handbook.md": {
+    "path": "handbook.md",
+    "title": "Higgins Unity Framework (HUF) Handbook",
+    "sha256": "b063d89f60e63434482bd1a72e5dd94c624257f1ca16a048c0cfb68fd4df3e78"
+  },
+  "huf_math_form_and_function.md": {
+    "path": "huf_math_form_and_function.md",
+    "title": "Higgins Unity Framework: Mathematical form and function",
+    "sha256": "e4e8e4ade934beac241b87b4d415caf2c7ce95db74596ae80515f03d70cd6668"
+  },
+  "index.md": {
+    "path": "index.md",
+    "title": "Higgins Unity Framework (HUF) — Documentation",
+    "sha256": "c2e7c36f2adc5324a3ae3f6e050a0d9949404435dfa176817305a91ad54a1a39"
+  },
+  "jupyter_demos.md": {
+    "path": "jupyter_demos.md",
+    "title": "Jupyter demos (optional)",
+    "sha256": "8a0690d207e7325a32bc7811375a85d7af216e7578cedb70d1292418428f4127"
+  },
+  "learning_path.md": {
+    "path": "learning_path.md",
+    "title": "Learning path",
+    "sha256": "d2875fa6a0668d318333f1d4bcfb2b3f4ec6851b66b06cbf45bea0a260e994f8"
+  },
+  "long_tail_accounting_lens.md": {
+    "path": "long_tail_accounting_lens.md",
+    "title": "Long tail (accounting lens)",
+    "sha256": "c2c29f45f22d4c7b2e252359bc0de4dbdd674f9d0a827553f7b77e0dc5433093"
+  },
+  "markham_worked_example.md": {
+    "path": "markham_worked_example.md",
+    "title": "Markham worked example (2018 budget)",
+    "sha256": "b3d03ef6e6d80f3e2aeed55cec7ea86027e0d008f831a17c3dfb299d42d27b99"
+  },
+  "partnerships/index.md": {
+    "path": "partnerships/index.md",
+    "title": "Partnerships",
+    "sha256": "45f5349d599202b7adb6b1e71864d86925fcc146348147c62a90e122c60e02fe"
+  },
+  "partnerships/weaviate_full_picture.md": {
+    "path": "partnerships/weaviate_full_picture.md",
+    "title": "Weaviate × HUF — the full picture",
+    "sha256": "cfdb86fce03f8156d07f3b54272db3dedfc5d29b5067a0c456c9674cfa32920f"
+  },
+  "partnerships/weaviate_outreach.md": {
+    "path": "partnerships/weaviate_outreach.md",
+    "title": "Weaviate outreach package",
+    "sha256": "7f85f665bcdf83686d1dfff319d4e69fa18d0036ac045e7a39a2618a6ec78ddc"
+  },
+  "planck.md": {
+    "path": "planck.md",
+    "title": "Planck 70 GHz worked example",
+    "sha256": "2333d39243327a909fdf3b2ca9f9dbca87da34b4d04b76580c1510687ffe264e"
+  },
+  "quick_run.md": {
+    "path": "quick_run.md",
+    "title": "Quick Run (copy/paste)",
+    "sha256": "4eb472407a8804974101946ac62817bfd79f0116dfd452972787078f998f37b5"
+  },
+  "reference_manual.md": {
+    "path": "reference_manual.md",
+    "title": "HUF Reference Manual",
+    "sha256": "02a4c0828ec717411e298d496d2c460ea2c704fa26fab91cce9d13ca103037b1"
+  },
+  "running_examples.md": {
+    "path": "running_examples.md",
+    "title": "Running examples on Windows, macOS, and Linux",
+    "sha256": "e5a4d099fe0b3d0a480a3edadc63e339d387feee2673fff199dc39b1ce5f84c3"
+  },
+  "start_here.md": {
+    "path": "start_here.md",
+    "title": "Start Here (Developer)",
+    "sha256": "87c33d5bdcdfd82c589199a0f5c0ffd8052e7538a57b7e9614e5b7634b3c540c"
+  },
+  "The_Higgins_Unity_Framework.md": {
+    "path": "The_Higgins_Unity_Framework.md",
+    "title": "The Higgins Unity Framework (HUF)",
+    "sha256": "7ca4090d25bb93dd3d4986897671b7f1e4575c274f6bafef780a3b68e9aad7e6"
+  },
+  "theory_notes.md": {
+    "path": "theory_notes.md",
+    "title": "Theory Notes (HUF / UBH)",
+    "sha256": "56b8a98a18c710f3eb5272f68941463a183f736d314a339c8e10772c0fe7ecf1"
+  },
+  "traffic_phase_worked_example.md": {
+    "path": "traffic_phase_worked_example.md",
+    "title": "Traffic Phase worked example (Toronto signals)",
+    "sha256": "4178f0578ba91a09055e5111d5383c53c4163ab0ac08c3747f722ef1dea2d9c5"
+  },
+  "troubleshooting.md": {
+    "path": "troubleshooting.md",
+    "title": "Troubleshooting",
+    "sha256": "ca16814513a8f3e6bbeb61ac1c59cbb8a32b9898732bf75c61ab789122a27039"
+  },
+  "vector_db_coherence.md": {
+    "path": "vector_db_coherence.md",
+    "title": "Vector DB coherence (from retrieval results)",
+    "sha256": "0b46c62356ca3b20e62e35636f961bed61e466a269392a4577ba8db86f8bcef5"
+  },
+  "vector_db_coherence_one_pager.md": {
+    "path": "vector_db_coherence_one_pager.md",
+    "title": "Vector DB coherence (one‑pager)",
+    "sha256": "f8232f932c73821dc83cc67f9daeea76712b180400f2817b2dc80563133f2fb4"
+  },
+  "windows_powershell_vs_python.md": {
+    "path": "windows_powershell_vs_python.md",
+    "title": "PowerShell vs Python (Windows-safe)",
+    "sha256": "f7da40d770c768c60992ad307cc6189a48733797563ac3f80e7c5a7743d07f19"
+  }
+}
