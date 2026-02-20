@@ -2,7 +2,7 @@
 
 **Updated:** 2026-02-17
 
-This page collects the common “Windows reality” problems people hit when they’re new to Python tooling.
+This page collects common “Windows reality” problems people hit when they’re new to Python tooling.
 
 ---
 
@@ -22,16 +22,19 @@ Use the venv explicitly:
 ## 2) SSL certificate errors (CERTIFICATE_VERIFY_FAILED)
 
 Symptoms:
+
 - `ssl.SSLCertVerificationError: certificate verify failed`
 
 Fix:
+
 ```powershell
 .\.venv\Scripts\python -m pip install certifi
-.\.venv\Scripts\python scripts\fetch_data.py --toronto --yes
+.\.venv\Scripts\python scripts/fetch_data.py --toronto --yes
 ```
 
 If you are on a corporate network or behind a TLS-inspecting proxy, you may need to:
-- download the dataset ZIP manually in a browser, then place the resulting CSV into the expected `cases\...\inputs\` folders
+
+- download the dataset ZIP manually in a browser, then place the resulting CSV into the expected `cases/.../inputs/` folders
 
 ---
 
@@ -44,17 +47,17 @@ Use the default CKAN base:
 Explicit override:
 
 ```powershell
-.\.venv\Scripts\python scripts\fetch_data.py --toronto --yes --toronto-ckan https://open.toronto.ca/api/3/action
+.\.venv\Scripts\python scripts/fetch_data.py --toronto --yes --toronto-ckan https://open.toronto.ca/api/3/action
 ```
 
 ---
 
 ## 4) The Windows starter `.bat` prints weird characters
 
-If you see “Γ£à” or similar, that’s just a console encoding mismatch.
-It does **not** affect the run.
+If you see “Γ£à” or similar, that’s a console encoding mismatch.
 
-If you edited the `.bat` file, save it as:
+It does **not** affect the run. If you edited the `.bat` file, save it as:
+
 - **ANSI** or **UTF-8** (not UTF-16)
 - with normal Windows line endings
 
@@ -65,8 +68,7 @@ If you edited the `.bat` file, save it as:
 Run fetch first:
 
 ```powershell
-.\.venv\Scripts\python scripts\fetch_data.py --markham --toronto --yes
+.\.venv\Scripts\python scripts/fetch_data.py --markham --toronto --yes
 ```
 
 Then run the case commands.
-

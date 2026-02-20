@@ -1,63 +1,72 @@
 # Start Here (Developer)
 
-This page assumes you already have the repo locally (git clone or GitHub Desktop).  
-Goal: get a working `.venv`, fetch inputs, run demos.
+This page assumes you're comfortable editing files and running commands, but it still prioritizes **copy/paste success**.
 
-> Run commands from the repo root (folder containing `pyproject.toml`).
+## 1) Clone or download the repo
 
----
+- Git: `git clone ...`
+- Or use GitHub Desktop
+- Or download the ZIP from GitHub and unzip it
 
-## Windows (PowerShell)
+You are in the right folder if you can see `pyproject.toml`.
 
-### Create venv + install
+## 2) Create the repo virtual environment (`.venv`)
+
+Recommended (works on Windows/macOS/Linux):
+
 ```powershell
-python scripts\bootstrap.py
-.\.venv\Scripts\python -m pip install -e .
+python scripts/bootstrap.py
 ```
 
-### Ensure the venv `huf` wins over conda
+After bootstrap, **always** call the repo executables explicitly:
+
 ```powershell
-$env:Path = "$PWD\.venv\Scripts;$env:Path"
-huf --help
+.\.venv\Scripts\python -V
+.\.venv\Scripts\huf --help
 ```
 
-### Fetch inputs
+!!! note "Conda users"
+    Conda is fine, but avoid installing HUF into a global Conda environment.
+    Bootstrap once, then run `.\.venv\Scripts\python` / `.\.venv\Scripts\huf` explicitly so you never “accidentally” execute `miniconda3\Scripts\huf.exe`.
+
+## 3) Fetch demo inputs (Markham + Toronto)
+
 ```powershell
-.\.venv\Scripts\python scripts\fetch_data.py --markham --toronto --yes
+.\.venv\Scripts\python scripts/fetch_data.py --markham --toronto --yes
 ```
 
-### Run demos
+## 4) Run a case
+
 ```powershell
-huf markham --xlsx cases\markham2018\inputs\2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out\markham2018
-huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
-huf traffic-anomaly --csv cases\traffic_anomaly\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_anomaly --status "Green Termination" --tau-global 0.0005
+.\.venv\Scripts\huf markham --xlsx cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out/markham2018
 ```
 
-### Planck (optional)
+## 5) Run the docs site locally
+
+Docs preview command (always):
+
 ```powershell
-.\.venv\Scripts\python -m pip install astropy
-.\.venv\Scripts\python scripts\fetch_data.py --planck-guide
-# (place the FITS at cases\planck70\inputs\LFI_SkyMap_070_1024_R3.00_full.fits)
-huf planck --fits cases\planck70\inputs\LFI_SkyMap_070_1024_R3.00_full.fits --out out\planck70 --retained-target 0.97 --nside-out 64
+.\.venv\Scripts\python -m mkdocs serve
 ```
 
----
+Strict build check (CI-style):
 
-## macOS / Linux (bash/zsh)
-
-```bash
-python3 scripts/bootstrap.py
-./.venv/bin/python -m pip install -e .
-
-./.venv/bin/python scripts/fetch_data.py --markham --toronto --yes
-
-./.venv/bin/huf markham --xlsx cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out/markham2018
-./.venv/bin/huf traffic --csv cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_phase
-./.venv/bin/huf traffic-anomaly --csv cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_anomaly --status "Green Termination" --tau-global 0.0005
+```powershell
+.\.venv\Scripts\python -m mkdocs build --strict
 ```
 
-### Makefile (optional convenience)
-If you have `make` installed (common on macOS/Linux):
-```bash
-make fetch-data
+## 6) Planck (optional, large file)
+
+Planck files are large and are intentionally **guided/manual**:
+
+```powershell
+.\.venv\Scripts\python scripts/fetch_data.py --planck-guide
 ```
+
+Then run:
+
+```powershell
+.\.venv\Scripts\huf planck --fits cases/planck70/inputs/YOUR_70GHZ_MAP.fits --out out/planck70
+```
+
+(Use the filename you actually downloaded; the Planck adapter accepts common 70 GHz products.)

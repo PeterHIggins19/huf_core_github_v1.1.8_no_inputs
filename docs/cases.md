@@ -2,96 +2,107 @@
 
 These cases are **ready-to-run** from a fresh clone.
 
-**Inputs**
+## Inputs
+
 - ✅ Markham XLSX: shipped in `cases/markham2018/inputs/`
-- ✅ Toronto traffic CSVs: shipped in `cases/traffic_phase/inputs/` and `cases/traffic_anomaly/inputs/`
-- ❌ Planck FITS: **not shipped** (large). Use `python scripts/fetch_data.py --planck-guide` for a copy/paste download guide.
+- ✅ Toronto traffic CSV: shipped in `cases/traffic_phase/inputs/` and `cases/traffic_anomaly/inputs/`
+- ❌ Planck FITS: **not shipped** (large). Use `.\.venv\Scripts\python scripts/fetch_data.py --planck-guide` for a copy/paste download guide.
 
-**Outputs**
-- New runs write to `out/<case_name>/` (recommended).
-- Each run produces the same core artifacts:
-  `artifact_1_coherence_map.csv`, `artifact_2_active_set.csv`,
-  `artifact_3_trace_report.jsonl`, `artifact_4_error_budget.json`,
-  plus `meta.json` and `run_stamp.json`.
+## Outputs
 
----
+- New runs write to `out/` (recommended).
+- Each run produces the core artifacts:
+
+  - `artifact_1_coherence_map.csv`
+  - `artifact_2_active_set.csv`
+  - `artifact_3_trace_report.jsonl`
+  - `artifact_4_error_budget.json`
+  - plus `meta.json` and `run_stamp.json`
 
 ## Quick commands (Windows PowerShell)
 
-> Tip: run `START_HERE_WINDOWS.bat` first (it prepends `.\.venv\Scripts` to `PATH`).
-
 Fetch (optional refresh of shipped inputs):
+
 ```powershell
-.\.venv\Scripts\python scripts\fetch_data.py --markham --toronto --yes
+.\.venv\Scripts\python scripts/fetch_data.py --markham --toronto --yes
 ```
 
 Run Markham:
+
 ```powershell
-huf markham --xlsx cases\markham2018\inputs\2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out\markham2018
+.\.venv\Scripts\huf markham --xlsx cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out/markham2018
 ```
 
 Run Traffic Phase:
+
 ```powershell
-huf traffic --csv cases\traffic_phase\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_phase
+.\.venv\Scripts\huf traffic --csv cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_phase
 ```
 
 Run Traffic Anomaly:
+
 ```powershell
-huf traffic-anomaly --csv cases\traffic_anomaly\inputs\toronto_traffic_signals_phase_status.csv --out out\traffic_anomaly --status "Green Termination"
+.\.venv\Scripts\huf traffic-anomaly --csv cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_anomaly --status "Green Termination"
 ```
 
 Planck guide (prints download steps, does **not** download automatically):
+
 ```powershell
-.\.venv\Scripts\python scripts\fetch_data.py --planck-guide
+.\.venv\Scripts\python scripts/fetch_data.py --planck-guide
 ```
 
 ---
 
-## What each case demonstrates
+## Traffic Phase vs Traffic Anomaly
+### A practical “accounting lens” on non-linear + long-tail behavior
 
-### Markham 2018 budget (XLSX)
-- Adapter: `huf markham ...`
-- Shows: **multi-fund budget compression** + **cell-level provenance** from a public workbook.
-- Best next page: 👉 [Markham worked example](markham_worked_example.md)
+**Traffic Phase** and **Traffic Anomaly** use the *same input CSV*, but they answer different questions:
 
-### Toronto traffic phase (CSV)
-- Adapter: `huf traffic ...`
-- Shows: **phase-band compression** (lots of rows → fewer coherent regimes) for operational signals.
-- Best next page: 👉 [Traffic Phase worked example](traffic_phase_worked_example.md)
+- **Traffic Phase** (baseline): “What does normal operation look like, and where is most of the mass?”
+- **Traffic Anomaly** (diagnostic): “Within a specific exception status, where is the mass now — and what changed?”
 
-### Toronto traffic anomaly (CSV)
-- Adapter: `huf traffic-anomaly ...`
-- Shows: **diagnostic filtering** for a named status (e.g., `"Green Termination"`) with global discard reporting.
+If you’re coming from accounting, map it like this:
 
-### Planck LFI 70 GHz (FITS)
-- Adapter: `huf planck ...`
-- Shows: **pixel-energy compression** on a sky map (requires `astropy`; FITS not bundled).
+- **Traffic Phase = the whole ledger.**  
+  You look at all transactions and build a stable picture of allocation across cost centers.
+
+- **Traffic Anomaly = a filtered sub-ledger.**  
+  For example: *only refunds*, *only manual journal entries*, *only write-offs*, or *only policy exceptions*.
+
+Why this is powerful:
+
+1) **Long-tail**: In real systems, you usually have *many small contributors*.  
+   Most of them don’t matter operationally — until you filter to a rare event type. Then the “tail” can become the story.
+
+2) **Non-linear**: The impact is not proportional to row counts.  
+   A small fraction of records (or a rare status) can concentrate into a few regimes (intersections / cost centers) and dominate your risk or operational burden.
+
+3) **Auditability**: HUF gives you the “where the mass is” ranking *plus* a trace report.  
+   That means you can justify **why** “these 12 intersections” or “these 7 accounts” are your top review list, without hand-waving.
+
+**How to use both cases together:**
+
+- Run **Traffic Phase** to establish the stable baseline distribution.
+- Run **Traffic Anomaly** for a named status (e.g., `"Green Termination"`) and compare:
+  - which regimes jump up the ranking,
+  - how concentrated the retained set becomes,
+  - and how much mass sits “near tau” (stability sensitivity).
+
+This is the same workflow as: baseline P&L → exception-only P&L → ranked variance review.
 
 ---
 
 ## Verify a run quickly
 
 After any run, check the output folder has at least:
+
 - `run_stamp.json`
 - `artifact_1_coherence_map.csv`
 - `artifact_2_active_set.csv`
 
 Example:
+
 ```powershell
-Test-Path out\markham2018\run_stamp.json
-Test-Path out\markham2018\artifact_1_coherence_map.csv
+Test-Path out/markham2018/run_stamp.json
+Test-Path out/markham2018/artifact_1_coherence_map.csv
 ```
-
----
-
-## Links
-
-- Repo case folders (inputs + example artifacts):  
-  `cases/markham2018/`, `cases/traffic_phase/`, `cases/traffic_anomaly/`, `cases/planck70/`
-
-
-- GitHub (browse raw files):
-  - Markham: https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/tree/main/cases/markham2018
-  - Traffic phase: https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/tree/main/cases/traffic_phase
-  - Traffic anomaly: https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/tree/main/cases/traffic_anomaly
-  - Planck: https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs/tree/main/cases/planck70

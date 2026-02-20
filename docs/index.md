@@ -1,23 +1,39 @@
-# Higgins Unity Framework (HUF) — Documentation
+# Higgins Unity Framework (HUF) — HUF Core docs
 
-This site is meant to help you **run HUF first**, then learn the rest in small steps.
+HUF Core is a runnable, **artifact-first** toolkit: you run a case, then you read the outputs it produced.
 
-## Start here
+## Where to start
 
-- ✅ **Beginner (no GitHub knowledge required):** [Get Started (Zero GitHub)](get_started_zero_github.md)
-- ▶️ **Copy/paste demo runner:** [Quick Run](quick_run.md)
-- 🧭 **Recommended reading order:** [Learning Path](learning_path.md)
-- 📦 **Download data (Markham + Toronto):** [Data Sources & Fetching](data_sources.md)
-- ▶️ **Run examples (“cases”):** [Cases](cases.md)
-- 🆘 **Fix common problems:** [Troubleshooting](troubleshooting.md)
+- **Learning Path**: follow the “do-this-next” flow in the left sidebar.  
+  → [Learning Path](learning_path.md)
+- **Beginner (no Git)**: point-and-click setup, then copy/paste commands.  
+  → [Start Here → Zero GitHub Knowledge](get_started_zero_github.md)
+- **Developer**: bootstrap a repo venv + run docs locally.  
+  → [Start Here → Developer](start_here.md)
+- **If anything breaks**: Windows/Conda fixes.  
+  → [Troubleshooting](troubleshooting.md)
 
-## What is HUF?
+## One-minute demo (Windows PowerShell)
 
-- [What is the Higgins Unity Framework?](The_Higgins_Unity_Framework.md)
+After you have created the repo virtual environment (`.venv`) and installed dependencies:
 
-## For developers
+```powershell
+.\.venv\Scripts\python scripts/fetch_data.py --markham --toronto --yes
+.\.venv\Scripts\huf markham --xlsx cases/markham2018/inputs/2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx --out out/markham2018
+.\.venv\Scripts\huf traffic --csv cases/traffic_phase/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_phase
+.\.venv\Scripts\huf traffic-anomaly --csv cases/traffic_anomaly/inputs/toronto_traffic_signals_phase_status.csv --out out/traffic_anomaly --status "Green Termination"
+```
 
-- [Start Here (Developer)](start_here.md)
-- [Reference Manual](reference_manual.md)
-- [Theory Notes (optional)](theory_notes.md)
-- [GitHub for Beginners](github_for_beginners.md)
+Then open:
+
+- `out/markham2018/artifact_1_coherence_map.csv` (regimes)
+- `out/markham2018/artifact_2_active_set.csv` (retained set)
+- `out/markham2018/artifact_3_trace_report.jsonl` (audit trail)
+
+## Run the docs site locally (Windows)
+
+```powershell
+.\.venv\Scripts\python -m mkdocs serve
+```
+
+Tip: If copy/paste ever seems “weird” on Windows, prefer **forward slashes** in file paths (e.g., `scripts/fetch_data.py`, `cases/...`) and only use backslashes for the venv executables (e.g., `.\.venv\Scripts\python`).
