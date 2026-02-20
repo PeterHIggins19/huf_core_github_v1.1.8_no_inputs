@@ -67,6 +67,7 @@ nav:
       - Traffic phase worked example: traffic_phase_worked_example.md
   - Adapters:
       - Vector DB coherence: vector_db_coherence.md
+      - Vector DB coherence (one-page brief): vector_db_coherence_one_pager.md
   - Optional:
       - Jupyter demos: jupyter_demos.md
   - Reference:
