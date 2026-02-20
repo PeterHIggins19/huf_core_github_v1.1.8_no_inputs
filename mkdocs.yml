@@ -1,7 +1,7 @@
 site_name: HUF Core Snapshot
 site_url: https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/
-repo_url: https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs
-repo_name: PeterHIggins19/huf_core_github_v1.1.8_no_inputs
+repo_url: https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs
+repo_name: PeterHiggins19/huf_core_github_v1.1.8_no_inputs
 edit_uri: edit/main/docs/
 
 theme:
@@ -65,6 +65,7 @@ nav:
       - Included cases: cases.md
       - Markham worked example: markham_worked_example.md
       - Traffic phase worked example: traffic_phase_worked_example.md
+      - Planck LFI 70 GHz guide: planck.md
   - Adapters:
       - Vector DB coherence: vector_db_coherence.md
       - Vector DB coherence (one-page brief): vector_db_coherence_one_pager.md
