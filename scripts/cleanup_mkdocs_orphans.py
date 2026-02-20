@@ -83,7 +83,7 @@ def main() -> int:
         print("[ok] no docs/docs nesting found")
 
     print("[done] cleanup complete. Rebuild with:")
-    print("       .\.venv\Scripts\python -m mkdocs build --strict")
+    print(r"       .\.venv\Scripts\python -m mkdocs build --strict")
     return 0
 
 
