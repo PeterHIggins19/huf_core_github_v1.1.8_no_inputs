@@ -86,6 +86,18 @@ nav:
       - HUF overview (legacy notes): The_Higgins_Unity_Framework.md
   - Contributing: contributing.md
   - Partnerships:
+      - Partner program: partnerships/partner_program.md
+      - Partner playbook: partnerships/partner_playbook.md
+      - Dissemination checklist: partnerships/dissemination.md
+      - Outreach templates: partnerships/templates.md
+      - Case studies: partnerships/case_studies/index.md
+      - Weaviate — Vector DB coherence: partnerships/case_studies/weaviate_vector_db_coherence.md
+      - Qdrant — Coherence audit: partnerships/case_studies/qdrant.md
+      - Pinecone — Namespace dominance: partnerships/case_studies/pinecone.md
+      - LangChain/LlamaIndex — Retrieval callback: partnerships/case_studies/orchestration.md
+      - Eval platforms — Composition audit: partnerships/case_studies/evaluation_platforms.md
+      - Public sector — Accounting lens: partnerships/case_studies/public_sector.md
+      - Science — Planck validation: partnerships/case_studies/scientific_planck.md
       - Partnerships home: partnerships/index.md
       - Weaviate outreach package: partnerships/weaviate_outreach.md
       - Weaviate × HUF — full picture: partnerships/weaviate_full_picture.md
