@@ -10,7 +10,6 @@ theme:
   icon:
     repo: fontawesome/brands/github
   features:
-    # Keep the learning flow in the LEFT sidebar (no top tabs)
     - navigation.sections
     - navigation.expand
     - navigation.path
@@ -51,9 +50,9 @@ markdown_extensions:
   - toc:
       permalink: true
 
-# IMPORTANT (mkdocs --strict):
-# Every nav path must match a REAL file under ./docs/
+# Strict-mode safe navigation
 nav:
+
   - Home: index.md
   - Learning path: learning_path.md
   - Quick run: quick_run.md
@@ -61,7 +60,7 @@ nav:
   - Start here:
       - Running examples (Windows/macOS/Linux): running_examples.md
       - PowerShell vs Python (Windows-safe): windows_powershell_vs_python.md
-      - Developer: start_here.md
+      - Developer start: start_here.md
       - Zero GitHub knowledge: get_started_zero_github.md
       - Get started (README-style): get_started_readme.md
       - Data sources & fetching: data_sources.md
@@ -79,20 +78,22 @@ nav:
   - Optional:
       - Jupyter demos: jupyter_demos.md
 
-  - Reference:
-      - Docs inventory: docs_inventory.md
-      - [HUF Clean Handbook v1.3.0 (DOCX)](assets/papers/HUF_Clean_Handbook_v1.3.0.docx)
-      - [HUF Skeptic Appendix v1.3.0 (DOCX)](assets/papers/HUF_Skeptic_Appendix_v1.3.0.docx)
-      - Reference manual: reference_manual.md
-      - Troubleshooting: troubleshooting.md
-      - Repo hygiene (clean commits): repo_hygiene.md
+  - Research:
+      - Clean handbook v1.3.0 (DOCX): assets/papers/HUF_Clean_Handbook_v1.3.0.docx
+      - Skeptic appendix v1.3.0 (DOCX): assets/papers/HUF_Skeptic_Appendix_v1.3.0.docx
+      - Mathematical form and function: huf_math_form_and_function.md
       - Theory notes: theory_notes.md
       - Long tail (accounting lens): long_tail_accounting_lens.md
-      - Mathematical form and function: huf_math_form_and_function.md
+      - HUF overview (legacy notes): The_Higgins_Unity_Framework.md
+
+  - Documentation:
+      - Docs inventory: docs_inventory.md
+      - Reference manual: reference_manual.md
       - CLI command lists + terminology: cli_huf_reference.md
+      - Troubleshooting: troubleshooting.md
+      - Repo hygiene (clean commits): repo_hygiene.md
       - GUI quickstart: gui_quickstart.md
       - GitHub for beginners: github_for_beginners.md
-      - HUF overview (legacy notes): The_Higgins_Unity_Framework.md
       - Contributing: contributing.md
 
   - Partnerships:
