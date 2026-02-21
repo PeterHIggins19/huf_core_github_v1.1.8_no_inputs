@@ -1,0 +1,32 @@
+{
+  "Partnerships": [
+    {
+      "title": "Partnerships home",
+      "path": "partnerships/index.md"
+    },
+    {
+      "title": "Weaviate outreach package",
+      "path": "partnerships/weaviate_outreach.md"
+    },
+    {
+      "title": "Weaviate × HUF — full picture",
+      "path": "partnerships/weaviate_full_picture.md"
+    }
+  ],
+  "Start here": [
+    {
+      "title": "Running examples (Windows/macOS/Linux)",
+      "path": "running_examples.md"
+    },
+    {
+      "title": "PowerShell vs Python (Windows-safe)",
+      "path": "windows_powershell_vs_python.md"
+    }
+  ],
+  "Cases": [
+    {
+      "title": "Planck LFI 70 GHz guide",
+      "path": "planck.md"
+    }
+  ]
+}
