@@ -112,3 +112,5 @@ nav:
       - Science — Planck validation: partnerships/case_studies/scientific_planck.md
       - Weaviate outreach package: partnerships/weaviate_outreach.md
       - Weaviate × HUF — full picture: partnerships/weaviate_full_picture.md
+  - Reference:
+      - Docs inventory: docs_inventory.md
