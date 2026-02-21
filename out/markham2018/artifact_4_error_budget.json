@@ -1,7 +1,0 @@
-{
-  "budget_type": "mass",
-  "discarded_budget_global": 0.02898029690555317,
-  "frame": "mass",
-  "metric": "total_variation_over_elements",
-  "tv": 0.02898029690555317
-}

@@ -1,2 +1,0 @@
-[console_scripts]
-huf = huf_core.cli:main
