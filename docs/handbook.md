@@ -1,423 +1,180 @@
-# Higgins Unity Framework (HUF) Handbook
+# HUF Handbook (Clean Edition) — v1.3.0
 
-**Edition:** v1.1.8 (docs refresh)  
-**Updated:** 2026-02-17  
+> Build date: 2026-02-21
 
-This handbook is the *conceptual and contractual* description of HUF: what the Unity-Budgeted Hierarchy (UBH) is, how HUF emits auditable artifacts, and how to interpret stability sweeps.
+## What this page is
+A clean, reproducible handbook for the Higgins Unity Framework (HUF): a **normalization-invariant audit layer** for hierarchical mixtures (sources / namespaces / tenants / components).
 
-**Real-data demos included in this repo:**
-- **Markham (2018 budget)** — real Excel input fetched from the City of Markham open data site.
-- **Toronto (traffic signals timing)** — real CSV derived from the City of Toronto open data “Traffic signals timing” ZIP.
-- **Planck (70 GHz all-sky map)** — real FITS map *not shipped in the repo* (too large). You fetch it from PLA or IRSA (guided in `scripts/fetch_data.py --planck-guide`).
+!!! note "Ethics disclosure (short)"
+    This documentation was drafted with AI assistance as an editing tool and then reviewed/curated by the author. Formal claims are stated conservatively and should be reproducible via code in the repository.
 
-**Synthetic data:** only small “toy” examples (used for quick sanity checks) are synthetic. The headline demos above are real data.
+## Why it matters
+HUF helps when you suspect *composition collapse* or *regime dominance* is hiding behind good-looking global metrics. It answers: **which regimes dominate, how concentrated that dominance is, and how stable the mix is under perturbations.**
 
----
-
-## Origins (why this exists)
-
-HUF grew out of a very practical question: how to **solve diffraction and dispersion** problems in loudspeakers well enough that the “why” became impossible to ignore.  
-The working path was:
-
-1. solve the physical problem (dispersion / diffraction) *empirically*
-2. notice an “energy budget” invariant when moving from **2π to 4π radiation equalization**
-3. formalize the invariant as an **isotropic budget / unity constraint**
-4. generalize it into a contract for hierarchies → the **Unity‑Budgeted Hierarchy (UBH)**
-5. treat every run as a reproducible artifact emitter → HUF
-
-That’s the reason the framework is written like a lab protocol: it is designed to let people verify “is this real?” before debating “is this beautiful?”.
-
+## What you’ll see
+- Formal Core definitions: items, regimes, scores, regime mass, normalized distribution
+- Invariance claims (within scope) and what they do *not* claim
+- Sphere/simplex geometry used for stability workflows
+- Worked examples (Vector DB coherence; Planck 70 GHz template)
+- A stable artifact protocol (coherence map, active set, trace report, error budget)
 
 ---
 
-Higgins Unity Framework (HUF)
-Handbook
+## Start Here
 
-A contract-first method for unity‑budgeted hierarchies,
-auditable reduction, and stable anomaly localization
+HUF is a normalization-invariant formalism for analyzing and stabilizing hierarchical mixtures. Given any system that produces weighted contributions across regimes (sources, namespaces, components, experts, tenants), HUF asks: which regimes dominate, how concentrated is dominance, and how stable is the mix under small perturbations?
 
-Handbook Edition • Version 1.0
-February 2026
+In practice, HUF consumes a simple JSONL log of retrieval results (or any scored items with a regime label) and emits a small set of artifacts: (1) a coherence map, (2) an active set, (3) a trace report, and (4) an error budget.
 
-Peter Higgins
+Core promise: results are meaningful even when upstream scores are rescaled, normalized differently, or mixed across sources—because the analysis is designed to be invariant to normalization choices.
 
-# Front matter
+## What HUF Is (and Is Not)
 
-This handbook replaces the earlier ‘meeting spec’ lineage. It is written to be implementable, teachable, and hard to misread. The tone is intentionally contract‑driven: if you cannot verify finite elements, conserve a declared unity budget, emit the required artifacts, and pass stability checks, then you are not doing HUF — you are doing storytelling.
+HUF is NOT a vector database, not a reranker, and not a replacement for your retrieval or modeling stack. It is an audit and stability layer that evaluates the *composition* of outputs across regimes.
 
-The handbook contains two comprehensive, real-data case studies (Planck 70 GHz and City of Markham public data) and a third operational case study (traffic signal telemetry) as an anomaly‑localization template.
+HUF IS useful when you suspect: a tenant dominates a multi-tenant system, one data source overwhelms others, a pipeline is brittle under small score shifts, or overall metrics look good while a subset silently collapses.
 
-## How to use this handbook
+## Formal Core
 
-- If you need the method: read Part I and implement the contract (required artifacts + stability packet).
+### Objects, Regimes, and Weights
 
-- If you need proof: read Part II and reproduce the reference runs (Planck and Markham).
+An *item* is a returned unit (document, record, event, sample). Each item i has:
 
-- If you need to teach or deploy: read Part III (implementation patterns, templates, and training exercises).
+- a regime label r(i) (e.g., namespace, tenant, source, modality)
+- a non-negative score s(i) (e.g., similarity, relevance, likelihood)
+- optional metadata (rank, query id, timestamp, etc.)
 
-# Table of contents
+Let R be the set of regimes. Define regime mass:
 
-In Word: Right‑click the TOC → Update Field → Update entire table.
+w_r = Σ_{i: r(i)=r} s(i)
 
-# Part I — HUF Core (Normative)
+Define the normalized regime distribution (a point on the probability simplex):
 
-## 1. Definition in one page (the core, stripped)
+p_r = w_r / Σ_{r∈R} w_r
 
-HUF defines a system as a unity‑budgeted hierarchy with auditable finite elements.
+HUF computations are designed to depend on p (and derived geometric quantities), not on the absolute scale of scores.
 
-1. Finite elements: verifiable units that contribute to a conserved budget.
+### Category-Theoretic Spine
 
-1. Regimes: named groupings of finite elements (nestable) used for interpretability.
+A minimal formalization treats HUF instances as objects in a category where morphisms preserve the structure relevant to normalization-invariant analysis.
 
-1. Unity budget: a declared conserved quantity (mass/weight or energy/power) with total sum exactly 1.0.
+Definition (HUF object). A HUF object is a pair (R, p) where R is a finite set of regimes and p is a distribution on R (p_r ≥ 0, Σ p_r = 1).
 
-1. Locked cycle: Normalize → Propagate → Aggregate → Exclude → Renormalize.
+Definition (structure-preserving morphism). A morphism f: (R, p) → (R', p') is a regime map f: R → R' such that p' is the pushforward of p under f (i.e., p'_{r'} = Σ_{r: f(r)=r'} p_r).
 
-1. Contract: a run is invalid unless it emits the required artifacts and passes declared stability checks.
+Intuition: merging regimes (kb + manual → docs) is a morphism; splitting regimes is not (unless you introduce additional structure).
 
-## 2. Motivation (the shortest honest version)
+This captures “sum-preserving” behavior: total mass is conserved under the regime mapping, and composition behaves as expected.
 
-Every serious system ends up doing some form of reduction: compressing models, pruning portfolios, prioritizing interventions, or summarizing telemetry. The failure mode is consistent: reduction happens, but the justification is ad hoc. HUF exists to make reduction auditable.
+### Normalization Invariance
 
-HUF does not promise ‘truth.’ It promises four things you can test: (1) unity conservation, (2) explicit retained set, (3) explicit discarded budget, and (4) backward trace to finite elements. That’s the entire game.
+Most pipelines rescale scores: cosine similarity, distances, logits, calibrated probabilities, min-max scaling, temperature scaling, etc. HUF is designed so that its regime-level conclusions are stable under monotone rescalings that do not change the relative ordering within a query, and under global multiplicative scaling.
 
-## 3. Primitives and invariants
+Claim (informal). If scores are scaled by a positive constant α>0 (s(i)→α s(i)), then p is unchanged and all regime-level statistics derived from p are unchanged.
 
-3.1 Finite element
+Note. For more general rescalings, invariance holds for the parts of the pipeline that depend only on normalized regime mass p (not on raw s).
 
-A finite element is the smallest unit you agree to audit. It must have: a unique identifier, a repeatable method of computing its contribution, and stored provenance.
+### Sphere Embedding and Geometry
 
-Minimum finite-element record:
+The normalized distribution p lives on the simplex. A useful embedding maps p to the unit sphere via elementwise square root:
 
-- id: stable string key (do not recycle IDs across runs)
+φ(p) = (√p_1, …, √p_|R|) ∈ S^{|R|-1}
 
-- inputs: pointers to measured data, logs, or upstream artifacts
+This embedding connects to well-known statistical geometry (Hellinger distance / Fisher–Rao metric). In HUF, it provides a convenient geometry for defining contraction/stability measures and for visualizing regime mixtures.
 
-- contribution: a non-negative scalar (or paired positive/negative extension) used by the unity budget
+### Stability and Lyapunov View
 
-- provenance: hash or stamp sufficient to reproduce the number
+HUF tracks whether the regime mixture is stable under small perturbations (e.g., small score changes, small dataset shifts). A practical stability packet reports how the active set and dominance metrics change under controlled noise or parameter sweeps (τ variants).
 
-3.2 Regime
+Lyapunov-style heuristic. If an update rule on φ(p) is contractive (reduces a suitable distance on the sphere), the mixture converges to a stable regime composition.
 
-A regime is a partition (or nested partition) used to contextualize budget. A regime answers: ‘where did the budget go?’ Regimes must not double-count contributions. If an element belongs to multiple regimes, you must explicitly split its budget.
+## Interpretive Extensions (Explicitly Non-Equivalence)
 
-3.3 Unity budget
+The following sections are *structural correspondences* and *embedding interpretations*. They are included because they help experts connect HUF to familiar frameworks, but they are not claimed as formal equivalences unless a full construction is given.
 
-Unity is the only invariant HUF treats as sacred: after normalization, the sum of contributions equals 1.0 globally. Local unity (within a regime) may be enforced for a local view, but the global unity must always be satisfied.
+- Sheaf analogy: regimes as open covers; local consistency vs global coherence.
+- Simplicial analogy: mixtures across regimes form simplices; refinement corresponds to regime partitioning.
+- Topos analogy: internal logic of a regime-indexed system; useful as metaphor unless axiomatized.
+- QEC / trace-preserving analogy: error budgets and discard tracking resemble conserved quantities; again, analogy unless formalized.
+- GNN analogy: aggregation over a regime graph; helpful for implementation mapping.
 
-## 4. Budget semantics (choose once; don’t cheat)
+## Worked Examples
 
-HUF is ruthless about budget semantics. Declare one of the following and never mix them mid-run:
+### Vector DB Coherence (multi-namespace retrieval)
 
-- Mass/weight budget: ρᵢ ≥ 0 and Σρᵢ = 1. Examples: expenditure shares, portfolio weights, probability mass.
+Goal: detect whether one namespace dominates retrieval results even when overall ranking metrics appear fine.
 
-- Energy/power budget: ρᵢ = eᵢ / Σe with eᵢ = |xᵢ|² or another Parseval-consistent energy under a declared orthogonal basis.
+Expected outcome (example run): top regimes by rho_global_post show dominance split across two regimes. In a sample run, 'kb' and 'tickets' appeared with rho ≈ 0.62 and 0.38 respectively (your console output).
 
-If your domain has cancellation (signed contributions), do not fake it by allowing negative ρ. Use a paired-budget extension (track positive and negative magnitudes separately) or an explicitly signed framework with stability proofs.
+What you get:
 
-## 5. The locked cycle and what each step is allowed to do
+- artifact_1_coherence_map.csv — regime-level dominance/coherence
+- artifact_2_active_set.csv — retained items after thresholding
+- artifact_3_trace_report.jsonl — explainability trace
+- artifact_4_error_budget.json — discards and accounting
 
-Figure 1. The locked HUF cycle. You may extend steps, but you may not reorder them without breaking audit expectations.
+### Planck 70 GHz (scientific data)
 
-Normalize
+Goal: demonstrate that the same audit/stability machinery works on scientific maps by treating map contributions as regime mixtures after binning/resolution changes.
 
-Normalize converts raw contributions into a unity budget. For mass budgets: ρᵢ = wᵢ / Σw. For energy budgets: ρᵢ = |xᵢ|² / Σ|x|². Normalization must be deterministic and logged.
+Expected outcome (example run): a compact coherence map across regimes, an active set of retained items, and generated plots (concentration curve, coherence by regime) when plotting is enabled.
 
-Propagate
+Example run metadata from a successful invocation:
 
-Propagation moves budget between representations (e.g., from fine pixels to coarse blocks, from categories to wards, from events to root causes). Propagation is admissible only if it is conservative and traceable.
+- active_set ≈ 18198, coherence_rows ≈ 12
+- retained_target = 0.97, nside_out = 64
+- discarded_global ≈ 0.03
 
-- Conservation check: |Σρ_out − Σρ_in| ≤ ε (declare ε).
+## Artifact Reference
 
-- Traceability check: every output element stores a map back to input elements with weights.
+HUF writes a directory of artifacts under --out. The artifact numbering is stable so downstream tools and documentation can rely on it.
 
-- No hidden state: propagation must be a pure function of inputs + declared parameters (seeded if stochastic).
+|Artifact|File|What it answers|
+|---|---|---|
+|1|artifact_1_coherence_map.csv|Which regimes dominate, and by how much (global/local coherence).|
+|2|artifact_2_active_set.csv|Which items are retained after τ/retention policy; ranks and regime labels.|
+|3|artifact_3_trace_report.jsonl|Per-item trace: why retained/discarded; attribution fields.|
+|4|artifact_4_error_budget.json|Accounting of discards: global/local/declared; summary stats.|
 
-Aggregate
+## Nomenclature (Symbols, Variables, and Definitions)
 
-Aggregation merges elements to reduce complexity while preserving the budget. Examples: cluster similar items, sum within a regime, downsample by known hierarchical structure.
+This section is intended to make the math readable and the code searchable.
 
-Exclude
+|Symbol / term|Meaning|Where you see it|
+|---|---|---|
+|R|Set of regimes (namespaces/tenants/sources).|Coherence map; regime-field.|
+|i|Item index.|Active set, trace report.|
+|s(i)|Raw score for item i (non-negative after any transform).|Input JSONL.|
+|w_r|Regime mass Σ s(i) within regime r.|Internal; coherence.|
+|p_r|Normalized regime mass w_r / Σ w.|Core object distribution.|
+|τ (tau)|Global retention / threshold parameter controlling how much tail mass is discarded.|CLI flags; meta.json.|
+|ρ_global_post|Post-normalization global coherence/dominance statistic over regimes.|artifact_1_coherence_map.csv|
+|ρ_local_post|Local coherence statistic within a regime (item-level concentration).|active set/coherence map|
+|items_to_cover_90pct|Smallest number of items whose cumulative mass reaches 90% (concentration proxy).|inspect scripts; tail summary.|
+|discarded_global|Fraction of mass removed by global policy.|meta.json; error_budget.|
 
-Exclusion removes elements below a threshold τ or keeps the smallest set reaching a retained budget target. Exclusion must emit a discard ledger (what was removed and how much budget it carried).
+## Cross-Platform Execution Notes
 
-Renormalize and validate
+HUF examples are runnable on Windows PowerShell, macOS, and Linux. Be careful: shell syntax differs. In particular, PowerShell does not support Bash heredocs (<<'PY'). Use either (a) a Python script file, (b) python -c "...", or (c) PowerShell here-strings (@' ... '@).
 
-Renormalize after exclusion (and after any operation that may introduce floating-point drift). Then validate the contract: unity checks, trace completeness, artifact emission, and stability packet results.
+If you see errors like “The '<' operator is reserved for future use”, you pasted Bash syntax into PowerShell.
 
-## 6. The contract (required artifacts)
+Recommendation: use the provided scripts in scripts/ and examples/ rather than pasting multi-line Python into a shell.
 
-Contract: a HUF run is invalid unless it emits all artifacts
+## Troubleshooting
 
-## 7. Artifact schemas (minimum workable forms)
+MkDocs warning about “MkDocs 2.0 incompatible with Material” means your MkDocs major version and the theme version are mismatched. If you use Material, prefer the pinned versions in this repo’s docs requirements. If you upgrade MkDocs, upgrade the theme accordingly (or switch generators).
 
-HUF does not mandate file formats, but it does mandate fields. Minimal schemas:
+If documentation pages exist but are “not included in nav”, run scripts/docs_hygiene.py (it normalizes nav and updates the catalog).
 
-Schema A — Active set
+---
 
-Schema B — Backward trace (per retained element)
+## Run the example
+Use the repository’s existing example pages and scripts (see **Quick run** and **Vector DB coherence** pages) to run an end-to-end audit. A typical pattern is:
 
-Schema C — Error/Budget report
+```bash
+# Example pattern (adjust to your repo’s actual scripts/entrypoints)
+# 1) Provide an input JSONL with: item_id, regime, score (+ optional metadata)
+# 2) Run HUF to produce artifacts under out/
 
-## 8. Stability packet (required anti-brittleness tests)
-
-Minimum stability packet
-
-## 9. Deployment hazards (the things critics correctly attack)
-
-- Semantics drift: changing what unity means mid-run (e.g., mixing weight and energy).
-
-- Black-box propagation: learned or heuristic mapping with no trace and no conservation validation.
-
-- Double counting: elements belonging to overlapping regimes without explicit splitting.
-
-- Unstable thresholds: large near-τ mass and low overlap across sweeps.
-
-- Overfitting the narrative: tuning τ until your preferred story appears.
-
-HUF’s job is to make these failures visible. If your run fails, that is not ‘HUF failing’; that is the system refusing to be compressed honestly.
-
-# Part II — Comprehensive Reference Runs (Real Data)
-
-## 10. Case Study A — Planck LFI 70 GHz (HEALPix, nside=1024)
-
-This case demonstrates energy‑budget HUF on a large scientific dataset. Input file: LFI_SkyMap_070_1024_R3.00_full.fits. We use the Stokes I column (I_STOKES). The finite elements are pixels; the energy contribution is I².
-
-### 10.1 Data model
-
-- Raw finite elements: nside=1024 pixels (12×1024² = 12,582,912 elements).
-
-- Aggregation: NESTED parent blocks at nside=64 (12×64² = 49,152 coarse elements), each covering 256 child pixels.
-
-- Regimes: 12 HEALPix base faces (each face = 4,096 coarse blocks).
-
-- Budget: energy share ρᵢ = eᵢ / Σe, with eᵢ = Σchild I² (for coarse blocks).
-
-### 10.2 Run configuration
-
-Aggregation: nside 1024 → 64 (ratio 16; 256 children per parent).
-
-Retain target: 0.97 of total energy.
-
-Outcome: K = 18,198 retained coarse blocks out of 49,152. Threshold τ = 1.66e-06.
-
-Energy retained = 0.9700; discarded = 0.0300.
-
-Pixel‑basis RMSE under keep‑or‑zero reconstruction = 7.6942e-05 (same units as I_STOKES).
-
-### 10.3 Coherence map
-
-Figure 2. Planck 70 GHz — global retained vs discarded energy share.
-
-Figure 3. Planck 70 GHz — per‑face unity bars (faces as regimes).
-
-Figure 4. Planck 70 GHz — active‑set growth curve (sorted by ρ).
-
-Table 10‑A. Per‑face energy shares (global ρ)
-
-Table 10‑B. Top retained coarse blocks (traceable sample)
-
-### 10.4 Traceability (how to audit a retained block)
-
-Because the map uses HEALPix NESTED ordering, each nside=64 parent block corresponds to a contiguous range of 256 nside=1024 child pixels. For a retained parent with index p, the child range is [256p, 256p+255]. This makes backward traces compact and exact.
-
-Example: a compact backward trace for an aggregated HEALPix block
-
-### 10.5 Stability packet (retain‑target sweep)
-
-Table 10‑C. Sweep points (target → K, τ)
-
-Table 10‑D. Active‑set overlap (Jaccard) between sweep points
-
-Table 10‑E. Regime ranking stability (faces) across sweep points
-
-### 10.6 What this run teaches (and what it does not)
-
-- HUF can reduce 49,152 coarse blocks to ~18k while retaining 97% pixel-basis energy, with exact accounting.
-
-- Per-regime views (faces) remain stable across threshold sweeps: the ‘where’ of energy is robust.
-
-- The discard fraction is a quantitative error bound under the declared reconstruction.
-
-- This is not cosmological inference. HUF is an auditable reduction layer; domain science still happens above it.
-
-## 11. Case Study B — City of Markham (2018 budget + civic layers)
-
-This case demonstrates mass/weight HUF on municipal public data. The conserved quantity is money. Primary budget workbook: 2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx (values in $000). We focus on expenditures (the allocation of outgoing funds), then show a propagation example onto wards using census population as a proxy.
-
-### 11.1 Data inventory (what we used)
-
-- 2018-Budget-Allocation-of-Revenue-and-Expenditure-by-Fund.xlsx — fund-level revenues/expenditures by category.
-
-- 2018-Operating-Budget-by-Account.xlsx — operating revenue/expense categories and year comparisons.
-
-- 2016-Tax-Rates.xlsx and 2018-Tax-Rates.xlsx — rate context (not used as budget, used for narrative checks).
-
-- GIS layers: WARD.geojson, Parks.geojson, Fire_Stations.geojson, City_Facilities.geojson (used for a propagation demo).
-
-- Census DA layer (Age/Sex) for Markham — used only to compute ward population shares (proxy).
-
-### 11.2 Budget declaration and finite elements
-
-Global budget: total 2018 expenditures across all funds = 456,171 ($000). Unity budget is ‘share of total expenditures’.
-
-Finite element for the primary run: (Fund × ExpenditureCategory). Regimes: Funds. This gives a clean ‘where does the city spend money’ decomposition.
-
-### 11.3 Primary run results (Fund×Category)
-
-Retain target: 0.97. Outcome: K = 23 retained elements out of 67. Threshold τ = 0.004. Retained = 0.9710; discarded = 0.0290.
-
-Figure 5. Markham 2018 expenditures — global retained vs discarded budget share.
-
-Figure 6. Markham 2018 expenditures — per-fund unity bars (funds as regimes).
-
-Figure 7. Markham 2018 expenditures — active-set growth curve (Fund×Category).
-
-Table 11‑A. Fund regimes: totals and global shares
-
-Table 11‑B. Largest spending contributors (Fund×Category)
-
-### 11.4 Stability packet
-
-Table 11‑C. Sweep points (target → K, τ)
-
-Table 11‑D. Active-set overlap (Jaccard) across sweep points
-
-### 11.5 Backward trace example (auditing a spending line)
-
-In this run, the backward trace is trivial but non‑negotiable: each retained element points back to a specific worksheet row/column (Fund, Category, cell location) plus workbook hash. If you can’t point to the cell, you can’t claim the number.
-
-Example: backward trace record for a budget line
-
-### 11.6 Propagation demo — Operating Fund to wards (proxy allocation)
-
-This section demonstrates propagation constraints on civic geography. We do NOT claim this is the real ward budget — the city budget is not ward‑allocated in this dataset. We demonstrate a conservative, auditable proxy mapping.
-
-Propagation map: allocate Operating Fund expenditures to wards proportional to 2016 census population share. This is admissible as a mapping only if it is declared as a proxy, conservative (sums match), and traceable.
-
-Figure 8. Markham wards — population shares (proxy weights for propagation).
-
-Figure 9. Operating Fund propagated to wards — per-regime unity bars (retained vs discarded at target 0.97).
-
-Table 11‑E. Ward proxy table: population, facilities counts, and Operating Fund allocation ($M)
-
-Why include facilities counts? Not as causal claims — as audit context. They provide additional regimes for future propagation (e.g., allocate a parks-maintenance budget proportional to park count or area). Any such mapping must be declared and tested for stability.
-
-### 11.7 What dominates and what to do next
-
-The Fund×Category decomposition typically reveals (a) how concentrated spending is, (b) whether one fund dominates the budget narrative, and (c) which categories are ‘structural’ versus ‘tail.’ This run is a starting point.
-
-- Next expansion: link operating categories to performance measures (if definitions match).
-
-- Next expansion: add revenues as a parallel budget and compare structural mismatch (revenue concentration vs expenditure concentration).
-
-- Next expansion: incorporate capital project lists and apply HUF to project portfolios (true finite elements with trace to project IDs).
-
-## 12. Case Study C — Traffic signal telemetry (anomaly localization template)
-
-This case shows how HUF behaves on operational event streams. The goal is not ‘compress for beauty’ — it is: what dominates anomalies, and where should you look first?
-
-### 12.1 Finite element and budget definition (recommended)
-
-Recommended finite element for anomaly work:
-Finite element = TCS × PHASE × PHASE_STATUS_TEXT (optionally × PHASE_CALL_TEXT)
-Budget = event share or severity‑weighted share (declare weights)
-Output = which intersections/phases dominate drops/terminations/clearance with full trace to raw rows.
-
-In this run we define a simple severity budget: Dropped calls weight 3, Termination statuses weight 2, everything else weight 1, then restrict the anomaly view to rows with severity > 1.
-
-### 12.2 Compressed phase activity distribution (what dominates anomalies)
-
-Figure 10. Traffic telemetry — anomaly severity budget by intersection (top contributors).
-
-Figure 11. Traffic telemetry — anomaly severity budget by phase.
-
-Figure 12. Traffic telemetry — anomaly severity budget by status.
-
-Table 12‑A. Top intersections by anomaly severity budget share
-
-Table 12‑B. Phases dominating the anomaly budget
-
-Table 12‑C. Status distribution within anomaly budget
-
-### 12.3 Traceability and actionability
-
-A practical HUF anomaly run ends with a short, actionable list: top intersections, top phases, and the raw event rows supporting them. Backward traces should include timestamp ranges and source row IDs so an engineer can replay the evidence.
-
-- If one intersection dominates: inspect controller configuration and detector health first.
-
-- If one phase dominates across many intersections: inspect phase timing policy or coordination logic.
-
-- If one status dominates: inspect the semantic definition (what exactly triggers ‘Termination’ in your system).
-
-# Part III — Implementation, extension, and training
-
-## 13. Reference implementation patterns
-
-A handbook is useless if it can’t be implemented. This section defines the minimal architecture that prevents HUF from collapsing back into prose.
-
-- Core data model: Element(id, rho, regime_path, trace).
-
-- Adapters: domain-specific loaders and propagators that output the same element schema.
-
-- I/O: artifact writers (CSV/JSON) that always include run stamps and file hashes.
-
-- Tests: each reference run must have an automated test that checks unity, artifact emission, and stability packet generation.
-
-Listing 13‑A. Reference core (excerpt, huf_core/core.py)
-
-(Full source is intended for the accompanying repository/package; this excerpt is included for handbook completeness.)
-
-## 14. How HUF prunes itself (expansion → contraction as a method)
-
-The development history that produced this handbook is not a shameful detour — it is the method. You expand to explore, then you contract to ship. HUF applies to itself:
-
-1. Expansion phase: explore candidate operations, artifacts, and narratives to discover what actually matters in practice.
-
-1. Contraction phase: declare the contract, delete optionality from the core, and move everything else into extensions.
-
-1. Stability phase: treat the framework definition as a system under HUF — track which sections survive pruning across reviewer critiques.
-
-A useful internal exercise: assign a unity budget to sections of your draft (by reader time, by risk, or by implementation cost), then run HUF to see which sections dominate confusion or contribute little. That is ‘HUF on HUF.’
-
-## 15. Training exercises (from toy to real)
-
-Exercises are designed to build the habit of declaring budgets, regimes, and traces before you compute.
-
-1. Take any spreadsheet with line items. Define finite elements and a mass budget. Produce the four artifacts.
-
-1. Repeat with two regime partitions (by department vs by fund). Compare regime stability across thresholds.
-
-1. Take an event log. Define anomaly budget weights. Produce a top‑N actionable list with backward traces to row IDs.
-
-1. Design a propagation map (e.g., cost → ward) and prove conservation + traceability in one paragraph.
-
-1. Perform a stability sweep and write the two-sentence interpretation of the stability packet.
-
-# Appendix A — Data samples (print-friendly excerpts)
-
-A1. Planck sample (first 5 coarse blocks; energies are in I² units)
-
-A2. Markham sample (top 10 Fund×Category elements)
-
-A3. Traffic sample (first 12 telemetry rows; severity weights shown)
-
-# Appendix B — Artifact checklists (what a reviewer will ask for)
-
-- Unity checks: global Σρ=1.0 after every normalization and renormalization step (log the tolerance).
-
-- Discard ledger: list of excluded elements with their ρ; discarded sum must match 1−retained.
-
-- Trace completeness: every retained element has a backward trace to finite elements (no null traces).
-
-- Stability packet: sweep points, overlap metrics, regime rank stability, near‑τ band.
-
-- Repro stamp: file hashes, code version, run_id, parameters (τ/target, seeds).
-
-# Appendix C — Glossary (minimal)
-
-Glossary
-
-# Appendix D — Reproducibility stamps (recommended minimum)
-
-Run stamp
+python -m huf_examples.vector_db_coherence --in data/example.jsonl --out out/vector_db
