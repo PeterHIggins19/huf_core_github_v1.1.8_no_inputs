@@ -85,3 +85,7 @@ nav:
       - GitHub for beginners: github_for_beginners.md
       - HUF overview (legacy notes): The_Higgins_Unity_Framework.md
   - Contributing: contributing.md
+  - Partnerships:
+      - Partnerships home: partnerships/index.md
+      - Weaviate outreach package: partnerships/weaviate_outreach.md
+      - Weaviate × HUF — full picture: partnerships/weaviate_full_picture.md
