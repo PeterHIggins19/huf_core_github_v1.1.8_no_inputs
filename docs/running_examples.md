@@ -145,7 +145,7 @@ What you should expect:
 
 - A “real physics” example that produces a non‑toy output and demonstrates the pipeline on scientific data.
 
-See the worked page: **[Planck 70 GHz worked example](planck.md)**.
+See the worked page: **[Planck LFI 70 GHz worked example](partners/case_studies/planck_lfi_70ghz.md)**.
 
 ---
 
