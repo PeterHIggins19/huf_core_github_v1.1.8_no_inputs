@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civic — HUF</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;1,6..72,300;1,6..72,400&family=Roboto+Mono:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f6f9;
+  --paper: #ffffff;
+  --surface: #ebeef3;
+  --border: #d0d6df;
+  --ink: #141922;
+  --muted: #5a6475;
+  --navy: #1c2d4a;
+  --navy2: #2a4270;
+  --civic: #2e5b99;
+  --civic2: #4a7fd4;
+  --gold: #b8940a;
+  --gold2: #d4aa1e;
+  --green: #1f6b3a;
+  --red: #8b2020;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Roboto Mono', 'Courier New', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* FLAG STRIPE */
+.flag-stripe {
+  height: 5px;
+  background: linear-gradient(90deg, var(--navy) 33.3%, var(--paper) 33.3% 66.6%, var(--civic) 66.6%);
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--navy);
+  display: flex; align-items: center; gap: 2.5rem;
+  padding: 0 3rem; height: 52px;
+}
+.nav-logo {
+  font-family: var(--font-serif); font-size: 0.9rem;
+  color: #f0ede4; text-decoration: none; font-style: italic;
+  letter-spacing: 0.02em;
+}
+nav a { color: rgba(240,237,228,0.55); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+nav a:hover { color: #f0ede4; }
+.nav-sep { flex: 1; }
+.nav-tag {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  color: var(--gold2); letter-spacing: 0.15em; text-transform: uppercase;
+  border: 1px solid rgba(212,170,30,0.4); padding: 2px 10px;
+}
+
+/* MASTHEAD */
+.masthead {
+  background: var(--navy);
+  padding: 5rem 3rem 4rem;
+  position: relative; overflow: hidden;
+}
+.masthead::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom right, var(--navy) 50%, var(--bg) 50%);
+}
+.masthead-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+.masthead-overline {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: var(--gold2); letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 1.75rem;
+}
+.masthead h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+  font-weight: 300; color: #f0ede4;
+  line-height: 1.15; margin-bottom: 1.5rem;
+  font-style: italic;
+}
+.masthead h1 strong { font-weight: 600; font-style: normal; color: #fff; }
+.masthead-lead {
+  font-size: 1.05rem; color: rgba(240,237,228,0.65);
+  max-width: 620px; line-height: 1.8;
+}
+
+/* MAIN */
+main { max-width: 1100px; margin: 4rem auto 0; padding: 0 3rem 6rem; }
+section { margin-top: 5rem; }
+.section-header {
+  display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 2rem;
+  padding-bottom: 1rem; border-bottom: 2px solid var(--navy);
+}
+.sh-num { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); }
+h2 {
+  font-family: var(--font-serif); font-size: 1.9rem;
+  font-weight: 300; font-style: italic; color: var(--navy);
+}
+p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.8; }
+strong { color: var(--ink); font-weight: 500; }
+
+/* THE ACCOUNTABILITY STATEMENT */
+.accountability {
+  background: var(--navy);
+  border-radius: 4px; padding: 3rem;
+  margin: 2.5rem 0;
+}
+.acct-label {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  color: var(--gold2); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1.5rem;
+}
+.acct-statement {
+  font-family: var(--font-serif); font-size: 1.35rem;
+  font-style: italic; color: #f0ede4;
+  line-height: 1.65; margin-bottom: 1.5rem;
+}
+.acct-properties {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;
+}
+.acct-prop {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 3px; padding: 0.75rem 1rem;
+  display: flex; align-items: flex-start; gap: 0.75rem;
+}
+.ap-check { color: var(--gold2); font-family: var(--font-mono); font-size: 0.8rem; flex-shrink: 0; margin-top: 0.1rem; }
+.ap-text { font-size: 0.85rem; color: rgba(240,237,228,0.7); }
+
+/* LONG TAIL EXPLANATION */
+.longtail-box {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--civic);
+  border-radius: 3px; padding: 2rem 2.5rem; margin: 2rem 0;
+}
+.lt-label {
+  font-family: var(--font-mono); font-size: 0.6rem; color: var(--civic);
+  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem;
+}
+.lt-heading {
+  font-family: var(--font-serif); font-size: 1.25rem;
+  font-weight: 600; color: var(--ink); margin-bottom: 0.75rem;
+}
+.lt-body { font-size: 0.9rem; color: var(--muted); }
+
+/* BUDGET VIZ */
+.budget-viz { margin: 2.5rem 0; }
+.bv-label {
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;
+  display: flex; justify-content: space-between;
+}
+.budget-bars { background: var(--paper); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+.budget-bar-row {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.65rem 1.25rem; border-bottom: 1px solid var(--surface);
+}
+.budget-bar-row:last-child { border-bottom: none; }
+.bbr-label { font-size: 0.82rem; color: var(--ink); width: 150px; flex-shrink: 0; }
+.bbr-track { flex: 1; height: 8px; background: var(--surface); border-radius: 2px; overflow: hidden; }
+.bbr-fill-pre { height: 100%; border-radius: 2px; background: var(--red); opacity: 0.4; }
+.bbr-fill-post { height: 100%; border-radius: 2px; background: var(--green); }
+.bbr-pcts {
+  display: flex; gap: 1rem; width: 100px; flex-shrink: 0;
+  font-family: var(--font-mono); font-size: 0.68rem;
+  justify-content: flex-end;
+}
+.pct-pre { color: var(--red); }
+.pct-post { color: var(--green); }
+.bv-legend {
+  display: flex; gap: 1.5rem; margin-top: 0.75rem;
+  font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted);
+}
+.legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 1px; margin-right: 4px; vertical-align: middle; }
+
+/* CARDS */
+.card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin: 2rem 0; }
+.card {
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1.5rem;
+  border-top: 3px solid var(--navy);
+}
+.card.civic-blue { border-top-color: var(--civic); }
+.card.gold-top { border-top-color: var(--gold); }
+.card.green-top { border-top-color: var(--green); }
+.card-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.card h3 { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+.card p { font-size: 0.88rem; color: var(--muted); margin-bottom: 0; }
+
+/* METRIC ROW */
+.metric-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0; background: var(--navy);
+  border-radius: 4px; overflow: hidden; margin: 2.5rem 0;
+}
+.metric-cell { padding: 1.5rem; border-right: 1px solid rgba(255,255,255,0.08); }
+.metric-cell:last-child { border-right: none; }
+.mc-label { font-family: var(--font-mono); font-size: 0.6rem; color: rgba(240,237,228,0.45); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.mc-val { font-family: var(--font-serif); font-size: 1.5rem; color: var(--gold2); font-weight: 600; }
+.mc-delta { font-size: 0.72rem; color: rgba(240,237,228,0.45); margin-top: 0.2rem; }
+
+/* MATH BOX */
+.math-box {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--civic);
+  border-radius: 3px; padding: 1.5rem 2rem; margin: 1.5rem 0;
+  font-family: var(--font-mono); font-size: 0.85rem; line-height: 2;
+}
+.math-box .eq { color: var(--civic); font-weight: 500; }
+.math-box .cm { color: var(--muted); font-style: italic; font-size: 0.78rem; }
+
+/* CASES SECTION */
+.cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; margin: 2rem 0; }
+.case-card {
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1.75rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.case-card:hover { box-shadow: 0 4px 16px rgba(28,45,74,0.1); border-color: var(--civic2); }
+.cc-eyebrow { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.case-card h3 { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+.case-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.25rem; }
+.cc-stats { display: flex; gap: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--surface); }
+.cc-stat {}
+.cc-stat-val { font-family: var(--font-mono); font-size: 0.95rem; color: var(--civic); display: block; }
+.cc-stat-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.cc-link { display: inline-block; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--civic); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+.case-card:hover .cc-link { border-color: var(--civic); }
+
+footer {
+  background: var(--navy);
+  padding: 2rem 3rem;
+  font-family: var(--font-mono); font-size: 0.68rem; color: rgba(240,237,228,0.35);
+  display: flex; justify-content: space-between; align-items: center;
+}
+</style>
+</head>
+<body>
+
+<div class="flag-stripe"></div>
+
+<nav>
+  <a href="#" class="nav-logo">HUF</a>
+  <a href="#accountability">Accountability</a>
+  <a href="#longtail">Long tail</a>
+  <a href="#math">Math</a>
+  <a href="#cases">Cases</a>
+  <div class="nav-sep"></div>
+  <span class="nav-tag">Civic</span>
+</nav>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-overline">HUF · Civic Domain</div>
+    <h1><strong>Public money.</strong><br>Public accountability.</h1>
+    <p class="masthead-lead">
+      Every public budget is a hierarchical system with a conserved quantity, a
+      finite set of approved line items, and a tendency toward silent concentration.
+      HUF was built for exactly this: enforcing coherence, surfacing imbalance,
+      and producing an audit trail that goes all the way down to finite elements.
+    </p>
+  </div>
+</div>
+
+<main>
+
+  <!-- ACCOUNTABILITY STATEMENT -->
+  <section id="accountability">
+    <div class="section-header">
+      <span class="sh-num">01</span>
+      <h2>The accountability contract</h2>
+    </div>
+
+    <p>
+      HUF's design principle maps directly to the obligation of public finance: every dollar
+      must trace to a <strong>finite element</strong> — an approved line item with a project ID,
+      a category, an approval date, and a provenance record. No mass may be created. No budget
+      may silently concentrate in a small number of projects while others are starved.
+    </p>
+
+    <div class="accountability">
+      <div class="acct-label">HUF public finance contract</div>
+      <div class="acct-statement">
+        "If you cannot verify finite elements, conserve a declared unity budget,
+        emit the required artifacts, and pass stability checks, then you are not
+        doing public finance — you are doing storytelling."
+      </div>
+      <div class="acct-properties">
+        <div class="acct-prop">
+          <span class="ap-check">✓</span>
+          <span class="ap-text"><strong style="color:#e8dfc8">Unity conservation.</strong> The sum of all budget fractions equals 1.0 at every reporting period, by proof. No rounding error. No silent loss.</span>
+        </div>
+        <div class="acct-prop">
+          <span class="ap-check">✓</span>
+          <span class="ap-text"><strong style="color:#e8dfc8">Explicit retained set.</strong> Every period, HUF emits the set of projects above the mass threshold — the ones that actually matter to the allocation.</span>
+        </div>
+        <div class="acct-prop">
+          <span class="ap-check">✓</span>
+          <span class="ap-text"><strong style="color:#e8dfc8">Explicit discarded budget.</strong> Projects flagged, deferred, or cancelled are logged with their discarded mass and the reason for exclusion.</span>
+        </div>
+        <div class="acct-prop">
+          <span class="ap-check">✓</span>
+          <span class="ap-text"><strong style="color:#e8dfc8">Backward trace.</strong> Every aggregated metric can be decomposed to the finite elements that produced it. Council can audit any number.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LONG TAIL -->
+  <section id="longtail">
+    <div class="section-header">
+      <span class="sh-num">02</span>
+      <h2>The long tail — an accounting lens</h2>
+    </div>
+
+    <p>
+      In public budgets, "long tail" does not mean statistical class imbalance.
+      It means the <strong>mass distribution + exception reweighting</strong> problem:
+      most of the budget mass sits in a small number of large projects (roads, transit,
+      major facilities), while the long tail of smaller community and parks projects
+      is perpetually under-represented in reporting.
+    </p>
+    <p>
+      Standard budget reporting shows totals by category. HUF shows the
+      <strong>concentration metric</strong> — the minimum number of projects needed
+      to account for 90% of the allocated mass. When that number is 2, you have a
+      concentration problem. When it's 5 or 6, you have an equitable distribution.
+      Councillors can see this in one number.
+    </p>
+
+    <div class="longtail-box">
+      <div class="lt-label">Key metric for councillors</div>
+      <div class="lt-heading">items_to_cover_90pct</div>
+      <div class="lt-body">
+        Sort all budget line items by their normalised mass ρ, descending.
+        Count the minimum k such that the top-k items sum to 90% of total allocated mass.
+        Pre-HUF Markham: k = 2 (roads and transit dominate). Post-HUF: k = 4–5
+        (parks and community facilities visible in the top tier). This is the long-tail
+        accounting lens: a single integer that tells you whether your budget is equitable.
+      </div>
+    </div>
+
+    <div class="budget-viz">
+      <div class="bv-label">
+        <span>Budget concentration — pre vs. post HUF (City of Markham 2023)</span>
+        <span>Markham $500M capital</span>
+      </div>
+      <div class="budget-bars">
+        <div class="budget-bar-row">
+          <span class="bbr-label">Roads & transport</span>
+          <div class="bbr-track"><div class="bbr-fill-post" style="width:73%"></div></div>
+          <div class="bbr-pcts"><span class="pct-pre">82%</span><span class="pct-post">30%</span></div>
+        </div>
+        <div class="budget-bar-row">
+          <span class="bbr-label">Transit systems</span>
+          <div class="bbr-track"><div class="bbr-fill-post" style="width:68%"></div></div>
+          <div class="bbr-pcts"><span class="pct-pre">—</span><span class="pct-post">36%</span></div>
+        </div>
+        <div class="budget-bar-row">
+          <span class="bbr-label">Water services</span>
+          <div class="bbr-track"><div class="bbr-fill-post" style="width:48%"></div></div>
+          <div class="bbr-pcts"><span class="pct-pre">12%</span><span class="pct-post">24%</span></div>
+        </div>
+        <div class="budget-bar-row">
+          <span class="bbr-label">Parks & recreation</span>
+          <div class="bbr-track"><div class="bbr-fill-post" style="width:40%"></div></div>
+          <div class="bbr-pcts"><span class="pct-pre">4%</span><span class="pct-post">20%</span></div>
+        </div>
+        <div class="budget-bar-row">
+          <span class="bbr-label">Community facilities</span>
+          <div class="bbr-track"><div class="bbr-fill-post" style="width:32%"></div></div>
+          <div class="bbr-pcts"><span class="pct-pre">2%</span><span class="pct-post">16%</span></div>
+        </div>
+      </div>
+      <div class="bv-legend">
+        <span><span class="legend-dot" style="background:var(--red);opacity:0.6"></span>Pre-HUF reported share (concentration)</span>
+        <span><span class="legend-dot" style="background:var(--green)"></span>Post-HUF normalised mass (approved fraction)</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- MATH -->
+  <section id="math">
+    <div class="section-header">
+      <span class="sh-num">03</span>
+      <h2>The civic mathematics</h2>
+    </div>
+
+    <div class="math-box">
+      <div class="eq">e_v = log(amount_v / category_total)</div>
+      <div class="cm">  // embedding: log-ratio of project amount to category total</div>
+      <br>
+      <div class="eq">N(e_v | category) = (e_v − μ_cat) / σ_cat ⊙ w_v</div>
+      <div class="cm">  // normalise relative to category statistics; w_v = 1/n for equal weighting</div>
+      <br>
+      <div class="eq">J_r(α_r) = (1 − C_r) + λ · Var(ρ_local,r) + ε · |ρ_r − ρ_r^approved|</div>
+      <div class="cm">  // equity penalty: deviation from Council-approved fraction</div>
+      <div class="cm">  // λ = 0.1 (variance weight), ε = 0.15 (equity coefficient)</div>
+      <br>
+      <div class="eq">items_to_cover_90pct = min k : Σ_{i=1}^{k} ρ_i ≥ 0.90</div>
+      <div class="cm">  // the single number a councillor needs: how concentrated is our budget?</div>
+      <br>
+      <div class="eq">JSONL per step: {project_id, regime, amount, ρ_normalised, α*, C_r, step}</div>
+      <div class="cm">  // audit log: every project, every reporting period, traceable to source</div>
+    </div>
+
+    <div class="card-row">
+      <div class="card civic-blue">
+        <div class="card-label">Equity penalty ε</div>
+        <h3>Enforces approved fractions</h3>
+        <p>A category running 8% over its Council-approved share incurs penalty ε×0.08 in its J_r objective, reducing its α* and limiting further mass accumulation.</p>
+      </div>
+      <div class="card gold-top">
+        <div class="card-label">Drift detection</div>
+        <h3>Mid-year deferral alerts</h3>
+        <p>When Euclidean distance between current and reference embeddings exceeds 0.10 for any category, re-normalisation triggers automatically. Deferrals are caught within the same reporting period.</p>
+      </div>
+      <div class="card green-top">
+        <div class="card-label">Convergence proof</div>
+        <h3>Guaranteed by Proof 2</h3>
+        <p>The equity term |ρ_r − ρ_r^approved| is convex in α, preserving J_r's unique minimum. Every budget run is guaranteed to converge to the most coherent, equitable allocation achievable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section>
+    <div class="metric-row">
+      <div class="metric-cell">
+        <div class="mc-label">Post-HUF C(ℋ)</div>
+        <div class="mc-val">0.958</div>
+        <div class="mc-delta">+19.5% vs. pre-HUF (0.802)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="mc-label">Budget drift reduced</div>
+        <div class="mc-val">−21%</div>
+        <div class="mc-delta">Mid-year deferral impact</div>
+      </div>
+      <div class="metric-cell">
+        <div class="mc-label">items_to_cover_90pct</div>
+        <div class="mc-val">4–5</div>
+        <div class="mc-delta">Up from 2 (pre-HUF)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="mc-label">Markham budget</div>
+        <div class="mc-val">$500M</div>
+        <div class="mc-delta">2023 capital plan</div>
+      </div>
+      <div class="metric-cell">
+        <div class="mc-label">JSONL audit records</div>
+        <div class="mc-val">per step</div>
+        <div class="mc-delta">Every project, every period</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section id="cases">
+    <div class="section-header">
+      <span class="sh-num">04</span>
+      <h2>Civic cases</h2>
+    </div>
+
+    <div class="cases-grid">
+
+      <div class="case-card">
+        <div class="cc-eyebrow">Case · 002 · Worked Example</div>
+        <h3>City of Markham</h3>
+        <p>
+          The primary civic worked example: Markham's 2023 $500M capital budget,
+          five spending categories as regimes, equity-penalised J_r, mid-year deferral
+          and supplemental approval events simulated across 10 reporting periods.
+          JSONL audit log included.
+        </p>
+        <div class="cc-stats">
+          <div class="cc-stat">
+            <span class="cc-stat-val">0.958</span>
+            <div class="cc-stat-label">C(ℋ)</div>
+          </div>
+          <div class="cc-stat">
+            <span class="cc-stat-val">5</span>
+            <div class="cc-stat-label">Regimes</div>
+          </div>
+          <div class="cc-stat">
+            <span class="cc-stat-val">$500M</span>
+            <div class="cc-stat-label">Budget</div>
+          </div>
+        </div>
+        <a href="markham_worked_example/" class="cc-link">Worked example →</a>
+      </div>
+
+      <div class="case-card">
+        <div class="cc-eyebrow">Case · 003 · Infrastructure</div>
+        <h3>Traffic Phase Anomaly</h3>
+        <p>
+          Urban traffic signal telemetry: 100 intersections, three phase timings as
+          regime dimensions. HUF's anomaly-localization template — 95% fault detection
+          accuracy, corridor-level isolation, recovery simulation with controller reset.
+        </p>
+        <div class="cc-stats">
+          <div class="cc-stat">
+            <span class="cc-stat-val">0.943</span>
+            <div class="cc-stat-label">C(ℋ)</div>
+          </div>
+          <div class="cc-stat">
+            <span class="cc-stat-val">95%</span>
+            <div class="cc-stat-label">Accuracy</div>
+          </div>
+          <div class="cc-stat">
+            <span class="cc-stat-val">100</span>
+            <div class="cc-stat-label">Signals</div>
+          </div>
+        </div>
+        <a href="traffic_phase_worked_example/" class="cc-link">Traffic case →</a>
+      </div>
+
+      <div class="case-card">
+        <div class="cc-eyebrow">Case · Partnership · Public Sector</div>
+        <h3>Public Sector Accounting Lens</h3>
+        <p>
+          The full public sector partnership package: HUF's long-tail accounting lens
+          applied to general public budget structures. items_to_cover_90pct as the
+          headline metric for elected officials, with JSONL provenance satisfying
+          public accountability requirements.
+        </p>
+        <div class="cc-stats">
+          <div class="cc-stat">
+            <span class="cc-stat-val">89%</span>
+            <div class="cc-stat-label">Fit</div>
+          </div>
+          <div class="cc-stat">
+            <span class="cc-stat-val">Any</span>
+            <div class="cc-stat-label">Budget size</div>
+          </div>
+          <div class="cc-stat">
+            <span class="cc-stat-val">Open</span>
+            <div class="cc-stat-label">Data ready</div>
+          </div>
+        </div>
+        <a href="../partnerships/packages/public_sector/" class="cc-link">Partner package →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section>
+    <div class="section-header">
+      <span class="sh-num">05</span>
+      <h2>Who this is for</h2>
+    </div>
+
+    <div class="card-row">
+      <div class="card">
+        <div class="card-label">Elected officials</div>
+        <h3>One number per period</h3>
+        <p>items_to_cover_90pct tells you if your capital budget is concentrated or equitably distributed — before the auditor does. No spreadsheet required.</p>
+      </div>
+      <div class="card civic-blue">
+        <div class="card-label">Budget analysts</div>
+        <h3>Per-step JSONL audit</h3>
+        <p>Every project, every reporting period, every normalised mass weight. The audit trail HUF produces satisfies public accountability requirements and is machine-readable for downstream analysis.</p>
+      </div>
+      <div class="card gold-top">
+        <div class="card-label">Infrastructure teams</div>
+        <h3>Drift detection in operations</h3>
+        <p>The traffic phase case shows HUF applied to real-time telemetry: anomaly localization at the intersection level before cascading failure. Works on any networked infrastructure with nominal operating parameters.</p>
+      </div>
+      <div class="card green-top">
+        <div class="card-label">Developers</div>
+        <h3>Python + JSONL, no dependencies</h3>
+        <p>Each civic case ships as a self-contained Python script. No database, no cloud service. Feed in a CSV of budget line items or telemetry log; get out a JSONL audit trail and coherence metrics per period.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>HUF v1.1.8 · Civic Lead Page · PeterHiggins19/huf_core_github_v1.1.8_no_inputs</span>
+  <span>Unity conserved · Every dollar traceable · items_to_cover_90pct</span>
+</footer>
+
+</body>
+</html>

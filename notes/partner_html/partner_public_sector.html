@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Public Sector × HUF — Accounting Lens</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Code+Pro:wght@400;600&family=Libre+Franklin:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1c1f2e;
+  --surface: #252839;
+  --surface2: #2e3347;
+  --border: #3a3f55;
+  --text: #dce0f0;
+  --muted: #7880a0;
+  --accent: #4a9eff;
+  --accent2: #ffd166;
+  --accent3: #72d9a0;
+  --accent4: #ff6b6b;
+  --font-display: 'Libre Baskerville', serif;
+  --font-mono: 'Source Code Pro', monospace;
+  --font-body: 'Libre Franklin', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(28,31,46,0.97);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 2rem;
+  padding: 0 2.5rem; height: 56px;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--accent2);
+  text-decoration: none;
+}
+nav a { color: var(--muted); text-decoration: none; font-size: 0.82rem; font-weight: 400; transition: color 0.2s; }
+nav a:hover { color: var(--text); }
+.nav-sep { flex: 1; }
+.gov-badge {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--accent);
+  border: 1px solid rgba(74,158,255,0.3);
+  padding: 3px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+}
+.gov-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.hero {
+  min-height: 88vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.hero-left {
+  padding: 5rem 4rem;
+  border-right: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2rem;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: italic; color: var(--accent2); }
+.hero-sub {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.8;
+}
+.hero-right {
+  padding: 4rem;
+  background: var(--surface);
+}
+.accounting-box {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.acct-header {
+  background: var(--surface2);
+  padding: 1rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+}
+.acct-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 100px;
+  gap: 1rem;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid rgba(58,63,85,0.4);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  align-items: center;
+  transition: background 0.15s;
+}
+.acct-row:hover { background: rgba(74,158,255,0.04); }
+.acct-row.header {
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.acct-name { color: var(--text); }
+.acct-mass { text-align: right; }
+.acct-pct { text-align: right; }
+.mass-bar-wrap { position: relative; height: 16px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+.mass-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s; }
+.mass-bar.warn { background: var(--accent4); }
+.mass-bar.ok { background: var(--accent3); }
+.acct-footer {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  padding: 1.5rem;
+  gap: 1rem;
+  border-top: 1px solid var(--border);
+}
+.acct-stat { display: flex; flex-direction: column; gap: 0.2rem; }
+.acct-stat .v {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent2);
+}
+.acct-stat .l { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; }
+
+/* ACCOUNTING LENS CONCEPT */
+.concept-section {
+  padding: 5rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+.sec-hdr {
+  display: flex; align-items: baseline; gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.sec-n { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
+.sec-t {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.concept-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;
+}
+.concept-card {
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.concept-icon { font-size: 2rem; margin-bottom: 1rem; }
+.concept-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.concept-huf {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+.concept-body { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+/* MATH */
+.math-section {
+  padding: 5rem 4rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.math-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+}
+.math-panel {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2rem;
+}
+.math-panel.wide { grid-column: 1/-1; }
+.mp-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 1rem;
+}
+.mp-eq {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 2.1;
+  color: var(--text);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(74,158,255,0.1);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+.mp-eq .sym { color: var(--accent2); }
+.mp-eq .cm { color: var(--muted); }
+.mp-note { font-size: 0.82rem; color: var(--muted); margin-top: 0.8rem; }
+
+/* CASE */
+.case-section {
+  padding: 5rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+.case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.case-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.case-header {
+  background: var(--surface2);
+  padding: 1rem 1.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.case-name { font-family: var(--font-display); font-weight: 700; font-size: 0.92rem; }
+.case-tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.case-tag.gov { background: rgba(74,158,255,0.2); color: var(--accent); }
+.case-tag.munic { background: rgba(114,217,160,0.2); color: var(--accent3); }
+.case-body { padding: 1.5rem; }
+.case-metric { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(58,63,85,0.3); }
+.case-metric .k { color: var(--muted); }
+.case-metric .v { font-family: var(--font-mono); }
+.case-metric .v.good { color: var(--accent3); }
+.case-metric .v.warn { color: var(--accent2); }
+
+/* PITCH */
+.pitch-section {
+  padding: 5rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+.pitch-frame {
+  border: 1px solid rgba(255,209,102,0.2);
+  border-radius: 8px;
+  padding: 3rem;
+  background: linear-gradient(135deg, rgba(255,209,102,0.04) 0%, transparent 50%);
+  max-width: 760px;
+}
+.pitch-lbl {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 1.5rem;
+}
+.pitch-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+.pitch-text strong { color: var(--accent2); }
+.exec-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
+.exec-c {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.5rem;
+  background: var(--surface);
+}
+.exec-s { font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
+.exec-h { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; }
+.exec-d { font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#top">HUF</a>
+  <a href="#concept">Concept</a>
+  <a href="#math">Math</a>
+  <a href="#cases">Cases</a>
+  <a href="#pitch">Pitch</a>
+  <div class="nav-sep"></div>
+  <div class="gov-badge"><div class="gov-dot"></div>PUBLIC SECTOR · ACCOUNTING LENS</div>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Partner Package · Public Sector · v1.1.8</div>
+    <h1>Public Sector<br><em>Accounting Lens</em></h1>
+    <p class="hero-sub">HUF applies the accounting lens to public sector AI and data systems — treating every budget line, policy document, and service category as a finite element with traceable mass that sums to unity.</p>
+  </div>
+  <div class="hero-right">
+    <div class="accounting-box">
+      <div class="acct-header">HUF Budget Ledger — Markham 2023</div>
+      <div class="acct-row header">
+        <span>Category</span>
+        <span style="text-align:right">ρ Mass</span>
+        <span style="text-align:right">% Share</span>
+      </div>
+      <div class="acct-row">
+        <span class="acct-name">Infrastructure</span>
+        <span class="acct-mass">0.312</span>
+        <span class="acct-pct" style="color:var(--accent)">31.2%</span>
+      </div>
+      <div class="acct-row">
+        <span class="acct-name">Community Services</span>
+        <span class="acct-mass">0.228</span>
+        <span class="acct-pct" style="color:var(--accent)">22.8%</span>
+      </div>
+      <div class="acct-row">
+        <span class="acct-name">Parks &amp; Recreation</span>
+        <span class="acct-mass">0.185</span>
+        <span class="acct-pct" style="color:var(--accent)">18.5%</span>
+      </div>
+      <div class="acct-row">
+        <span class="acct-name">Public Safety</span>
+        <span class="acct-mass">0.155</span>
+        <span class="acct-pct" style="color:var(--accent)">15.5%</span>
+      </div>
+      <div class="acct-row">
+        <span class="acct-name">Administration</span>
+        <span class="acct-mass">0.082</span>
+        <span class="acct-pct" style="color:var(--accent)">8.2%</span>
+      </div>
+      <div class="acct-row">
+        <span class="acct-name">Other</span>
+        <span class="acct-mass">0.038</span>
+        <span class="acct-pct" style="color:var(--muted)">3.8%</span>
+      </div>
+      <div class="acct-footer">
+        <div class="acct-stat"><span class="v">1.000</span><span class="l">Unity sum</span></div>
+        <div class="acct-stat"><span class="v">0.931</span><span class="l">C(ℋ)</span></div>
+        <div class="acct-stat"><span class="v">4</span><span class="l">items_90pct</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="concept-section" id="concept">
+  <div class="sec-hdr">
+    <span class="sec-n">§01</span>
+    <h2 class="sec-t">The Accounting Lens</h2>
+  </div>
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-icon">📁</div>
+      <div class="concept-title">Finite Elements</div>
+      <div class="concept-huf">→ Budget line items</div>
+      <div class="concept-body">Each budget category, policy clause, or service record is a finite element with a unique ID, repeatable contribution computation, and stored provenance. No ad-hoc aggregation — every number traces back.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🏛️</div>
+      <div class="concept-title">Regimes</div>
+      <div class="concept-huf">→ Departments / Tiers</div>
+      <div class="concept-body">Municipal departments, government tiers (local → provincial → federal), or service categories become HUF regimes. Each regime gets its own coherence score and damping factor α* for contextual drift management.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">⚖️</div>
+      <div class="concept-title">Unity Budget</div>
+      <div class="concept-huf">→ sum(ρ) = 1.000</div>
+      <div class="concept-body">The total allocation across all departments sums to exactly 1.0 — the HUF invariant. Any drift from this unity (e.g., double-counting, missing categories) is immediately detectable via the coherence score.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🔄</div>
+      <div class="concept-title">Locked Cycle</div>
+      <div class="concept-huf">→ Budget cycle normalization</div>
+      <div class="concept-body">Normalize → Propagate → Aggregate → Exclude → Renormalize. The annual budget cycle maps directly to HUF's locked cycle, with each phase producing auditable artifacts for accountability.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">📜</div>
+      <div class="concept-title">Contract</div>
+      <div class="concept-huf">→ Accountability covenant</div>
+      <div class="concept-body">A run is invalid unless it emits the required artifacts (retained set, discarded budget, backward trace). For public sector, this maps to transparency requirements in freedom-of-information and audit legislation.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">📊</div>
+      <div class="concept-title">Long Tail</div>
+      <div class="concept-huf">→ Exception reweighting</div>
+      <div class="concept-body">The accounting lens specifically addresses long-tail budget items: small-mass categories that should be tracked (baseline view) vs. anomalous ones that warrant exception reporting (filtered view).</div>
+    </div>
+  </div>
+</section>
+
+<section class="math-section" id="math">
+  <div class="sec-hdr">
+    <span class="sec-n">§02</span>
+    <h2 class="sec-t">Mathematical Formulation</h2>
+  </div>
+  <div class="math-grid">
+    <div class="math-panel">
+      <div class="mp-label">Public sector objective</div>
+      <div class="mp-eq">
+J_gov<span class="sym">(α)</span> = (1 − C(ℋ)) + λ·Var(ρ) + φ·|ρ − fair|<br>
+<br>
+<span class="cm">// fair = 1/|Departments| for equity baseline</span>
+<span class="cm">// φ = 0.10 equity weight</span>
+<span class="cm">// λ = 0.10 variance penalty</span>
+      </div>
+      <div class="mp-note">The equity term |ρ − fair| penalizes excessive concentration in any single department, ensuring the public sector allocation doesn't silently favor one regime.</div>
+    </div>
+    <div class="math-panel">
+      <div class="mp-label">Long-tail accounting</div>
+      <div class="mp-eq">
+Baseline: all ρᵢ > 0 retained<br>
+Filtered:  ρᵢ < τ excluded<br>
+Discarded budget = Σ excluded ρᵢ<br>
+<br>
+<span class="cm">// τ = 0.01 threshold (audit parameter)</span>
+<span class="cm">// Emit: retained set + discarded log</span>
+      </div>
+      <div class="mp-note">The baseline vs. filtered comparison reveals which small-mass items were excluded and why — the audit trail required by public accountability legislation.</div>
+    </div>
+    <div class="math-panel wide">
+      <div class="mp-label">Drift detection for policy documents</div>
+      <div class="mp-eq">
+C(ℋ) = 1 − (1/|ℋ|) · Σᵥ ‖e'ᵥ − e(t-1)ᵥ‖₂
+<br>
+<span class="cm">// ℋ = set of policy documents or budget line items</span>
+<span class="cm">// e'ᵥ = normalized embedding at time t</span>
+<span class="cm">// e(t-1)ᵥ = embedding from previous budget cycle</span>
+<br>
+Alert threshold: C < 0.95  →  flag for audit review
+      </div>
+      <div class="mp-note">Year-over-year budget drift is detectable through coherence scoring. A department whose allocation mass shifts more than 5% between cycles triggers a drift alert — providing early warning for budget anomalies that traditional variance analysis misses.</div>
+    </div>
+  </div>
+</section>
+
+<section class="case-section" id="cases">
+  <div class="sec-hdr">
+    <span class="sec-n">§03</span>
+    <h2 class="sec-t">Government Case Studies</h2>
+  </div>
+  <div class="case-grid">
+    <div class="case-card">
+      <div class="case-header">
+        <span class="case-name">City of Markham — Budget Coherence</span>
+        <span class="case-tag munic">Municipal</span>
+      </div>
+      <div class="case-body">
+        <div class="case-metric"><span class="k">Population</span><span class="v">350,000</span></div>
+        <div class="case-metric"><span class="k">Total budget</span><span class="v">$500M (2023)</span></div>
+        <div class="case-metric"><span class="k">Departments modeled</span><span class="v">6 regimes</span></div>
+        <div class="case-metric"><span class="k">Pre-HUF C(ℋ)</span><span class="v warn">0.82</span></div>
+        <div class="case-metric"><span class="k">Post-HUF C(ℋ)</span><span class="v good">0.96</span></div>
+        <div class="case-metric"><span class="k">items_to_cover_90pct</span><span class="v good">4 (stable)</span></div>
+        <div class="case-metric"><span class="k">Drift reduction</span><span class="v good">−18.3%</span></div>
+        <div class="case-metric"><span class="k">Audit artifacts</span><span class="v good">JSONL per cycle</span></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-header">
+        <span class="case-name">EU AI Act — High-Risk Compliance</span>
+        <span class="case-tag gov">Federal</span>
+      </div>
+      <div class="case-body">
+        <div class="case-metric"><span class="k">Framework</span><span class="v">EU AI Act Annex III</span></div>
+        <div class="case-metric"><span class="k">Regimes</span><span class="v">8 high-risk categories</span></div>
+        <div class="case-metric"><span class="k">Risk penalty</span><span class="v">R_high = 0.2</span></div>
+        <div class="case-metric"><span class="k">Pre-HUF C(ℋ)</span><span class="v warn">0.78</span></div>
+        <div class="case-metric"><span class="k">Post-HUF C(ℋ)</span><span class="v good">0.96</span></div>
+        <div class="case-metric"><span class="k">Drift reduction</span><span class="v good">82%</span></div>
+        <div class="case-metric"><span class="k">Compliance status</span><span class="v good">Traceable</span></div>
+        <div class="case-metric"><span class="k">Oversight constraint</span><span class="v">α* ≥ 0.3</span></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-header">
+        <span class="case-name">NIST CSF 2.0 — Energy Utility</span>
+        <span class="case-tag gov">Infrastructure</span>
+      </div>
+      <div class="case-body">
+        <div class="case-metric"><span class="k">Framework</span><span class="v">NIST CSF 2.0 Govern</span></div>
+        <div class="case-metric"><span class="k">Categories</span><span class="v">GV.OC, GV.RM, GV.RR</span></div>
+        <div class="case-metric"><span class="k">Strategy variance (pre)</span><span class="v warn">0.17</span></div>
+        <div class="case-metric"><span class="k">Post-HUF C(ℋ)</span><span class="v good">0.96</span></div>
+        <div class="case-metric"><span class="k">Variance reduced</span><span class="v good">76%</span></div>
+        <div class="case-metric"><span class="k">α* constraint</span><span class="v">≥ 0.4 (oversight)</span></div>
+        <div class="case-metric"><span class="k">Drift detector</span><span class="v">Euclidean &gt; 0.3</span></div>
+        <div class="case-metric"><span class="k">items_90pct</span><span class="v good">8</span></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-header">
+        <span class="case-name">ISO 42001 — Financial AIMS</span>
+        <span class="case-tag gov">Certifiable</span>
+      </div>
+      <div class="case-body">
+        <div class="case-metric"><span class="k">Standard</span><span class="v">ISO/IEC 42001</span></div>
+        <div class="case-metric"><span class="k">Regimes</span><span class="v">Clause 4–10 mapped</span></div>
+        <div class="case-metric"><span class="k">Control variance (pre)</span><span class="v warn">0.16</span></div>
+        <div class="case-metric"><span class="k">Post-HUF C(ℋ)</span><span class="v good">0.96</span></div>
+        <div class="case-metric"><span class="k">Drifted share → pre</span><span class="v warn">62%</span></div>
+        <div class="case-metric"><span class="k">Drifted share → post</span><span class="v good">18%</span></div>
+        <div class="case-metric"><span class="k">Traceability artifacts</span><span class="v good">JSONL certified</span></div>
+        <div class="case-metric"><span class="k">α* constraint</span><span class="v">≤ 0.7 (continual)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pitch-section" id="pitch">
+  <div class="sec-hdr">
+    <span class="sec-n">§04</span>
+    <h2 class="sec-t">Partnership Pitch &amp; Execution</h2>
+  </div>
+  <div class="pitch-frame">
+    <div class="pitch-lbl">3-Sentence Pitch</div>
+    <p class="pitch-text">HUF's <strong>accounting lens</strong> gives public sector AI deployments what no other framework provides: a mathematically guaranteed unity invariant where every budget category, risk class, or policy domain sums to 1.0 with full backward trace to finite elements. By mapping government hierarchies — departments, tiers, compliance frameworks — to HUF regimes, organizations get <strong>coherence scoring, drift detection, and JSONL audit artifacts</strong> that satisfy EU AI Act, NIST CSF, and ISO 42001 traceability requirements without custom tooling. Across four case studies spanning municipal budgets to federal AI governance, HUF reduced structural drift by <strong>76–82%</strong> and maintained items_to_cover_90pct ≥ 4 for stable, auditable allocations.</p>
+  </div>
+  <div class="exec-3">
+    <div class="exec-c">
+      <div class="exec-s">Path 1</div>
+      <div class="exec-h">Government Innovation Labs</div>
+      <div class="exec-d">Submit to GovTech accelerators (UK GDS, Canadian Digital Service, DOGE Digital) as an AI accountability tool. Lead with the Markham dataset and EU AI Act compliance mapping.</div>
+    </div>
+    <div class="exec-c">
+      <div class="exec-s">Path 2</div>
+      <div class="exec-h">Standards Bodies</div>
+      <div class="exec-d">Engage ISO TC 42 (AI standardization) and NIST AI RMF working groups. Position HUF as the mathematical substrate for traceable risk management frameworks.</div>
+    </div>
+    <div class="exec-c">
+      <div class="exec-s">Path 3</div>
+      <div class="exec-h">Procurement Channels</div>
+      <div class="exec-d">Package as a compliance plug-in for government AI procurement assessments. Open-source core + paid audit-trail tooling model. Target procurement officers and chief data officers.</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

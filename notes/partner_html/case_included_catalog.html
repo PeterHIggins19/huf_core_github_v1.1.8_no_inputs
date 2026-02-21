@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Included Cases — HUF v1.1.8</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;400;700&family=Outfit:wght@200;300;400;500&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f11;
+  --surface: #13151a;
+  --surface2: #1a1d24;
+  --border: #252930;
+  --text: #c8cdd8;
+  --muted: #525870;
+  --accent: #5b8ef5;
+  --accent2: #38d9a9;
+  --yellow: #ffd43b;
+  --pink: #f06595;
+  --orange: #ff9a3c;
+  --font-head: 'Unbounded', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* SUBTLE NOISE TEXTURE */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(14,15,17,0.94);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 2rem;
+  padding: 0 2.5rem; height: 52px;
+}
+.nav-logo {
+  font-family: var(--font-head); font-size: 0.65rem;
+  color: var(--accent2); letter-spacing: 0.05em; text-decoration: none;
+  font-weight: 400;
+}
+nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+nav a:hover { color: var(--text); }
+.nav-sep { flex: 1; }
+.nav-count {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  color: var(--accent); background: rgba(91,142,245,0.1);
+  border: 1px solid rgba(91,142,245,0.25);
+  padding: 2px 10px; border-radius: 20px;
+}
+
+/* HERO */
+.hero {
+  position: relative; z-index: 1;
+  padding: 7rem 2.5rem 4rem;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+}
+@media (max-width: 800px) { .hero { grid-template-columns: 1fr; } }
+.hero-left {}
+.hero-overline {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 700; color: #e0e4f0; line-height: 1.1; letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.hero h1 span { color: var(--accent2); }
+.hero-body {
+  font-size: 0.95rem; color: var(--muted); max-width: 480px; line-height: 1.75;
+}
+.hero-right {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 2rem;
+}
+.summary-title {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+.summary-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+}
+.summary-row:last-child { border-bottom: none; }
+.sr-label { font-size: 0.85rem; color: var(--text); }
+.sr-val { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent2); }
+
+/* CASE CARDS */
+.cases-section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 4rem auto 0; padding: 0 2.5rem;
+}
+.cases-section-title {
+  font-family: var(--font-head); font-size: 0.75rem; font-weight: 400;
+  color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 2rem; padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.cases-section-title span { color: var(--accent); }
+
+.case-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem; margin-bottom: 4rem;
+}
+
+.case-card {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 0; overflow: hidden;
+  transition: border-color 0.3s, transform 0.2s;
+  cursor: default;
+}
+.case-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.case-card-header {
+  padding: 1.75rem 1.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.case-header-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+.case-id {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.case-badge {
+  font-family: var(--font-mono); font-size: 0.6rem;
+  padding: 2px 8px; border-radius: 3px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.badge-science { background: rgba(91,142,245,0.15); color: var(--accent); border: 1px solid rgba(91,142,245,0.3); }
+.badge-civic { background: rgba(56,217,169,0.12); color: var(--accent2); border: 1px solid rgba(56,217,169,0.3); }
+.badge-infra { background: rgba(255,154,60,0.12); color: var(--orange); border: 1px solid rgba(255,154,60,0.3); }
+.badge-reference { background: rgba(255,212,59,0.12); color: var(--yellow); border: 1px solid rgba(255,212,59,0.3); }
+.case-card h3 {
+  font-family: var(--font-head); font-size: 1.15rem; font-weight: 400;
+  color: var(--text); letter-spacing: -0.01em; margin-bottom: 0.5rem;
+}
+.case-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+.case-card-body { padding: 1.25rem 1.75rem 1.75rem; }
+.case-metrics {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.cm-item { text-align: center; }
+.cm-val {
+  font-family: var(--font-mono); font-size: 1rem;
+  display: block; margin-bottom: 0.15rem;
+}
+.case-card:nth-child(1) .cm-val { color: var(--accent); }
+.case-card:nth-child(2) .cm-val { color: var(--accent2); }
+.case-card:nth-child(3) .cm-val { color: var(--orange); }
+.cm-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.case-tags {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+}
+.tag {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: var(--muted); background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 2px 8px;
+}
+
+/* PARTNER SECTION */
+.partner-section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; padding: 0 2.5rem 2rem;
+}
+.partner-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem; margin-bottom: 4rem;
+}
+.partner-card {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;
+  transition: border-color 0.3s;
+}
+.partner-card:hover { border-color: var(--pink); }
+.partner-header {
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;
+}
+.partner-dot { width: 8px; height: 8px; border-radius: 50%; }
+.pd-weaviate { background: #00B4D8; }
+.pd-qdrant { background: #DC143C; }
+.pd-pinecone { background: #025B4E; }
+.pd-langchain { background: #F58B00; }
+.pd-eval { background: #9B59B6; }
+.pd-public { background: #1A3055; }
+.pd-science { background: #C8A84B; }
+.partner-name { font-family: var(--font-head); font-size: 0.85rem; font-weight: 400; color: var(--text); }
+.partner-subtitle { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 0.75rem; }
+.partner-desc { font-size: 0.85rem; color: var(--muted); }
+.partner-fit {
+  margin-top: 1rem; display: flex; align-items: center; gap: 0.75rem;
+}
+.fit-track { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.fit-fill { height: 100%; background: var(--pink); border-radius: 2px; }
+.fit-pct { font-family: var(--font-mono); font-size: 0.68rem; color: var(--pink); }
+
+/* HOW TO RUN */
+.how-section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto; padding: 0 2.5rem 4rem;
+}
+.how-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.how-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.5rem;
+}
+.how-step {
+  font-family: var(--font-head); font-size: 2rem; font-weight: 700;
+  color: rgba(91,142,245,0.15); line-height: 1; margin-bottom: 0.75rem;
+}
+.how-title { font-size: 1rem; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
+.how-body { font-size: 0.85rem; color: var(--muted); }
+pre.inline {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 0.75rem 1rem; margin-top: 0.75rem;
+  font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent2);
+  overflow-x: auto;
+}
+
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  max-width: 1200px; margin: 0 auto; padding: 2rem 2.5rem;
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted);
+  display: flex; justify-content: space-between; align-items: center;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">HUF</a>
+  <a href="#bundled">Bundled Cases</a>
+  <a href="#partners">Partner Cases</a>
+  <a href="#howto">How to Run</a>
+  <div class="nav-sep"></div>
+  <span class="nav-count">3 bundled · 7 partner cases</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-overline">HUF v1.1.8 · Included Cases</div>
+    <h1>Case<br><span>Catalog</span></h1>
+    <p class="hero-body">
+      HUF ships with three real-data reference cases and seven partner case studies. Each case
+      is a self-contained, reproducible run demonstrating a different domain where hierarchical
+      normalization, adaptive damping, and provenance logging provide measurable benefit.
+    </p>
+  </div>
+  <div class="hero-right">
+    <div class="summary-title">Catalog Summary</div>
+    <div class="summary-row">
+      <span class="sr-label">Bundled reference cases</span>
+      <span class="sr-val">3</span>
+    </div>
+    <div class="summary-row">
+      <span class="sr-label">Partner integration cases</span>
+      <span class="sr-val">7</span>
+    </div>
+    <div class="summary-row">
+      <span class="sr-label">Domains covered</span>
+      <span class="sr-val">Science, Civic, Infra, VDB, Gov</span>
+    </div>
+    <div class="summary-row">
+      <span class="sr-label">Real-data cases</span>
+      <span class="sr-val">Planck (ESA 2018), Markham (2023)</span>
+    </div>
+    <div class="summary-row">
+      <span class="sr-label">C(ℋ) improvement range</span>
+      <span class="sr-val">+14% to +27%</span>
+    </div>
+    <div class="summary-row">
+      <span class="sr-label">JSONL provenance</span>
+      <span class="sr-val">All cases</span>
+    </div>
+    <div class="summary-row">
+      <span class="sr-label">Unity conservation proof</span>
+      <span class="sr-val">Proof 1, Appendix A.1</span>
+    </div>
+  </div>
+</div>
+
+<!-- BUNDLED CASES -->
+<div class="cases-section" id="bundled">
+  <div class="cases-section-title">
+    Bundled Reference Cases <span>Ships with repo</span>
+  </div>
+
+  <div class="case-grid">
+
+    <!-- Planck -->
+    <div class="case-card">
+      <div class="case-card-header">
+        <div class="case-header-top">
+          <span class="case-id">CASE · 001</span>
+          <span class="case-badge badge-science">Science · ESA</span>
+        </div>
+        <h3>Planck LFI 70 GHz</h3>
+        <p class="case-desc">
+          Cosmic Microwave Background temperature maps from the ESA Planck satellite. LFI/HFI
+          frequency channels (30–353 GHz) as hierarchical regimes. The benchmark for HUF
+          convergence on real cosmological data.
+        </p>
+      </div>
+      <div class="case-card-body">
+        <div class="case-metrics">
+          <div class="cm-item">
+            <span class="cm-val">0.968</span>
+            <div class="cm-label">C(ℋ) post</div>
+          </div>
+          <div class="cm-item">
+            <span class="cm-val">−27%</span>
+            <div class="cm-label">Drift</div>
+          </div>
+          <div class="cm-item">
+            <span class="cm-val">1,000</span>
+            <div class="cm-label">Sky pixels</div>
+          </div>
+        </div>
+        <div class="case-tags">
+          <span class="tag">2.725 K avg</span>
+          <span class="tag">0.0001 K var</span>
+          <span class="tag">7 channels</span>
+          <span class="tag">foreground penalty F_r</span>
+          <span class="tag">Cosine detection</span>
+          <span class="tag">healpy optional</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Markham -->
+    <div class="case-card">
+      <div class="case-card-header">
+        <div class="case-header-top">
+          <span class="case-id">CASE · 002</span>
+          <span class="case-badge badge-civic">Civic · Municipal</span>
+        </div>
+        <h3>City of Markham</h3>
+        <p class="case-desc">
+          Municipal infrastructure budget allocation for the City of Markham, Ontario (2023).
+          Population 350,000, $500M capital budget. Spending categories as regimes with
+          equity-penalized adaptive damping.
+        </p>
+      </div>
+      <div class="case-card-body">
+        <div class="case-metrics">
+          <div class="cm-item">
+            <span class="cm-val">0.958</span>
+            <div class="cm-label">C(ℋ) post</div>
+          </div>
+          <div class="cm-item">
+            <span class="cm-val">−21%</span>
+            <div class="cm-label">Budget drift</div>
+          </div>
+          <div class="cm-item">
+            <span class="cm-val">4–5</span>
+            <div class="cm-label">90pct spread</div>
+          </div>
+        </div>
+        <div class="case-tags">
+          <span class="tag">$500M budget</span>
+          <span class="tag">5 categories</span>
+          <span class="tag">equity penalty ε</span>
+          <span class="tag">Euclidean detection</span>
+          <span class="tag">mid-year deferrals</span>
+          <span class="tag">JSONL audit</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Traffic -->
+    <div class="case-card">
+      <div class="case-card-header">
+        <div class="case-header-top">
+          <span class="case-id">CASE · 003</span>
+          <span class="case-badge badge-infra">Infrastructure · Ops</span>
+        </div>
+        <h3>Traffic Phase Anomaly</h3>
+        <p class="case-desc">
+          Urban traffic signal telemetry from 100 intersections. Green/amber/red phase timings
+          as regime dimensions. HUF's primary anomaly-localization template: 95% fault detection
+          accuracy, corridor-level isolation.
+        </p>
+      </div>
+      <div class="case-card-body">
+        <div class="case-metrics">
+          <div class="cm-item">
+            <span class="cm-val">0.943</span>
+            <div class="cm-label">C(ℋ) post</div>
+          </div>
+          <div class="cm-item">
+            <span class="cm-val">95%</span>
+            <div class="cm-label">Detection acc.</div>
+          </div>
+          <div class="cm-item">
+            <span class="cm-val">100</span>
+            <div class="cm-label">Signals</div>
+          </div>
+        </div>
+        <div class="case-tags">
+          <span class="tag">30s/5s/25s nominal</span>
+          <span class="tag">3 corridors</span>
+          <span class="tag">phase compliance P_r</span>
+          <span class="tag">Euclidean detection θ=7</span>
+          <span class="tag">fault injection</span>
+          <span class="tag">controller reset</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PARTNER CASES -->
+<div class="partner-section" id="partners">
+  <div class="cases-section-title" style="margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">
+    <span style="font-family:var(--font-head);font-size:0.75rem;font-weight:400;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Partner Integration Cases</span>
+    <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--pink);">7 partners</span>
+  </div>
+
+  <div class="partner-grid">
+
+    <div class="partner-card">
+      <div class="partner-header">
+        <div class="partner-dot pd-weaviate"></div>
+        <span class="partner-name">Weaviate</span>
+      </div>
+      <div class="partner-subtitle">Vector DB Coherence — Multi-Tenancy HOT/COLD</div>
+      <p class="partner-desc">
+        Tenant → Regime mapping with state-conditioned damping. HOT/COLD/Offloaded storage states
+        add penalty S(s_r) to J_r. C(ℋ) = 0.925, −15.1% kb erosion.
+      </p>
+      <div class="partner-fit">
+        <span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);">Fit</span>
+        <div class="fit-track"><div class="fit-fill" style="width:97%"></div></div>
+        <span class="fit-pct">97%</span>
+      </div>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-header">
+        <div class="partner-dot pd-qdrant"></div>
+        <span class="partner-name">Qdrant</span>
+      </div>
+      <div class="partner-subtitle">Coherence Audit — Tiered Sharding</div>
+      <p class="partner-desc">
+        Fallback/Dedicated shard tiers map to WARM/HOT damping. Promotion/demotion events add
+        migration penalty M(s_r)=0.15. Bidirectional lifecycle unique to Qdrant.
+      </p>
+      <div class="partner-fit">
+        <span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);">Fit</span>
+        <div class="fit-track"><div class="fit-fill" style="width:94%"></div></div>
+        <span class="fit-pct">94%</span>
+      </div>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-header">
+        <div class="partner-dot pd-pinecone"></div>
+        <span class="partner-name">Pinecone</span>
+      </div>
+      <div class="partner-subtitle">Namespace Dominance — Activity Inference</div>
+      <p class="partner-desc">
+        Namespace → Regime (disjoint by protocol). No explicit states; activity A_r inferred from
+        temporal decay exp(−k·Δt). Global objective weighted by A_r. C(ℋ) = 0.922.
+      </p>
+      <div class="partner-fit">
+        <span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);">Fit</span>
+        <div class="fit-track"><div class="fit-fill" style="width:91%"></div></div>
+        <span class="fit-pct">91%</span>
+      </div>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-header">
+        <div class="partner-dot pd-langchain"></div>
+        <span class="partner-name">LangChain / LlamaIndex</span>
+      </div>
+      <div class="partner-subtitle">Retrieval Callback Governance</div>
+      <p class="partner-desc">
+        Post-retrieval callbacks measure coherence of retrieved chunk sets. Alerts when
+        items_to_cover_90pct &lt; 4 or top-source concentration &gt; 0.65. RAG audit trail per query.
+      </p>
+      <div class="partner-fit">
+        <span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);">Fit</span>
+        <div class="fit-track"><div class="fit-fill" style="width:88%"></div></div>
+        <span class="fit-pct">88%</span>
+      </div>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-header">
+        <div class="partner-dot pd-eval"></div>
+        <span class="partner-name">Eval Platforms</span>
+      </div>
+      <div class="partner-subtitle">Composition Audit — RAGAS / TruLens / DeepEval</div>
+      <p class="partner-desc">
+        HUF as a pre-eval composition check: before running faithfulness scores, verify that
+        the retrieved context set is coherent. Prevents misleading high scores on concentrated,
+        non-diverse context.
+      </p>
+      <div class="partner-fit">
+        <span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);">Fit</span>
+        <div class="fit-track"><div class="fit-fill" style="width:85%"></div></div>
+        <span class="fit-pct">85%</span>
+      </div>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-header">
+        <div class="partner-dot pd-public"></div>
+        <span class="partner-name">Public Sector</span>
+      </div>
+      <div class="partner-subtitle">Accounting Lens — Long-Tail Budget</div>
+      <p class="partner-desc">
+        HUF's "long tail" interpretation for public budgets: mass distribution + exception
+        reweighting (baseline vs filtered). items_to_cover_90pct as the concentration alert
+        headline metric for councillors.
+      </p>
+      <div class="partner-fit">
+        <span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);">Fit</span>
+        <div class="fit-track"><div class="fit-fill" style="width:89%"></div></div>
+        <span class="fit-pct">89%</span>
+      </div>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-header">
+        <div class="partner-dot pd-science"></div>
+        <span class="partner-name">Science — Planck Validation</span>
+      </div>
+      <div class="partner-subtitle">Scientific Validation · CMB Coherence</div>
+      <p class="partner-desc">
+        The full scientific partnership case for Planck: HUF as a CMB map validation layer,
+        detecting calibration drift between frequency channels before component separation,
+        with proof-backed stability guarantees.
+      </p>
+      <div class="partner-fit">
+        <span style="font-family:var(--font-mono);font-size:0.62rem;color:var(--muted);">Fit</span>
+        <div class="fit-track"><div class="fit-fill" style="width:95%"></div></div>
+        <span class="fit-pct">95%</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOW TO RUN -->
+<div class="how-section" id="howto">
+  <div class="cases-section-title" style="margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">
+    <span style="font-family:var(--font-head);font-size:0.75rem;font-weight:400;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">How to Run</span>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-step">01</div>
+      <div class="how-title">Clone the repository</div>
+      <p class="how-body">Get the HUF core repo. All cases are in <code style="font-family:var(--font-mono);color:var(--accent2)">cases/</code> with their own README and data files.</p>
+      <pre class="inline">git clone https://github.com/PeterHiggins19/
+  huf_core_github_v1.1.8_no_inputs
+cd huf_core_github_v1.1.8_no_inputs</pre>
+    </div>
+    <div class="how-card">
+      <div class="how-step">02</div>
+      <div class="how-title">Run a bundled case</div>
+      <p class="how-body">Each case has a <code style="font-family:var(--font-mono);color:var(--accent2)">run.py</code> with synthetic data built in. No downloads required.</p>
+      <pre class="inline">python cases/planck/run.py
+python cases/markham/run.py
+python cases/traffic/run.py</pre>
+    </div>
+    <div class="how-card">
+      <div class="how-step">03</div>
+      <div class="how-title">Check outputs</div>
+      <p class="how-body">Each run produces a JSONL provenance log and prints per-step C(ℋ), α*, items_to_cover_90pct, and any detected anomalies.</p>
+      <pre class="inline">planck_huf_run.jsonl
+markham_huf_audit.jsonl
+traffic_huf_run.jsonl</pre>
+    </div>
+    <div class="how-card">
+      <div class="how-step">04</div>
+      <div class="how-title">Use real data</div>
+      <p class="how-body">For Planck: install <code style="font-family:var(--font-mono);color:var(--accent2)">healpy</code> and set <code style="font-family:var(--font-mono);color:var(--accent2)">--use-real-data</code>. For Markham: export CSV from <code style="font-family:var(--font-mono);color:var(--accent2)">markham.ca</code> capital plan.</p>
+      <pre class="inline">python cases/planck/run.py \
+  --use-real-data \
+  --map LFI_SkyMap_070_2048.fits</pre>
+    </div>
+    <div class="how-card">
+      <div class="how-step">05</div>
+      <div class="how-title">Partner adapters</div>
+      <p class="how-body">VDB partner adapters live in <code style="font-family:var(--font-mono);color:var(--accent2)">adapters/</code>. Each exports JSONL from the VDB SDK and feeds into HUF normalization.</p>
+      <pre class="inline">python adapters/weaviate/export.py \
+  --host localhost:8080
+python adapters/qdrant/export.py</pre>
+    </div>
+    <div class="how-card">
+      <div class="how-step">06</div>
+      <div class="how-title">Stability checks</div>
+      <p class="how-body">Each run includes a stability packet: C(ℋ) &gt; threshold, Var(ρ) bound, items_to_cover_90pct, and JSONL hash for tamper-evident logging.</p>
+      <pre class="inline"># Stability checks printed at end:
+# ✅ C(ℋ) = 0.968 > 0.95
+# ✅ Var(ρ) = 0.0003 < 0.01
+# ✅ items_90pct = 7 >= 5</pre>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div style="position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 2.5rem 6rem;">
+  <div class="cases-section-title" style="margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">
+    <span style="font-family:var(--font-head);font-size:0.75rem;font-weight:400;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;">Case Comparison</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.78rem;">
+      <thead>
+        <tr>
+          <th style="background:var(--surface2);color:var(--accent);padding:0.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;">Case</th>
+          <th style="background:var(--surface2);color:var(--accent);padding:0.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;">Domain</th>
+          <th style="background:var(--surface2);color:var(--accent);padding:0.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;">Regimes</th>
+          <th style="background:var(--surface2);color:var(--accent);padding:0.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;">Penalty term</th>
+          <th style="background:var(--surface2);color:var(--accent);padding:0.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;">Detection</th>
+          <th style="background:var(--surface2);color:var(--accent);padding:0.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;">Post C(ℋ)</th>
+          <th style="background:var(--surface2);color:var(--accent);padding:0.65rem 1rem;text-align:left;border-bottom:1px solid var(--border);font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;">Δ drift</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--text);">Planck LFI 70 GHz</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Science / ESA</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">7 freq channels</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">φ·F_r (foreground)</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Cosine d&gt;0.12</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">0.968</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">−27%</td>
+        </tr>
+        <tr>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--text);">City of Markham</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Civic / Municipal</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">5 budget cats</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">ε·|ρ−ρ^approved|</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Euclidean d&gt;0.10</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">0.958</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">−21%</td>
+        </tr>
+        <tr>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--text);">Traffic Phase</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Infrastructure</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">3 phases × corridors</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">π·P_r (compliance)</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Euclidean ‖e‖&gt;7</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">0.943</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">−18%</td>
+        </tr>
+        <tr>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--text);">Weaviate VDB</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Vector DB</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Tenants / States</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">β·S(s_r) (state)</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Cosine</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">0.925</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">−15.1%</td>
+        </tr>
+        <tr>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--text);">Qdrant VDB</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Vector DB</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Fallback/Dedicated</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">T(s_r) + M(s_r)</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Cosine</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">0.926</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">−13.5%</td>
+        </tr>
+        <tr>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--text);">Pinecone VDB</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Vector DB</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Namespaces</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">μ·(1−A_r)</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);">Activity decay</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">0.922</td>
+          <td style="padding:0.55rem 1rem;border-bottom:1px solid rgba(37,41,48,0.5);color:var(--accent2);">−14.2%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <span>HUF v1.1.8 · Included Cases Catalog · PeterHiggins19/huf_core_github_v1.1.8_no_inputs</span>
+  <span style="color:var(--accent2)">3 bundled · 7 partner · all with JSONL provenance</span>
+</footer>
+
+</body>
+</html>

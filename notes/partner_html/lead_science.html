@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Science — HUF</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Neue+Haas+Grotesk+Display+Pro:wght@400;500&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f4;
+  --paper: #fff;
+  --surface: #f2efe8;
+  --border: #ddd9cf;
+  --ink: #18160f;
+  --muted: #6b6555;
+  --deep: #1a1814;
+  --copper: #8b5e2a;
+  --copper2: #c4893f;
+  --slate: #2c3e50;
+  --wave: #2a4f6e;
+  --wave2: #4a7fa0;
+  --green: #2d5a3d;
+  --font-serif: 'Playfair Display', 'EB Garamond', Georgia, serif;
+  --font-body: 'Jost', sans-serif;
+  --font-mono: 'DM Mono', 'Inconsolata', 'Courier New', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* WAVEFORM HEADER DECORATION */
+.wave-decoration {
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg,
+    var(--wave) 0%, var(--wave2) 20%,
+    var(--copper) 40%, var(--copper2) 50%,
+    var(--copper) 60%, var(--wave2) 80%,
+    var(--wave) 100%);
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,248,244,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 2.5rem;
+  padding: 0 3rem; height: 54px;
+}
+.nav-logo {
+  font-family: var(--font-serif); font-size: 1rem;
+  color: var(--ink); text-decoration: none; font-style: italic;
+}
+nav a { color: var(--muted); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+nav a:hover { color: var(--ink); }
+.nav-sep { flex: 1; }
+.nav-tag {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: var(--wave); letter-spacing: 0.12em; text-transform: uppercase;
+  border: 1px solid var(--wave); padding: 2px 10px;
+}
+
+/* HERO — full bleed with physics feel */
+.hero {
+  position: relative;
+  background: var(--deep);
+  overflow: hidden;
+  padding: 8rem 3rem 6rem;
+}
+.hero-waveform {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 120px; pointer-events: none;
+}
+.hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-label {
+  font-family: var(--font-mono); font-size: 0.65rem;
+  color: rgba(196,137,63,0.8); letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 400; color: #f0ece0;
+  line-height: 1.1; margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+.hero h1 em { color: var(--copper2); font-style: italic; }
+.hero-lead {
+  font-size: 1.1rem; color: rgba(240,236,224,0.65);
+  max-width: 620px; line-height: 1.75;
+  border-left: 2px solid rgba(196,137,63,0.4);
+  padding-left: 1.5rem;
+}
+
+/* ORIGIN STORY — the heart of this page */
+.origin {
+  background: var(--paper);
+  border-bottom: 1px solid var(--border);
+}
+.origin-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 6rem 3rem;
+  display: grid; grid-template-columns: 2fr 1fr; gap: 5rem; align-items: start;
+}
+@media (max-width: 800px) { .origin-inner { grid-template-columns: 1fr; gap: 3rem; } }
+.origin-text {}
+.origin-label {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: var(--copper); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.origin-label::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 80px; }
+.origin h2 {
+  font-family: var(--font-serif); font-size: 2.2rem;
+  font-weight: 400; color: var(--ink);
+  line-height: 1.25; margin-bottom: 2rem;
+}
+.origin h2 em { color: var(--copper); font-style: italic; }
+.origin-body p {
+  font-size: 1.05rem; color: var(--muted);
+  margin-bottom: 1.5rem; line-height: 1.85;
+}
+.origin-body p strong { color: var(--ink); font-weight: 500; }
+.origin-body p em { font-style: italic; color: var(--wave); }
+.origin-pull {
+  font-family: var(--font-serif); font-size: 1.35rem;
+  font-style: italic; color: var(--ink);
+  line-height: 1.5; margin: 2.5rem 0;
+  padding: 1.5rem 0 1.5rem 2rem;
+  border-left: 3px solid var(--copper2);
+}
+
+/* SIDE PANEL */
+.origin-side {}
+.physics-card {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 1.75rem; margin-bottom: 1.25rem;
+  position: sticky; top: 80px;
+}
+.pc-label {
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem;
+}
+.pc-entry { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.pc-entry:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.pc-key { font-size: 0.8rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+.pc-val { font-size: 0.82rem; color: var(--muted); }
+.pc-val.highlight { color: var(--copper); font-family: var(--font-mono); font-size: 0.78rem; }
+
+/* MINIMUM ENTROPY SECTION */
+.entropy {
+  background: var(--deep);
+  padding: 6rem 3rem;
+}
+.entropy-inner { max-width: 1100px; margin: 0 auto; }
+.entropy-label {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  color: rgba(196,137,63,0.7); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+.entropy h2 {
+  font-family: var(--font-serif); font-size: 2.2rem;
+  font-weight: 400; color: #e8e0cc;
+  line-height: 1.25; margin-bottom: 2.5rem;
+}
+.entropy-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+}
+@media (max-width: 800px) { .entropy-grid { grid-template-columns: 1fr; gap: 2rem; } }
+.entropy-left p { font-size: 1rem; color: rgba(232,224,204,0.65); margin-bottom: 1.5rem; line-height: 1.8; }
+.entropy-left p strong { color: #e8e0cc; font-weight: 500; }
+.entropy-right {}
+.entropy-insight {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(196,137,63,0.2);
+  border-left: 3px solid var(--copper2);
+  border-radius: 4px; padding: 1.5rem 1.75rem;
+  margin-bottom: 1.25rem;
+}
+.ei-label {
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--copper2);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.ei-text { font-size: 0.92rem; color: rgba(232,224,204,0.7); line-height: 1.7; }
+
+/* WAVE DIAGRAM — SVG inline */
+.wave-diagram {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 1.5rem; margin: 2rem 0;
+  overflow: hidden;
+}
+.wave-diagram-label {
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;
+}
+
+/* CASES SECTION */
+.cases {
+  background: var(--bg);
+  padding: 6rem 3rem;
+  border-top: 1px solid var(--border);
+}
+.cases-inner { max-width: 1100px; margin: 0 auto; }
+.cases-label {
+  font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted);
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.cases-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.cases h2 {
+  font-family: var(--font-serif); font-size: 2rem;
+  font-weight: 400; color: var(--ink);
+  margin-bottom: 2.5rem;
+}
+.case-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.case-card {
+  background: var(--paper);
+  border: 1px solid var(--border); border-radius: 4px; padding: 2rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.case-card:hover {
+  border-color: var(--copper2);
+  box-shadow: 0 4px 20px rgba(139,94,42,0.08);
+}
+.cc-label {
+  font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.case-card h3 {
+  font-family: var(--font-serif); font-size: 1.3rem;
+  font-weight: 400; color: var(--ink); margin-bottom: 0.5rem;
+}
+.case-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.25rem; }
+.cc-metrics {
+  display: flex; gap: 1.5rem;
+  border-top: 1px solid var(--border); padding-top: 1rem;
+}
+.cc-metric {}
+.cc-val {
+  font-family: var(--font-mono); font-size: 0.95rem;
+  color: var(--copper); display: block;
+}
+.cc-key { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.cc-link {
+  display: inline-block; margin-top: 1rem;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--wave); border-bottom: 1px solid transparent;
+  text-decoration: none; transition: border-color 0.2s;
+}
+.case-card:hover .cc-link { border-color: var(--wave); }
+
+/* AI NOTE */
+.ai-note {
+  background: linear-gradient(135deg, #1a2535 0%, #0e1a2a 100%);
+  padding: 5rem 3rem;
+}
+.ai-note-inner { max-width: 1100px; margin: 0 auto; }
+.ai-note h2 {
+  font-family: var(--font-serif); font-size: 2rem;
+  font-weight: 400; color: #e0e8f0;
+  margin-bottom: 1.5rem;
+}
+.ai-note h2 em { color: var(--wave2); font-style: italic; }
+.ai-note p {
+  font-size: 1rem; color: rgba(224,232,240,0.6);
+  max-width: 700px; margin-bottom: 1.25rem; line-height: 1.85;
+}
+.ai-note p strong { color: rgba(224,232,240,0.9); font-weight: 500; }
+.ai-credit {
+  margin-top: 2.5rem;
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: rgba(196,137,63,0.7); line-height: 1.8;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 1.5rem;
+}
+
+footer {
+  background: var(--ink);
+  padding: 2rem 3rem;
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: rgba(255,255,255,0.3);
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 100%;
+}
+</style>
+</head>
+<body>
+
+<div class="wave-decoration"></div>
+
+<nav>
+  <a href="#" class="nav-logo">HUF</a>
+  <a href="#origin">Origin</a>
+  <a href="#entropy">Minimum Entropy</a>
+  <a href="#cases">Cases</a>
+  <a href="#ai">AI & Drift</a>
+  <div class="nav-sep"></div>
+  <span class="nav-tag">Science</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">HUF · Scientific Domain</div>
+    <h1>Where HUF<br><em>came from</em></h1>
+    <p class="hero-lead">
+      The Higgins Unity Framework was not designed at a whiteboard. It emerged from
+      the physics of sound — wavefront control, multi-driver coherence, and the
+      mathematics of what a loudspeaker array has to do to produce an isotropic
+      radiation field that human perception accepts as real.
+    </p>
+  </div>
+
+  <!-- Waveform SVG decoration -->
+  <svg class="hero-waveform" viewBox="0 0 1400 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 60 Q70 20 140 60 Q210 100 280 60 Q350 20 420 60 Q490 100 560 60 Q630 20 700 60 Q770 100 840 60 Q910 20 980 60 Q1050 100 1120 60 Q1190 20 1260 60 Q1330 100 1400 60"
+          stroke="rgba(74,127,160,0.3)" stroke-width="1.5" />
+    <path d="M0 60 Q35 35 70 60 Q105 85 140 60 Q175 35 210 60 Q245 85 280 60 Q315 35 350 60 Q385 85 420 60 Q455 35 490 60 Q525 85 560 60 Q595 35 630 60 Q665 85 700 60 Q735 35 770 60 Q805 85 840 60 Q875 35 910 60 Q945 85 980 60 Q1015 35 1050 60 Q1085 85 1120 60 Q1155 35 1190 60 Q1225 85 1260 60 Q1295 35 1330 60 Q1365 85 1400 60"
+          stroke="rgba(196,137,63,0.4)" stroke-width="1" />
+  </svg>
+</div>
+
+<!-- ORIGIN STORY -->
+<div class="origin" id="origin">
+  <div class="origin-inner">
+    <div class="origin-text">
+      <div class="origin-label">The origin</div>
+      <h2>Born from<br><em>wavefront control</em></h2>
+      <div class="origin-body">
+        <p>
+          The problem was a multi-driver loudspeaker array: many drivers, each producing pressure
+          waves that must arrive at the listening position with the correct phase, amplitude, and
+          time relationship to produce a single coherent wavefront. Get this wrong and the sound
+          field collapses — not into silence, but into something worse: a field that sounds almost
+          right while hiding deep incoherence in its mass distribution.
+        </p>
+        <p>
+          <strong>Isotropic radiation</strong> was the goal. Not a beam, not a hot-spot, but a
+          field that distributes acoustic energy with equal density in all directions — the kind
+          of field that dissolves the sensation of speakers and replaces it with the sensation of
+          space. Human auditory perception is exquisitely sensitive to the difference. The ear
+          does not hear pressure; it hears the geometry of arrival.
+        </p>
+        <p>
+          To control that geometry across many drivers, you need a framework that normalizes
+          contributions from each driver into a coherent hierarchy, assigns damping to regulate
+          inter-driver coupling, and detects when any single driver is drifting from its role
+          in the collective wavefront. You need, in short, something that enforces unity across
+          a hierarchical system — that prevents any single element from silently dominating the
+          mass budget while the rest collapse into noise.
+        </p>
+
+        <div class="origin-pull">
+          The framework removed itself when it was done.
+          Tests showed the control application running thermodynamically
+          close to predicted optimum — minimum entropy.
+        </div>
+
+        <p>
+          <em>That</em> is what HUF is. Not a generalization applied to audio, but a structure
+          that fell out of audio when the experiment ran correctly. The mathematics that made
+          a loudspeaker array produce an isotropic field at minimum cost turns out to be the
+          same mathematics that makes a vector database maintain coherent retrieval, a municipal
+          budget maintain equitable distribution, or a satellite instrument maintain calibrated
+          frequency channels across years of operation.
+        </p>
+        <p>
+          The unity constraint is not an assumption. It is a thermodynamic consequence of
+          requiring a system to do its job — and only its job — without waste.
+        </p>
+      </div>
+    </div>
+
+    <div class="origin-side">
+      <div class="physics-card">
+        <div class="pc-label">System specifications</div>
+        <div class="pc-entry">
+          <div class="pc-key">Architecture</div>
+          <div class="pc-val">Multi-driver time-coherent loudspeaker array</div>
+        </div>
+        <div class="pc-entry">
+          <div class="pc-key">Goal</div>
+          <div class="pc-val">Isotropic radiation distribution in a sound field</div>
+        </div>
+        <div class="pc-entry">
+          <div class="pc-key">Domain of application</div>
+          <div class="pc-val">Human auditory perception research</div>
+        </div>
+        <div class="pc-entry">
+          <div class="pc-key">Framework origin</div>
+          <div class="pc-val">Emerged from experiment structure; not designed a priori</div>
+        </div>
+        <div class="pc-entry">
+          <div class="pc-key">Thermodynamic result</div>
+          <div class="pc-val highlight">Minimum entropy — close to predicted optimum</div>
+        </div>
+        <div class="pc-entry">
+          <div class="pc-key">Author</div>
+          <div class="pc-val">Peter Higgins</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MINIMUM ENTROPY -->
+<div class="entropy" id="entropy">
+  <div class="entropy-inner">
+    <div class="entropy-label">Thermodynamic interpretation</div>
+    <h2>Minimum entropy — what it means</h2>
+
+    <div class="entropy-grid">
+      <div class="entropy-left">
+        <p>
+          When the control system ran correctly — drivers phased, weighted, and damped by the
+          emerging HUF structure — the experiment measured entropy production in the acoustic
+          field at levels thermodynamically close to the predicted minimum for that operation.
+        </p>
+        <p>
+          This is not a poetic description. <strong>Minimum entropy production</strong> means
+          the system is doing exactly what it needs to do and nothing else. No wasted energy
+          driving incoherent cross-modes. No excess variance in the mass distribution. No
+          drift amplification from one driver into the global field.
+        </p>
+        <p>
+          The unity constraint — that the sum of all normalized contributions equals one,
+          always, provably — is the mathematical statement of this thermodynamic fact.
+          A system that conserves its unity budget does not leak. A system that does not
+          leak approaches the minimum.
+        </p>
+        <p>
+          <strong>When HUF converges, it is not just finding a stable solution.
+          It is finding the most efficient one available to the hierarchy.</strong>
+          The framework removes itself because a minimum-entropy system needs no ongoing
+          correction — the structure is self-maintaining once coherence is achieved.
+        </p>
+      </div>
+
+      <div class="entropy-right">
+        <div class="entropy-insight">
+          <div class="ei-label">Unity conservation</div>
+          <div class="ei-text">
+            Σ ρ = 1.0 at every step, by proof. No mass is created or destroyed.
+            This is the acoustic energy budget constraint restated in embedding space.
+          </div>
+        </div>
+        <div class="entropy-insight">
+          <div class="ei-label">Adaptive damping α*</div>
+          <div class="ei-text">
+            The optimal coupling coefficient between levels of the hierarchy.
+            In audio: the inter-driver weighting that minimises wavefront distortion.
+            In HUF: argmin J(α) where J measures incoherence + variance.
+          </div>
+        </div>
+        <div class="entropy-insight">
+          <div class="ei-label">Self-removal</div>
+          <div class="ei-text">
+            When C(ℋ) stabilises, α* stabilises, and Var(ρ) → minimum. The framework
+            has nothing left to correct. The experiment runs at optimum. This is
+            thermodynamic convergence expressed as software behaviour.
+          </div>
+        </div>
+        <div class="entropy-insight">
+          <div class="ei-label">Drift as decoherence</div>
+          <div class="ei-text">
+            Embedding drift in AI systems is phase decoherence in sound systems.
+            The same structure that kept wavefronts aligned across drivers is now
+            keeping embeddings coherent across retrieval regimes.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CASES -->
+<div class="cases" id="cases">
+  <div class="cases-inner">
+    <div class="cases-label">Scientific cases</div>
+    <h2>HUF in the physical world</h2>
+
+    <div class="case-cards">
+
+      <div class="case-card">
+        <div class="cc-label">Case · 001 · ESA</div>
+        <h3>Planck LFI 70 GHz</h3>
+        <p>
+          The Planck satellite's frequency channels (30–353 GHz) as a HUF hierarchy.
+          Calibration drift between LFI and HFI instruments maps to the same decoherence
+          signal HUF was built to detect. 1,000 CMB sky pixels, foreground-penalised
+          adaptive damping, 10-step drift simulation.
+        </p>
+        <div class="cc-metrics">
+          <div class="cc-metric">
+            <span class="cc-val">0.968</span>
+            <div class="cc-key">C(ℋ) post</div>
+          </div>
+          <div class="cc-metric">
+            <span class="cc-val">−27%</span>
+            <div class="cc-key">Drift</div>
+          </div>
+          <div class="cc-metric">
+            <span class="cc-val">2.725 K</span>
+            <div class="cc-key">CMB avg</div>
+          </div>
+        </div>
+        <a href="planck/" class="cc-link">Read the case →</a>
+      </div>
+
+      <div class="case-card">
+        <div class="cc-label">Case · 004 · Partnership</div>
+        <h3>Science — Planck Validation</h3>
+        <p>
+          The full scientific partnership package: HUF as a CMB map validation layer
+          before component separation. Detects inter-channel calibration drift, provides
+          proof-backed convergence guarantees, and emits a per-step JSONL audit log
+          compatible with ESA data products.
+        </p>
+        <div class="cc-metrics">
+          <div class="cc-metric">
+            <span class="cc-val">95%</span>
+            <div class="cc-key">Fit</div>
+          </div>
+          <div class="cc-metric">
+            <span class="cc-val">7 ch.</span>
+            <div class="cc-key">Regimes</div>
+          </div>
+          <div class="cc-metric">
+            <span class="cc-val">φ·F_r</span>
+            <div class="cc-key">Penalty</div>
+          </div>
+        </div>
+        <a href="../partnerships/packages/science_planck/" class="cc-link">Partner package →</a>
+      </div>
+
+      <div class="case-card">
+        <div class="cc-label">Application · Future</div>
+        <h3>AI Embedding Drift</h3>
+        <p>
+          Semantic embedding drift is phase decoherence. As language models update,
+          fine-tune, or retrieve across heterogeneous corpora, the embedding space
+          drifts — exactly as a driver array drifts when a transducer ages or a
+          room mode shifts. HUF's convergence proof applies directly.
+        </p>
+        <div class="cc-metrics">
+          <div class="cc-metric">
+            <span class="cc-val">Active</span>
+            <div class="cc-key">Research</div>
+          </div>
+          <div class="cc-metric">
+            <span class="cc-val">VDB</span>
+            <div class="cc-key">First domain</div>
+          </div>
+          <div class="cc-metric">
+            <span class="cc-val">α*</span>
+            <div class="cc-key">Key parameter</div>
+          </div>
+        </div>
+        <a href="../adapters/vector_db_coherence/" class="cc-link">Vector DB adapter →</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- AI & DRIFT NOTE -->
+<div class="ai-note" id="ai">
+  <div class="ai-note-inner">
+    <h2>HUF and <em>AI drift</em></h2>
+    <p>
+      The framework that controlled wavefront coherence in a multi-driver loudspeaker array
+      is now being applied — with no fundamental change — to vector database coherence,
+      retrieval drift in RAG systems, and the long-tail mass distribution of AI knowledge bases.
+    </p>
+    <p>
+      This is not an analogy. <strong>An embedding space is a field.</strong> Semantic drift
+      is decoherence. The mass distribution over retrieved chunks obeys the same unity constraint
+      as the energy distribution over acoustic drivers. When any single source dominates —
+      a single chunk, a single frequency, a single driver — the field collapses into something
+      that mimics quality while hiding incoherence.
+    </p>
+    <p>
+      HUF's adaptive damping derives the optimal coupling coefficient at every step.
+      In a loudspeaker, that coefficient is a physical weighting. In a vector database,
+      it is the regime inheritance factor that prevents any single tenant, namespace, or
+      shard from silently taking over the retrieval budget. The mathematics is identical
+      because the problem is identical.
+    </p>
+    <p>
+      The AI applications documented on this site — Weaviate, Qdrant, Pinecone, LangChain —
+      are not analogies to the acoustic work. They are the same framework meeting the same
+      problem in a different medium. HUF may one day benefit AI drift mitigation in the
+      same way it benefited sound field control: not by being applied to it, but by
+      <strong>being recognised within it</strong>.
+    </p>
+
+    <div class="ai-credit">
+      HUF v1.1.8 · Author: Peter Higgins ·
+      Developed for wavefront control in multi-driver time-coherent systems ·
+      Isotropic radiation distribution and human perception in a sound field ·
+      Built with extensive use of AI in more advanced and functional applications ·
+      Repository: PeterHiggins19/huf_core_github_v1.1.8_no_inputs
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>HUF · Science Lead Page · v1.1.8</span>
+  <span>Minimum entropy · C(ℋ) → optimum · Unity conserved</span>
+</footer>
+
+</body>
+</html>

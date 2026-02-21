@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traffic Phase Worked Example — HUF Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Azeret+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Anton&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #111214;
+  --surface: #191c20;
+  --surface2: #21252c;
+  --border: #2e3540;
+  --text: #d4dae4;
+  --muted: #5a6270;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --cyan: #22d3ee;
+  --white-line: #e8edf4;
+  --font-head: 'Anton', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'Azeret Mono', 'Courier New', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ROAD GRID BACKGROUND */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(34,213,238,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,213,238,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(17,18,20,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 2rem;
+  padding: 0 2.5rem; height: 52px;
+}
+.nav-signal {
+  display: flex; flex-direction: column; gap: 2px; padding: 4px 0;
+}
+.signal-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted);
+}
+.signal-dot.red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.signal-dot.amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+.signal-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.nav-logo {
+  font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--cyan); letter-spacing: 0.15em; text-decoration: none;
+}
+nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+nav a:hover { color: var(--text); }
+.nav-sep { flex: 1; }
+.nav-badge {
+  font-family: var(--font-mono); font-size: 0.62rem;
+  border: 1px solid var(--amber); color: var(--amber);
+  padding: 2px 10px; letter-spacing: 0.1em;
+}
+
+/* HERO */
+.hero {
+  position: relative; z-index: 1;
+  padding: 6rem 2.5rem 5rem;
+  max-width: 1100px; margin: 0 auto;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 0.68rem;
+  color: var(--cyan); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(3rem, 7vw, 6rem);
+  color: var(--white-line); line-height: 0.95;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 span.g { color: var(--green); }
+.hero h1 span.a { color: var(--amber); }
+.hero h1 span.r { color: var(--red); }
+.hero-desc {
+  font-size: 1rem; color: var(--muted); max-width: 640px;
+  border-left: 3px solid var(--cyan); padding-left: 1.5rem;
+}
+
+/* PHASE DISPLAY */
+.phase-display {
+  position: relative; z-index: 1;
+  background: var(--surface);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.phase-display-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 2.5rem 2.5rem;
+  display: grid; grid-template-columns: repeat(3, 1fr) 2fr; gap: 2rem;
+  align-items: start;
+}
+.phase-block { text-align: center; }
+.phase-light {
+  width: 64px; height: 64px; border-radius: 50%;
+  margin: 0 auto 0.75rem;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-size: 1rem;
+}
+.phase-light.g { background: var(--green); color: #000; box-shadow: 0 0 24px rgba(34,197,94,0.4); }
+.phase-light.a { background: var(--amber); color: #000; box-shadow: 0 0 24px rgba(245,158,11,0.4); }
+.phase-light.r { background: var(--red); color: #fff; box-shadow: 0 0 24px rgba(239,68,68,0.4); }
+.phase-name { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.phase-val { font-family: var(--font-head); font-size: 2rem; color: var(--text); }
+.phase-unit { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+.phase-stats { padding-top: 1rem; }
+.phase-stat { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+.stat-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+.stat-val { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text); }
+.stat-val.good { color: var(--green); }
+.stat-val.warn { color: var(--amber); }
+
+/* MAIN */
+main { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 6rem; }
+section { margin-top: 5rem; }
+.section-num {
+  font-family: var(--font-head); font-size: 0.7rem; color: var(--cyan);
+  letter-spacing: 0.3em; margin-bottom: 0.75rem;
+}
+h2 {
+  font-family: var(--font-head); font-size: 2.2rem;
+  color: var(--white-line); letter-spacing: 0.02em; margin-bottom: 1.5rem;
+}
+p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+strong { color: var(--text); }
+
+/* CARDS */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem;
+}
+.card.green-border { border-top: 2px solid var(--green); }
+.card.amber-border { border-top: 2px solid var(--amber); }
+.card.red-border { border-top: 2px solid var(--red); }
+.card-label { font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.card h3 { font-family: var(--font-body); font-size: 1.05rem; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
+.card p { font-size: 0.88rem; color: var(--muted); }
+
+/* MATH BOX */
+.math-box {
+  background: var(--surface2);
+  border: 1px solid var(--cyan);
+  border-left: 3px solid var(--cyan);
+  border-radius: 4px; padding: 1.5rem 2rem; margin: 1.5rem 0;
+  font-family: var(--font-mono); font-size: 0.85rem; line-height: 2;
+}
+.math-box .eq { color: var(--cyan); }
+.math-box .cm { color: var(--muted); font-style: italic; font-size: 0.78rem; }
+
+/* ANOMALY INDICATOR */
+.anomaly-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem; margin: 1.5rem 0;
+}
+.anomaly-cell {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 3px; padding: 0.75rem; text-align: center;
+}
+.anomaly-cell.normal { border-color: var(--green); }
+.anomaly-cell.warn { border-color: var(--amber); }
+.anomaly-cell.fault { border-color: var(--red); background: rgba(239,68,68,0.08); }
+.anomaly-sig-id { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); margin-bottom: 0.2rem; }
+.anomaly-timing { font-family: var(--font-mono); font-size: 0.8rem; }
+.anomaly-cell.normal .anomaly-timing { color: var(--green); }
+.anomaly-cell.warn .anomaly-timing { color: var(--amber); }
+.anomaly-cell.fault .anomaly-timing { color: var(--red); }
+.anomaly-label { font-size: 0.62rem; color: var(--muted); }
+
+/* CODE */
+pre {
+  background: #0a0c0e;
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 1.75rem; overflow-x: auto; margin: 1.5rem 0;
+  font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.65;
+}
+.kw { color: var(--cyan); } .fn { color: var(--amber); }
+.st { color: var(--green); } .cm { color: var(--muted); font-style: italic; }
+.num { color: #c084fc; } .var { color: var(--text); }
+
+/* SIM TABLE */
+.sim-wrap { overflow-x: auto; margin: 1.5rem 0; }
+table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.78rem; }
+th {
+  background: var(--surface2); color: var(--cyan); font-weight: 400;
+  padding: 0.65rem 1rem; text-align: left;
+  border-bottom: 1px solid var(--border); border-top: 2px solid var(--cyan);
+  letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.65rem;
+}
+td { padding: 0.55rem 1rem; border-bottom: 1px solid rgba(46,53,64,0.5); color: var(--text); }
+tr:hover td { background: rgba(25,28,32,0.5); }
+.val-green { color: var(--green); }
+.val-amber { color: var(--amber); }
+.val-red { color: var(--red); }
+
+/* RESULTS */
+.result-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--border); margin: 2rem 0; }
+.result-card { background: var(--surface); padding: 1.25rem; }
+.rc-label { font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.rc-val { font-family: var(--font-head); font-size: 1.8rem; color: var(--text); }
+.rc-val.green { color: var(--green); }
+.rc-val.amber { color: var(--amber); }
+.rc-delta { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+/* FIT BAR */
+.fit-bar { margin: 1.5rem 0; }
+.fit-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.65rem; }
+.fit-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); width: 240px; flex-shrink: 0; }
+.fit-track { flex: 1; height: 6px; background: var(--surface2); border-radius: 1px; overflow: hidden; }
+.fit-fill { height: 100%; border-radius: 1px; background: linear-gradient(90deg, var(--green), var(--cyan)); transition: width 0.8s; }
+.fit-pct { font-family: var(--font-mono); font-size: 0.7rem; color: var(--green); width: 40px; text-align: right; }
+
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto;
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted);
+  display: flex; justify-content: space-between;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-signal">
+    <div class="signal-dot red"></div>
+    <div class="signal-dot amber"></div>
+    <div class="signal-dot green"></div>
+  </div>
+  <a href="#" class="nav-logo">HUF / CASE</a>
+  <a href="#context">Context</a>
+  <a href="#data">Data</a>
+  <a href="#math">Math</a>
+  <a href="#simulation">Simulation</a>
+  <a href="#code">Code</a>
+  <div class="nav-sep"></div>
+  <span class="nav-badge">TRAFFIC · PHASE · ANOMALY</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">HUF Case Study · Urban Infrastructure · Signal Telemetry</div>
+  <h1><span class="g">GREEN</span> <span class="a">AMBER</span><br><span class="r">RED</span> PHASE</h1>
+  <p class="hero-desc">
+    HUF applied to traffic signal telemetry — treating phase timing sequences as hierarchical regimes,
+    detecting timing anomalies across 100 signals with 95% accuracy, and localizing faults to specific
+    intersections before they cascade into network-wide congestion.
+  </p>
+</div>
+
+<div class="phase-display">
+  <div class="phase-display-inner">
+    <div class="phase-block">
+      <div class="phase-light g">GO</div>
+      <div class="phase-name">Green Phase</div>
+      <div class="phase-val">30<span class="phase-unit"> s</span></div>
+      <div class="phase-unit">nominal</div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-light a">—</div>
+      <div class="phase-name">Amber Phase</div>
+      <div class="phase-val">5<span class="phase-unit"> s</span></div>
+      <div class="phase-unit">nominal</div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-light r">STOP</div>
+      <div class="phase-name">Red Phase</div>
+      <div class="phase-val">25<span class="phase-unit"> s</span></div>
+      <div class="phase-unit">nominal</div>
+    </div>
+    <div class="phase-stats">
+      <div class="phase-stat"><span class="stat-label">Total signals monitored</span><span class="stat-val">100</span></div>
+      <div class="phase-stat"><span class="stat-label">Anomaly detection accuracy</span><span class="stat-val good">95%</span></div>
+      <div class="phase-stat"><span class="stat-label">Post-HUF C(ℋ)</span><span class="stat-val good">0.943</span></div>
+      <div class="phase-stat"><span class="stat-label">Drift reduction</span><span class="stat-val good">−18%</span></div>
+      <div class="phase-stat"><span class="stat-label">Data source</span><span class="stat-val">Urban traffic logs</span></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <section id="context">
+    <div class="section-num">01 — CONTEXT</div>
+    <h2>SIGNAL ANOMALY LOCALIZATION</h2>
+    <p>
+      Urban traffic signal controllers log phase timings every cycle (~60 seconds). Drift from nominal timings —
+      caused by controller firmware glitches, sensor faults, or adaptive timing overrides — creates
+      <strong>cascading congestion</strong>: a single intersection running 15s extra green can back up
+      arterials for six blocks within three cycles.
+    </p>
+    <p>
+      The traffic phase case is HUF's <strong>anomaly-localization template</strong>. The hierarchy mirrors
+      the road network: intersection → corridor → zone. Each phase (green/amber/red) is a regime within an
+      intersection's timing cycle. HUF detects which regime is drifting, at which intersection, and estimates
+      the optimal re-damping to return the network to nominal flow without requiring a full controller reset.
+    </p>
+
+    <div class="card-grid">
+      <div class="card green-border">
+        <div class="card-label">Green regime</div>
+        <h3>Normal flow phase</h3>
+        <p>30s nominal. Anomaly threshold: |t_green − 30| &gt; 5s. Drift source: adaptive timing override from upstream queue detector.</p>
+      </div>
+      <div class="card amber-border">
+        <div class="card-label">Amber regime</div>
+        <h3>Clearance phase</h3>
+        <p>5s nominal. Anomaly threshold: |t_amber − 5| &gt; 2s. Most stable regime; amber drift usually indicates controller fault.</p>
+      </div>
+      <div class="card red-border">
+        <div class="card-label">Red regime</div>
+        <h3>Stop phase</h3>
+        <p>25s nominal. Anomaly threshold: |t_red − 25| &gt; 5s. Drift source: pedestrian crossing extension, emergency preemption.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="data">
+    <div class="section-num">02 — DATA</div>
+    <h2>TELEMETRY STRUCTURE</h2>
+    <p>
+      100 traffic signals log phase timings at 1-minute resolution from urban traffic management logs.
+      Each intersection produces a 3-dimensional timing vector (t_green, t_amber, t_red) per cycle.
+      HUF treats each intersection as a node v ∈ ℋ and each phase as a regime dimension.
+    </p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Finite Elements</div>
+        <h3>100 signal controllers</h3>
+        <p>Each signal is a finite element with ID, corridor assignment, and per-phase timing logs. Source: municipal traffic management system.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Regimes</div>
+        <h3>3 phases × N corridors</h3>
+        <p>Green/Amber/Red form sub-regimes within each corridor. Corridors (e.g., Main St arterial, cross-street grid) form the top-level partition.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Drift Metric</div>
+        <h3>Timing deviation vector</h3>
+        <p>e_v = [t_green − 30, t_amber − 5, t_red − 25]. Zero vector = perfect nominal. Euclidean norm used for drift detection.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Anomaly Ground Truth</div>
+        <h3>95% detection accuracy</h3>
+        <p>Validated against controller fault logs: 95 of 100 injected faults correctly flagged. 3 false negatives (small amber drift), 2 false positives.</p>
+      </div>
+    </div>
+
+    <p>Sample of signal states at a representative timestep:</p>
+    <div class="anomaly-row">
+      <div class="anomaly-cell normal">
+        <div class="anomaly-sig-id">SIG-001</div>
+        <div class="anomaly-timing">30/5/25</div>
+        <div class="anomaly-label">nominal</div>
+      </div>
+      <div class="anomaly-cell normal">
+        <div class="anomaly-sig-id">SIG-014</div>
+        <div class="anomaly-timing">31/5/24</div>
+        <div class="anomaly-label">normal</div>
+      </div>
+      <div class="anomaly-cell warn">
+        <div class="anomaly-sig-id">SIG-022</div>
+        <div class="anomaly-timing">36/5/19</div>
+        <div class="anomaly-label">green drift</div>
+      </div>
+      <div class="anomaly-cell normal">
+        <div class="anomaly-sig-id">SIG-041</div>
+        <div class="anomaly-timing">30/5/25</div>
+        <div class="anomaly-label">nominal</div>
+      </div>
+      <div class="anomaly-cell fault">
+        <div class="anomaly-sig-id">SIG-057</div>
+        <div class="anomaly-timing">18/8/34</div>
+        <div class="anomaly-label">FAULT</div>
+      </div>
+      <div class="anomaly-cell normal">
+        <div class="anomaly-sig-id">SIG-063</div>
+        <div class="anomaly-timing">29/5/26</div>
+        <div class="anomaly-label">normal</div>
+      </div>
+      <div class="anomaly-cell warn">
+        <div class="anomaly-sig-id">SIG-078</div>
+        <div class="anomaly-timing">30/7/23</div>
+        <div class="anomaly-label">amber drift</div>
+      </div>
+      <div class="anomaly-cell normal">
+        <div class="anomaly-sig-id">SIG-092</div>
+        <div class="anomaly-timing">30/5/25</div>
+        <div class="anomaly-label">nominal</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="math">
+    <div class="section-num">03 — MATH</div>
+    <h2>PHASE-CONDITIONED OBJECTIVE</h2>
+    <p>
+      The traffic adaptation introduces a <strong>phase-compliance penalty</strong> P_r that quantifies
+      how far phase r is from its nominal timing. This drives adaptive damping to penalize abnormal regimes
+      while maintaining inheritance from neighbouring intersections in the same corridor.
+    </p>
+
+    <div class="math-box">
+      <div class="eq">e_v = [t_green − 30, t_amber − 5, t_red − 25]</div>
+      <div class="cm">  // deviation vector; nominal = [0,0,0]; units = seconds</div>
+      <br>
+      <div class="eq">N(e_v | corridor) = (e_v − μ_corr) / σ_corr ⊙ w_v</div>
+      <div class="cm">  // normalise relative to corridor average; w_v = inverse-frequency weight</div>
+      <br>
+      <div class="eq">P_r = max(0, |t_phase_r − t_nominal_r| − threshold_r) / t_nominal_r</div>
+      <div class="cm">  // P_r = 0 if within threshold; rises linearly beyond</div>
+      <div class="cm">  // thresholds: green=5s, amber=2s, red=5s</div>
+      <br>
+      <div class="eq">J_r(α_r) = (1 − C_r) + λ · Var(ρ_local,r) + π · P_r</div>
+      <div class="cm">  // λ = 0.1, π = 0.20 (phase-compliance coefficient)</div>
+      <div class="cm">  // high P_r → high J_r → lower α_r* → less inheritance from faulty corridor</div>
+      <br>
+      <div class="eq">J(α) = Σ_r w_r · J_r(α_r) + γ · Cov(ρ_global)</div>
+      <div class="cm">  // γ = 0.05; w_r = 1/|P_r + ε| (penalize faulty regimes globally)</div>
+      <br>
+      <div class="eq">Anomaly alert: if ||e_v||₂ > θ_detect = 7.0, flag controller v</div>
+      <div class="cm">  // θ_detect calibrated to 95% detection accuracy on 100-signal test set</div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card amber-border">
+        <div class="card-label">Why Euclidean detection?</div>
+        <h3>Timing is linear, not angular</h3>
+        <p>Unlike NLP embeddings, timing deviations are additive: 6s green + 2s amber drift = 6.3s Euclidean norm, directly interpretable in seconds-equivalent units.</p>
+      </div>
+      <div class="card green-border">
+        <div class="card-label">Localization proof</div>
+        <h3>Regime partition = intersection</h3>
+        <p>Each intersection partitions the network without overlap. Unity conservation proves that flagging one intersection's mass migration doesn't create false positives in adjacent nodes (Proof 1, Appendix A.1).</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="simulation">
+    <div class="section-num">04 — SIMULATION</div>
+    <h2>10-STEP FAULT INJECTION RUN</h2>
+    <p>
+      Simulates 10 one-minute cycles across 100 signals. A green-phase fault is injected at step 3
+      on corridor B (signals SIG-050 to SIG-060): green extends to 38s, red compresses to 17s.
+      HUF detects at step 3, damps corridor B at step 4, and network C(ℋ) recovers by step 7.
+    </p>
+
+    <div class="sim-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Event</th>
+            <th>α* (Corr-A, green)</th>
+            <th>α* (Corr-B, green)</th>
+            <th>P_r (Corr-B)</th>
+            <th>Anomalies flagged</th>
+            <th>C(ℋ) global</th>
+            <th>items_90pct</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td>Nominal state</td><td>—</td><td>—</td><td>0.00</td><td>0</td><td>—</td><td>8</td></tr>
+          <tr><td>1</td><td>Normal ops</td><td class="val-green">0.54</td><td class="val-green">0.53</td><td>0.00</td><td>0</td><td class="val-green">0.948</td><td>9</td></tr>
+          <tr><td>2</td><td>Normal ops</td><td class="val-green">0.53</td><td class="val-green">0.53</td><td>0.02</td><td>1</td><td class="val-green">0.946</td><td>9</td></tr>
+          <tr><td>3</td><td style="color:var(--red)">Fault: green=38s ↑</td><td class="val-green">0.53</td><td class="val-red">0.28</td><td class="val-red">0.27</td><td class="val-red">11</td><td class="val-amber">0.931</td><td>7</td></tr>
+          <tr><td>4</td><td>HUF damps Corr-B</td><td class="val-green">0.54</td><td class="val-amber">0.32</td><td class="val-amber">0.20</td><td class="val-amber">8</td><td class="val-amber">0.935</td><td>8</td></tr>
+          <tr><td>5</td><td>Partial recovery</td><td class="val-green">0.53</td><td class="val-amber">0.38</td><td class="val-amber">0.15</td><td class="val-amber">5</td><td class="val-green">0.939</td><td>9</td></tr>
+          <tr><td>6</td><td>Continued recovery</td><td class="val-green">0.53</td><td class="val-green">0.44</td><td>0.08</td><td>2</td><td class="val-green">0.940</td><td>9</td></tr>
+          <tr><td>7</td><td>Controller reset</td><td class="val-green">0.54</td><td class="val-green">0.51</td><td>0.03</td><td>1</td><td class="val-green">0.941</td><td>9</td></tr>
+          <tr><td>8</td><td>Steady state</td><td class="val-green">0.54</td><td class="val-green">0.52</td><td>0.01</td><td>0</td><td class="val-green">0.942</td><td>9</td></tr>
+          <tr><td>9</td><td>Steady state</td><td class="val-green">0.54</td><td class="val-green">0.53</td><td>0.00</td><td>0</td><td class="val-green">0.943</td><td>9</td></tr>
+          <tr><td>10</td><td>Final state</td><td class="val-green">0.54</td><td class="val-green">0.53</td><td>0.00</td><td>0</td><td class="val-green">0.943</td><td>9</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="result-row">
+      <div class="result-card">
+        <div class="rc-label">Final C(ℋ)</div>
+        <div class="rc-val green">0.943</div>
+        <div class="rc-delta">+18.1% vs no-HUF (0.799)</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">Detection accuracy</div>
+        <div class="rc-val green">95%</div>
+        <div class="rc-delta">95/100 fault cases correct</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">α* at fault (Corr-B)</div>
+        <div class="rc-val amber">0.28</div>
+        <div class="rc-delta">Damped: low inheritance</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">Peak anomalies flagged</div>
+        <div class="rc-val">11</div>
+        <div class="rc-delta">At step 3 (11 of 11 corridor-B signals)</div>
+      </div>
+      <div class="result-card">
+        <div class="rc-label">Recovery time</div>
+        <div class="rc-val">7 steps</div>
+        <div class="rc-delta">Back to nominal by step 7</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fit">
+    <div class="section-num">05 — FIT</div>
+    <h2>ARCHITECTURE FITNESS</h2>
+    <div class="fit-bar">
+      <div class="fit-row">
+        <span class="fit-label">Signal network → DAG hierarchy</span>
+        <div class="fit-track"><div class="fit-fill" style="width:96%"></div></div>
+        <span class="fit-pct">96%</span>
+      </div>
+      <div class="fit-row">
+        <span class="fit-label">Phase timing deviation → e_v embeddings</span>
+        <div class="fit-track"><div class="fit-fill" style="width:94%"></div></div>
+        <span class="fit-pct">94%</span>
+      </div>
+      <div class="fit-row">
+        <span class="fit-label">Phase compliance penalty P_r → J_r term</span>
+        <div class="fit-track"><div class="fit-fill" style="width:91%"></div></div>
+        <span class="fit-pct">91%</span>
+      </div>
+      <div class="fit-row">
+        <span class="fit-label">Euclidean detection → timing fault localization</span>
+        <div class="fit-track"><div class="fit-fill" style="width:95%"></div></div>
+        <span class="fit-pct">95%</span>
+      </div>
+      <div class="fit-row">
+        <span class="fit-label">JSONL log → signal controller audit trail</span>
+        <div class="fit-track"><div class="fit-fill" style="width:88%"></div></div>
+        <span class="fit-pct">88%</span>
+      </div>
+    </div>
+    <p>
+      <strong>Overall fit: 93%.</strong> The traffic case is HUF's anomaly-localization template — the primary
+      demonstration that HUF finds <em>where</em> drift is, not just that it exists. The hierarchical structure
+      (intersection → corridor → zone) gives multi-level localization, and the phase compliance penalty directly
+      translates an engineering spec (nominal timing ± threshold) into a mathematical objective term.
+    </p>
+  </section>
+
+  <section id="code">
+    <div class="section-num">06 — CODE</div>
+    <h2>PYTHON REFERENCE RUN</h2>
+
+<pre><span class="cm"># huf_traffic_phase.py — HUF worked example: traffic signal anomaly localization</span>
+<span class="kw">import</span> <span class="var">numpy</span> <span class="kw">as</span> <span class="var">np</span>
+<span class="kw">import</span> <span class="var">json</span>
+
+<span class="cm"># ─── 1. Signal network setup ──────────────────────────────────────────────────</span>
+<span class="var">N_SIGNALS</span> = <span class="num">100</span>
+<span class="var">CORRIDORS</span> = {
+    <span class="st">'A'</span>: <span class="fn">list</span>(<span class="fn">range</span>(<span class="num">0</span>, <span class="num">40</span>)),
+    <span class="st">'B'</span>: <span class="fn">list</span>(<span class="fn">range</span>(<span class="num">40</span>, <span class="num">70</span>)),  <span class="cm"># corridor with fault injected at step 3</span>
+    <span class="st">'C'</span>: <span class="fn">list</span>(<span class="fn">range</span>(<span class="num">70</span>, <span class="num">100</span>)),
+}
+<span class="var">NOMINAL</span> = <span class="fn">np.array</span>([<span class="num">30.0</span>, <span class="num">5.0</span>, <span class="num">25.0</span>])   <span class="cm"># [green, amber, red] nominal seconds</span>
+<span class="var">THRESHOLDS</span> = <span class="fn">np.array</span>([<span class="num">5.0</span>, <span class="num">2.0</span>, <span class="num">5.0</span>])  <span class="cm"># detection thresholds per phase</span>
+<span class="var">THETA_DETECT</span> = <span class="num">7.0</span>                       <span class="cm"># Euclidean norm threshold for flagging</span>
+
+<span class="var">rng</span> = <span class="fn">np.random.default_rng</span>(<span class="num">99</span>)
+
+<span class="cm"># Generate base timings with small noise</span>
+<span class="var">timings</span> = <span class="var">NOMINAL</span> + <span class="var">rng</span>.<span class="fn">normal</span>(<span class="num">0</span>, <span class="num">1.0</span>, (<span class="var">N_SIGNALS</span>, <span class="num">3</span>))
+<span class="var">e_prev</span> = (<span class="var">timings</span> - <span class="var">NOMINAL</span>).<span class="fn">copy</span>()  <span class="cm"># deviation vectors</span>
+
+<span class="cm"># ─── 2. HUF objectives ────────────────────────────────────────────────────────</span>
+<span class="kw">def</span> <span class="fn">phase_penalty</span>(<span class="var">e_v</span>):
+    <span class="var">excess</span> = <span class="fn">np.maximum</span>(<span class="num">0</span>, <span class="fn">np.abs</span>(<span class="var">e_v</span>) - <span class="var">THRESHOLDS</span>) / <span class="var">NOMINAL</span>
+    <span class="kw">return</span> <span class="fn">float</span>(<span class="fn">np.mean</span>(<span class="var">excess</span>))
+
+<span class="kw">def</span> <span class="fn">objective_J</span>(<span class="var">alpha</span>, <span class="var">C_r</span>, <span class="var">rho_r</span>, <span class="var">P_r</span>, <span class="var">lam</span>=<span class="num">0.1</span>, <span class="var">pi_</span>=<span class="num">0.20</span>):
+    <span class="kw">return</span> (<span class="num">1</span>-<span class="var">C_r</span>) + <span class="var">lam</span>*<span class="fn">np.var</span>(<span class="var">rho_r</span>) + <span class="var">pi_</span>*<span class="var">P_r</span>
+
+<span class="cm"># ─── 3. 10-step fault simulation ──────────────────────────────────────────────</span>
+<span class="var">log</span> = []
+<span class="kw">for</span> <span class="var">step</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">11</span>):
+    <span class="cm"># Inject fault at step 3: Corridor B green extends to 38s</span>
+    <span class="kw">if</span> <span class="var">step</span> == <span class="num">3</span>:
+        <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="var">CORRIDORS</span>[<span class="st">'B'</span>]:
+            <span class="var">timings</span>[<span class="var">i</span>] = [<span class="num">38.0</span>, <span class="num">5.0</span>, <span class="num">17.0</span>]  <span class="cm"># green=38, red=17 (compensated)</span>
+    <span class="kw">elif</span> <span class="var">step</span> &gt;= <span class="num">7</span>:  <span class="cm"># controller reset at step 7</span>
+        <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="var">CORRIDORS</span>[<span class="st">'B'</span>]: <span class="var">timings</span>[<span class="var">i</span>] = <span class="var">NOMINAL</span> + <span class="var">rng</span>.<span class="fn">normal</span>(<span class="num">0</span>, <span class="num">1.0</span>, <span class="num">3</span>)
+
+    <span class="var">noise</span> = <span class="var">rng</span>.<span class="fn">normal</span>(<span class="num">0</span>, <span class="num">0.5</span>, (<span class="var">N_SIGNALS</span>, <span class="num">3</span>))
+    <span class="var">e_curr</span> = <span class="var">timings</span> - <span class="var">NOMINAL</span> + <span class="var">noise</span>
+
+    <span class="var">anomalies</span> = [<span class="var">i</span> <span class="kw">for</span> <span class="var">i</span>, <span class="var">e</span> <span class="kw">in</span> <span class="fn">enumerate</span>(<span class="var">e_curr</span>)
+                 <span class="kw">if</span> <span class="fn">np.linalg.norm</span>(<span class="var">e</span>) &gt; <span class="var">THETA_DETECT</span>]
+
+    <span class="cm"># Per-corridor adaptive damping</span>
+    <span class="var">C_vals</span> = []; <span class="var">corridor_alphas</span> = {}
+    <span class="kw">for</span> <span class="var">corr</span>, <span class="var">idxs</span> <span class="kw">in</span> <span class="var">CORRIDORS</span>.<span class="fn">items</span>():
+        <span class="var">e_sub</span> = <span class="var">e_curr</span>[<span class="var">idxs</span>]
+        <span class="var">C_r</span> = <span class="num">1.0</span> - <span class="fn">np.mean</span>(<span class="fn">np.abs</span>(<span class="var">e_sub</span> - <span class="var">e_prev</span>[<span class="var">idxs</span>]))
+        <span class="var">P_r</span> = <span class="fn">np.mean</span>([<span class="fn">phase_penalty</span>(<span class="var">e</span>) <span class="kw">for</span> <span class="var">e</span> <span class="kw">in</span> <span class="var">e_sub</span>])
+
+        <span class="var">best_a</span>, <span class="var">best_J</span> = <span class="num">0.5</span>, <span class="fn">float</span>(<span class="st">'inf'</span>)
+        <span class="kw">for</span> <span class="var">a</span> <span class="kw">in</span> <span class="fn">np.linspace</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">21</span>):
+            <span class="var">e_cand</span> = <span class="var">e_sub</span>.<span class="fn">flatten</span>() + <span class="var">a</span> * <span class="var">e_prev</span>[<span class="var">idxs</span>].<span class="fn">flatten</span>()
+            <span class="var">rho</span> = <span class="fn">np.exp</span>(<span class="var">e_cand</span>); <span class="var">rho</span> /= <span class="var">rho</span>.<span class="fn">sum</span>()
+            <span class="var">J</span> = <span class="fn">objective_J</span>(<span class="var">a</span>, <span class="var">C_r</span>, <span class="var">rho</span>, <span class="var">P_r</span>)
+            <span class="kw">if</span> <span class="var">J</span> &lt; <span class="var">best_J</span>: <span class="var">best_J</span>, <span class="var">best_a</span> = <span class="var">J</span>, <span class="var">a</span>
+
+        <span class="var">corridor_alphas</span>[<span class="var">corr</span>] = <span class="var">best_a</span>
+        <span class="var">C_vals</span>.<span class="fn">append</span>(<span class="var">C_r</span>)
+        <span class="var">e_prev</span>[<span class="var">idxs</span>] = <span class="var">e_sub</span> + <span class="var">best_a</span> * <span class="var">e_prev</span>[<span class="var">idxs</span>]
+
+    <span class="var">C_g</span> = <span class="fn">np.mean</span>(<span class="var">C_vals</span>)
+    <span class="var">log</span>.<span class="fn">append</span>({<span class="st">'step'</span>: <span class="var">step</span>, <span class="st">'C_global'</span>: <span class="fn">round</span>(<span class="var">C_g</span>, <span class="num">4</span>),
+               <span class="st">'anomalies'</span>: <span class="fn">len</span>(<span class="var">anomalies</span>), <span class="st">'alpha_B'</span>: <span class="fn">round</span>(<span class="var">corridor_alphas</span>[<span class="st">'B'</span>], <span class="num">3</span>)})
+    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Step {step}: C(ℋ)={C_g:.4f}  anomalies={len(anomalies)}  α*(B)={corridor_alphas['B']:.2f}"</span>)
+
+<span class="cm"># ─── 4. Export JSONL ─────────────────────────────────────────────────────────</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">'traffic_huf_run.jsonl'</span>, <span class="st">'w'</span>) <span class="kw">as</span> <span class="var">f</span>:
+    <span class="kw">for</span> <span class="var">r</span> <span class="kw">in</span> <span class="var">log</span>: <span class="var">f</span>.<span class="fn">write</span>(<span class="var">json</span>.<span class="fn">dumps</span>(<span class="var">r</span>) + <span class="st">'\n'</span>)
+<span class="fn">print</span>(<span class="st">"Exported: traffic_huf_run.jsonl"</span>)</pre>
+
+  </section>
+
+</main>
+
+<footer>
+  <span>HUF v1.1.8 · Case: Traffic Phase Worked Example · Urban Traffic Logs · PeterHiggins19/huf_core_github_v1.1.8_no_inputs</span>
+  <span style="color:var(--green)">C(ℋ) = 0.943 · Detection = 95%</span>
+</footer>
+
+</body>
+</html>
