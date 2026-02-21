@@ -1,7 +1,5 @@
 # Higgins Unity Framework (HUF) — Documentation
-
 ![HUF cover](assets/huf_cover.png)
-
 This site is meant to help you **run HUF first**, then learn the rest in small steps.
 
 ## Start here
