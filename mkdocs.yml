@@ -81,7 +81,8 @@ nav:
 
   - Reference:
       - Docs inventory: docs_inventory.md
-      - Handbook: handbook.md
+      - [HUF Clean Handbook v1.3.0 (DOCX)](assets/papers/HUF_Clean_Handbook_v1.3.0.docx)
+      - [HUF Skeptic Appendix v1.3.0 (DOCX)](assets/papers/HUF_Skeptic_Appendix_v1.3.0.docx)
       - Reference manual: reference_manual.md
       - Troubleshooting: troubleshooting.md
       - Repo hygiene (clean commits): repo_hygiene.md
