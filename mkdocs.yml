@@ -2,10 +2,10 @@ site_name: Higgins Unity Framework (HUF)
 site_description: Normalization-invariant audit layer for hierarchical mixtures (regimes/tenants/sources)
 site_author: Peter Higgins
 
-site_url: https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/
+site_url: https://peterhiggins19.github.io/huf_core/
 
-repo_url: https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs
-repo_name: huf-core
+repo_url: https://github.com/PeterHiggins19/huf_core
+repo_name: PeterHiggins19/huf_core
 edit_uri: edit/main/docs/
 
 theme:
