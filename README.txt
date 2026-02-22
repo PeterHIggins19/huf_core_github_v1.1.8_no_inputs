@@ -1,20 +1,22 @@
-HUF polish bundle (v3)
+HUF polish bundle (v4)
 ======================
 
-This v3 bundle fixes two issues:
-1) PowerShell 5.1 parsing problems caused by non-ASCII characters in .ps1 files.
-2) The '--' replacement bug (char vs string overload).
+Fixes
+-----
+- PowerShell 5.1 parsing issues (no backticks, no non-ASCII in the .ps1 file).
+- Correctly repairs common mojibake (â€œ / Ã¢â‚¬Å“ forms) by CP1252->UTF8 reversal.
+- Normalizes punctuation to ASCII to prevent recurrence.
 
 Included
 --------
-- scripts/fix_readme_mojibake.ps1  (ASCII-only; safe on Windows PowerShell 5.1)
-- .gitattributes                   (exclude partner HTML from Linguist language stats)
-- .gitignore.additions.txt         (lines to paste into your .gitignore)
-- README_TOP_SUGGESTION.md         (new README header: no "Snapshot", PROOF moved up)
+- scripts/fix_readme_mojibake.ps1
+- .gitattributes
+- .gitignore.additions.txt
+- README_TOP_SUGGESTION.md
 
-How to apply
-------------
-1) Unzip into your repo root (overwrite existing files).
+Steps
+-----
+1) Unzip into repo root (overwrite existing files).
 2) Run:
    powershell -ExecutionPolicy Bypass -File scripts\fix_readme_mojibake.ps1
 
@@ -23,7 +25,7 @@ How to apply
 
 4) Commit + push:
    git add README.md .gitattributes
-   git commit -m "Fix README encoding + adjust Linguist stats"
+   git commit -m "Fix README encoding + reduce Linguist HTML noise"
    git push
 
-Generated: 2026-02-22T05:23:19
+Generated: 2026-02-22T05:31:35
