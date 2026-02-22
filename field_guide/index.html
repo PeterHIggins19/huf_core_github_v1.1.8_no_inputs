@@ -3007,7 +3007,7 @@ Mathematical analogies (entropy, wavefronts, sheaves, etc.) are presented as <st
 <li><em>What changed between baseline and exception views?</em>  </li>
 <li><em>Why did each item stay or get discarded?</em>  </li>
 </ul>
-<p>The “counter‑intuitive” part is intentional: <strong>discarding tail mass and then re-normalizing makes the retained portion look stronger</strong>. HUF makes that effect explicit (and auditable), so humans don’t misread it as “magic.”</p>
+<p>The “counter‑intuitive” part is intentional: <strong>discarding tail mass and then re-normalizing makes the retained portion look stronger</strong>. HUF makes that effect explicit (and auditable), so it is less likely to be misinterpreted as a black-box effect.</p>
 <hr />
 <h2 id="2-origin-story-wavefront-control-audit-layers">2. Origin story: wavefront control → audit layers<a class="headerlink" href="#2-origin-story-wavefront-control-audit-layers" title="Permanent link">&para;</a></h2>
 <p>HUF wasn’t invented as “a library feature.” It emerged from experimental work in <strong>multi-driver wavefront control</strong>, where many drivers must combine into a coherent field without any one driver silently dominating the energy budget.</p>
@@ -3137,10 +3137,10 @@ This can be used to define distances between mixtures, but the geometry is a <st
 <p><strong>Meaning:</strong> sort items by mass share; count the minimum number needed to cover 90% of total mass.<br />
 Lower count → more concentrated mix (fewer items dominate).</p>
 <div class="admonition tip">
-<p class="admonition-title">How to explain it to a human</p>
-<p>Baseline view: “Where is the mass across everything?”<br />
-Exception view: “Where is the mass given only the exceptions?”<br />
-Re-normalization makes the exception story <em>sharper</em>, so concentration becomes visible instead of blurred.</p>
+<p class="admonition-title">How to interpret it</p>
+<p>Baseline view: "Where is the mass across everything?"
+Exception view: "Where is the mass given only the exceptions?"
+Re-normalization makes the exception view sharper, so concentration becomes visible instead of blurred.</p>
 </div>
 <hr />
 <h2 id="7-domain-map-where-huf-applies">7. Domain map (where HUF applies)<a class="headerlink" href="#7-domain-map-where-huf-applies" title="Permanent link">&para;</a></h2>
