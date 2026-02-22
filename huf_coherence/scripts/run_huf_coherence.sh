@@ -1,4 +1,4 @@
-\
+﻿\
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -7,7 +7,7 @@
     "$PY" -m pip install --upgrade pip
     "$PY" -m pip install -r requirements.txt
 
-    "$PY" -m pip install "git+https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs.git"
+    "$PY" -m pip install "git+https://github.com/PeterHiggins19/huf_core.git"
 
     OUT="out/demo"
     mkdir -p "$OUT"

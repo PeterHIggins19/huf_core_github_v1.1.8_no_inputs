@@ -1,4 +1,4 @@
-# Start Here (Developer)
+﻿# Start Here (Developer)
 
 This page assumes you already have the repo locally (git clone or GitHub Desktop).
 

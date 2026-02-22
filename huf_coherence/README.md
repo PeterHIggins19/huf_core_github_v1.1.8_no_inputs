@@ -1,4 +1,4 @@
-\
+﻿\
     # HUF coherence audit for Weaviate retrieval exports
 
     This example turns a **saved retrieval export** (Weaviate or any vector DB) into a **HUF audit**:
@@ -24,4 +24,4 @@
 
     ## Canonical HUF repo used by this example
 
-    - https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs
+    - https://github.com/PeterHiggins19/huf_core
