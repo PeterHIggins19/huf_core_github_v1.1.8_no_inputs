@@ -12,20 +12,27 @@ function Patch-Folder([string]$Folder) {
     return
   }
 
-  $map = [ordered]@{
-    # Old docs site -> new docs site
-    "https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/" = "https://peterhiggins19.github.io/huf_core/";
-    # Old repo URL -> new repo URL
-    "https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs" = "https://github.com/PeterHiggins19/huf_core";
-    # Fix common typo casing in username
-    "https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs" = "https://github.com/PeterHiggins19/huf_core";
-    # Repo slug text (non-URL)
-    "PeterHiggins19/huf_core_github_v1.1.8_no_inputs" = "PeterHiggins19/huf_core";
+  # IMPORTANT: use an ordered list of replacement pairs (PowerShell hashtables are case-insensitive by default,
+  # which can cause "duplicate key" parser errors for URLs that differ only by case, e.g. PeterHiggins vs PeterHIggins).
+  $pairs = @(
+    # Old docs site -> new docs site (with and without trailing slash)
+    @("https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs/", "https://peterhiggins19.github.io/huf_core/"),
+    @("https://peterhiggins19.github.io/huf_core_github_v1.1.8_no_inputs",  "https://peterhiggins19.github.io/huf_core/"),
+
+    # Old repo URL -> new repo URL (correct + common typo variant)
+    @("https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs", "https://github.com/PeterHiggins19/huf_core"),
+    @("https://github.com/PeterHIggins19/huf_core_github_v1.1.8_no_inputs", "https://github.com/PeterHiggins19/huf_core"),
+
     # git+ install URLs
-    "git+https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs.git" = "git+https://github.com/PeterHiggins19/huf_core.git";
-    # Common CLI instructions
-    "cd huf_core_github_v1.1.8_no_inputs" = "cd huf_core";
-  }
+    @("git+https://github.com/PeterHiggins19/huf_core_github_v1.1.8_no_inputs.git", "git+https://github.com/PeterHiggins19/huf_core.git"),
+
+    # Repo slug text (non-URL) and cd instructions
+    @("PeterHiggins19/huf_core_github_v1.1.8_no_inputs", "PeterHiggins19/huf_core"),
+    @("cd huf_core_github_v1.1.8_no_inputs", "cd huf_core"),
+
+    # Fallback: plain repo folder name occurrences (kept last to avoid breaking more specific replacements)
+    @("huf_core_github_v1.1.8_no_inputs", "huf_core")
+  )
 
   $files = Get-ChildItem $Folder -Recurse -File -Include *.html,*.md,*.txt
   if (!$files -or $files.Count -eq 0) {
@@ -43,8 +50,10 @@ function Patch-Folder([string]$Folder) {
   foreach ($f in $files) {
     $txt = Get-Content -Raw -LiteralPath $f.FullName
     $new = $txt
-    foreach ($k in $map.Keys) {
-      $new = $new.Replace($k, $map[$k])
+    foreach ($pair in $pairs) {
+      $from = $pair[0]
+      $to   = $pair[1]
+      $new = $new.Replace($from, $to)
     }
     if ($new -ne $txt) {
       Set-Content -LiteralPath $f.FullName -Value $new -Encoding utf8
