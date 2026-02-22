@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://peterhiggins19.github.io/huf_core/field_guide/">
       
       
+        <link rel="prev" href="../huf_reference/">
+      
+      
+        <link rel="next" href="../ethics/">
       
       
         
@@ -25,7 +29,7 @@
     
     
       
-        <title>HUF Field Guide — Architecture, Artifacts, and Domain Map - Higgins Unity Framework (HUF)</title>
+        <title>HUF Field Guide - Higgins Unity Framework (HUF)</title>
       
     
     
@@ -112,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HUF Field Guide — Architecture, Artifacts, and Domain Map
+              HUF Field Guide
             
           </span>
         </div>
@@ -338,8 +342,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -349,6 +355,8 @@
       
         
       
+        
+      
     
     
     
@@ -358,13 +366,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
@@ -385,7 +391,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -447,6 +453,352 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HUF Field Guide
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HUF Field Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-huf-does-in-one-paragraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What HUF does in one paragraph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-origin-story-wavefront-control-audit-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Origin story: wavefront control → audit layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-core-architecture-conceptual-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Core architecture (conceptual pipeline)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-artifacts-what-every-run-emits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Artifacts (what every run emits)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Artifacts (what every run emits)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#artifact_1_coherence_mapcsv-where-the-mass-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        artifact_1_coherence_map.csv — where the mass is
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact_2_active_setcsv-what-was-retained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        artifact_2_active_set.csv — what was retained
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact_3_trace_reportjsonl-why-it-stayed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        artifact_3_trace_report.jsonl — why it stayed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact_4_error_budgetjson-what-was-discarded-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        artifact_4_error_budget.json — what was discarded (accounting)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mathematical-core-minimal-safe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Mathematical core (minimal, safe)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Mathematical core (minimal, safe)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#regimes-and-mass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regimes and mass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retention-and-renormalization-the-counter-intuitive-part" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retention and renormalization (the counter-intuitive part)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-geometry-interpretive-but-useful" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional geometry (interpretive, but useful)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-the-proof-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. The PROOF line
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-domain-map-where-huf-applies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Domain map (where HUF applies)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Domain map (where HUF applies)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#civic-budgets-allocation-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Civic: budgets / allocation tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#civic-traffic-signal-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Civic: traffic signal telemetry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#science-instrument-channels-data-products-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Science: instrument channels / data products (template)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rag-vector-databases-multi-tenant-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RAG / vector databases / multi-tenant retrieval
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-stability-and-convergence-practical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Stability and convergence (practical)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-huf-vs-other-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. HUF vs other approaches
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Quick start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Glossary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2569,6 +2921,46 @@
 
   
 
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href=".." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../handbook/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    HUF Books
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
 
               
               <article class="md-content__inner md-typeset">
