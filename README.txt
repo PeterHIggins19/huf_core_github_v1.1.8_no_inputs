@@ -1,45 +1,27 @@
-Partner HTML Link Patch (v2)
-============================
+HUF polish bundle
+=================
 
-Why v2
-------
-PowerShell hashtables are case-insensitive by default, so keys that differ only by case
-(e.g., PeterHiggins19 vs PeterHIggins19) trigger a "duplicate key" parser error.
-v2 uses an ordered list of replacement pairs instead.
+Included
+--------
+- scripts/fix_readme_mojibake.ps1      (fix UTF-8 mojibake in README.md)
+- .gitattributes                       (exclude partner HTML from Linguist language stats)
+- .gitignore.additions.txt             (lines to paste into your .gitignore)
+- README_TOP_SUGGESTION.md             (suggested new README header with PROOF line)
 
-Purpose
--------
-Updates partner-facing HTML (and any accompanying markdown/text in the same folder)
-so all links/footers point to the canonical repo/site:
+How to use
+----------
+1) Unzip into your repo root (it adds scripts/ and the other files).
+2) Fix README encoding:
+   powershell -ExecutionPolicy Bypass -File scripts\fix_readme_mojibake.ps1
 
-  Repo: https://github.com/PeterHiggins19/huf_core
-  Docs: https://peterhiggins19.github.io/huf_core/
+3) Apply .gitattributes:
+   - If you already have .gitattributes, merge the content.
+   - Otherwise copy in the provided .gitattributes.
 
-What it does
-------------
-- Creates a timestamped backup folder next to notes\partner_html
-- Rewrites old repo/site strings to the new canonical ones
-- Fixes the common typo "PeterHIggins19" -> "PeterHiggins19"
-- Updates git+ install URLs and "cd ..." instructions
+4) Add the .gitignore additions:
+   - Paste the contents of .gitignore.additions.txt into your existing .gitignore.
 
-How to run (PowerShell)
------------------------
-From the repo root:
+5) (Optional) Update README title + move PROOF line up:
+   - Use README_TOP_SUGGESTION.md as your new top section.
 
-  powershell -ExecutionPolicy Bypass -File scripts\patch_partner_html_links.ps1
-
-Optional: also patch notes\legacy_md:
-
-  powershell -ExecutionPolicy Bypass -File scripts\patch_partner_html_links.ps1 -IncludeLegacyNotes
-
-Verify
-------
-  rg "huf_core_github_v1\.1\.8_no_inputs|PeterHIggins19|peterhiggins19\.github\.io/huf_core_github_v1\.1\.8_no_inputs" -n notes\partner_html
-
-Commit
-------
-  git add notes\partner_html
-  git commit -m "Update partner HTML links to canonical huf_core repo/site"
-  git push
-
-Generated: 2026-02-22T04:10:14
+Generated: 2026-02-22T05:11:56
