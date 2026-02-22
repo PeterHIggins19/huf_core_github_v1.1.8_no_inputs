@@ -78,3 +78,4 @@ If you see a warning about MkDocs 2.0, re-install the pinned versions:
 ```powershell
 .\.venv\Scripts\python -m pip install "mkdocs==1.6.1" "mkdocs-material==9.7.2"
 ```
+
