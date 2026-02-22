@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Traffic Phase Worked Example â€” HUF Case Study</title>
+<title>Traffic Phase Worked Example — HUF Case Study</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Azeret+Mono:ital,wght@0,300;0,400;0,600;1,300&family=Anton&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -258,14 +258,14 @@ footer {
   <a href="#simulation">Simulation</a>
   <a href="#code">Code</a>
   <div class="nav-sep"></div>
-  <span class="nav-badge">TRAFFIC Â· PHASE Â· ANOMALY</span>
+  <span class="nav-badge">TRAFFIC · PHASE · ANOMALY</span>
 </nav>
 
 <div class="hero">
-  <div class="hero-eyebrow">HUF Case Study Â· Urban Infrastructure Â· Signal Telemetry</div>
+  <div class="hero-eyebrow">HUF Case Study · Urban Infrastructure · Signal Telemetry</div>
   <h1><span class="g">GREEN</span> <span class="a">AMBER</span><br><span class="r">RED</span> PHASE</h1>
   <p class="hero-desc">
-    HUF applied to traffic signal telemetry â€” treating phase timing sequences as hierarchical regimes,
+    HUF applied to traffic signal telemetry — treating phase timing sequences as hierarchical regimes,
     detecting timing anomalies across 100 signals with 95% accuracy, and localizing faults to specific
     intersections before they cascade into network-wide congestion.
   </p>
@@ -280,7 +280,7 @@ footer {
       <div class="phase-unit">nominal</div>
     </div>
     <div class="phase-block">
-      <div class="phase-light a">â€”</div>
+      <div class="phase-light a">—</div>
       <div class="phase-name">Amber Phase</div>
       <div class="phase-val">5<span class="phase-unit"> s</span></div>
       <div class="phase-unit">nominal</div>
@@ -294,8 +294,8 @@ footer {
     <div class="phase-stats">
       <div class="phase-stat"><span class="stat-label">Total signals monitored</span><span class="stat-val">100</span></div>
       <div class="phase-stat"><span class="stat-label">Anomaly detection accuracy</span><span class="stat-val good">95%</span></div>
-      <div class="phase-stat"><span class="stat-label">Post-HUF C(â„‹)</span><span class="stat-val good">0.943</span></div>
-      <div class="phase-stat"><span class="stat-label">Drift reduction</span><span class="stat-val good">âˆ’18%</span></div>
+      <div class="phase-stat"><span class="stat-label">Post-HUF C(ℋ)</span><span class="stat-val good">0.943</span></div>
+      <div class="phase-stat"><span class="stat-label">Drift reduction</span><span class="stat-val good">−18%</span></div>
       <div class="phase-stat"><span class="stat-label">Data source</span><span class="stat-val">Urban traffic logs</span></div>
     </div>
   </div>
@@ -304,17 +304,17 @@ footer {
 <main>
 
   <section id="context">
-    <div class="section-num">01 â€” CONTEXT</div>
+    <div class="section-num">01 — CONTEXT</div>
     <h2>SIGNAL ANOMALY LOCALIZATION</h2>
     <p>
-      Urban traffic signal controllers log phase timings every cycle (~60 seconds). Drift from nominal timings â€”
-      caused by controller firmware glitches, sensor faults, or adaptive timing overrides â€” creates
+      Urban traffic signal controllers log phase timings every cycle (~60 seconds). Drift from nominal timings —
+      caused by controller firmware glitches, sensor faults, or adaptive timing overrides — creates
       <strong>cascading congestion</strong>: a single intersection running 15s extra green can back up
       arterials for six blocks within three cycles.
     </p>
     <p>
       The traffic phase case is HUF's <strong>anomaly-localization template</strong>. The hierarchy mirrors
-      the road network: intersection â†’ corridor â†’ zone. Each phase (green/amber/red) is a regime within an
+      the road network: intersection → corridor → zone. Each phase (green/amber/red) is a regime within an
       intersection's timing cycle. HUF detects which regime is drifting, at which intersection, and estimates
       the optimal re-damping to return the network to nominal flow without requiring a full controller reset.
     </p>
@@ -323,28 +323,28 @@ footer {
       <div class="card green-border">
         <div class="card-label">Green regime</div>
         <h3>Normal flow phase</h3>
-        <p>30s nominal. Anomaly threshold: |t_green âˆ’ 30| &gt; 5s. Drift source: adaptive timing override from upstream queue detector.</p>
+        <p>30s nominal. Anomaly threshold: |t_green − 30| &gt; 5s. Drift source: adaptive timing override from upstream queue detector.</p>
       </div>
       <div class="card amber-border">
         <div class="card-label">Amber regime</div>
         <h3>Clearance phase</h3>
-        <p>5s nominal. Anomaly threshold: |t_amber âˆ’ 5| &gt; 2s. Most stable regime; amber drift usually indicates controller fault.</p>
+        <p>5s nominal. Anomaly threshold: |t_amber − 5| &gt; 2s. Most stable regime; amber drift usually indicates controller fault.</p>
       </div>
       <div class="card red-border">
         <div class="card-label">Red regime</div>
         <h3>Stop phase</h3>
-        <p>25s nominal. Anomaly threshold: |t_red âˆ’ 25| &gt; 5s. Drift source: pedestrian crossing extension, emergency preemption.</p>
+        <p>25s nominal. Anomaly threshold: |t_red − 25| &gt; 5s. Drift source: pedestrian crossing extension, emergency preemption.</p>
       </div>
     </div>
   </section>
 
   <section id="data">
-    <div class="section-num">02 â€” DATA</div>
+    <div class="section-num">02 — DATA</div>
     <h2>TELEMETRY STRUCTURE</h2>
     <p>
       100 traffic signals log phase timings at 1-minute resolution from urban traffic management logs.
       Each intersection produces a 3-dimensional timing vector (t_green, t_amber, t_red) per cycle.
-      HUF treats each intersection as a node v âˆˆ â„‹ and each phase as a regime dimension.
+      HUF treats each intersection as a node v ∈ ℋ and each phase as a regime dimension.
     </p>
 
     <div class="card-grid">
@@ -355,13 +355,13 @@ footer {
       </div>
       <div class="card">
         <div class="card-label">Regimes</div>
-        <h3>3 phases Ã— N corridors</h3>
+        <h3>3 phases × N corridors</h3>
         <p>Green/Amber/Red form sub-regimes within each corridor. Corridors (e.g., Main St arterial, cross-street grid) form the top-level partition.</p>
       </div>
       <div class="card">
         <div class="card-label">Drift Metric</div>
         <h3>Timing deviation vector</h3>
-        <p>e_v = [t_green âˆ’ 30, t_amber âˆ’ 5, t_red âˆ’ 25]. Zero vector = perfect nominal. Euclidean norm used for drift detection.</p>
+        <p>e_v = [t_green − 30, t_amber − 5, t_red − 25]. Zero vector = perfect nominal. Euclidean norm used for drift detection.</p>
       </div>
       <div class="card">
         <div class="card-label">Anomaly Ground Truth</div>
@@ -416,7 +416,7 @@ footer {
   </section>
 
   <section id="math">
-    <div class="section-num">03 â€” MATH</div>
+    <div class="section-num">03 — MATH</div>
     <h2>PHASE-CONDITIONED OBJECTIVE</h2>
     <p>
       The traffic adaptation introduces a <strong>phase-compliance penalty</strong> P_r that quantifies
@@ -425,25 +425,25 @@ footer {
     </p>
 
     <div class="math-box">
-      <div class="eq">e_v = [t_green âˆ’ 30, t_amber âˆ’ 5, t_red âˆ’ 25]</div>
+      <div class="eq">e_v = [t_green − 30, t_amber − 5, t_red − 25]</div>
       <div class="cm">  // deviation vector; nominal = [0,0,0]; units = seconds</div>
       <br>
-      <div class="eq">N(e_v | corridor) = (e_v âˆ’ Î¼_corr) / Ïƒ_corr âŠ™ w_v</div>
+      <div class="eq">N(e_v | corridor) = (e_v − μ_corr) / σ_corr ⊙ w_v</div>
       <div class="cm">  // normalise relative to corridor average; w_v = inverse-frequency weight</div>
       <br>
-      <div class="eq">P_r = max(0, |t_phase_r âˆ’ t_nominal_r| âˆ’ threshold_r) / t_nominal_r</div>
+      <div class="eq">P_r = max(0, |t_phase_r − t_nominal_r| − threshold_r) / t_nominal_r</div>
       <div class="cm">  // P_r = 0 if within threshold; rises linearly beyond</div>
       <div class="cm">  // thresholds: green=5s, amber=2s, red=5s</div>
       <br>
-      <div class="eq">J_r(Î±_r) = (1 âˆ’ C_r) + Î» Â· Var(Ï_local,r) + Ï€ Â· P_r</div>
-      <div class="cm">  // Î» = 0.1, Ï€ = 0.20 (phase-compliance coefficient)</div>
-      <div class="cm">  // high P_r â†’ high J_r â†’ lower Î±_r* â†’ less inheritance from faulty corridor</div>
+      <div class="eq">J_r(α_r) = (1 − C_r) + λ · Var(ρ_local,r) + π · P_r</div>
+      <div class="cm">  // λ = 0.1, π = 0.20 (phase-compliance coefficient)</div>
+      <div class="cm">  // high P_r → high J_r → lower α_r* → less inheritance from faulty corridor</div>
       <br>
-      <div class="eq">J(Î±) = Î£_r w_r Â· J_r(Î±_r) + Î³ Â· Cov(Ï_global)</div>
-      <div class="cm">  // Î³ = 0.05; w_r = 1/|P_r + Îµ| (penalize faulty regimes globally)</div>
+      <div class="eq">J(α) = Σ_r w_r · J_r(α_r) + γ · Cov(ρ_global)</div>
+      <div class="cm">  // γ = 0.05; w_r = 1/|P_r + ε| (penalize faulty regimes globally)</div>
       <br>
-      <div class="eq">Anomaly alert: if ||e_v||â‚‚ > Î¸_detect = 7.0, flag controller v</div>
-      <div class="cm">  // Î¸_detect calibrated to 95% detection accuracy on 100-signal test set</div>
+      <div class="eq">Anomaly alert: if ||e_v||₂ > θ_detect = 7.0, flag controller v</div>
+      <div class="cm">  // θ_detect calibrated to 95% detection accuracy on 100-signal test set</div>
     </div>
 
     <div class="card-grid">
@@ -461,12 +461,12 @@ footer {
   </section>
 
   <section id="simulation">
-    <div class="section-num">04 â€” SIMULATION</div>
+    <div class="section-num">04 — SIMULATION</div>
     <h2>10-STEP FAULT INJECTION RUN</h2>
     <p>
       Simulates 10 one-minute cycles across 100 signals. A green-phase fault is injected at step 3
       on corridor B (signals SIG-050 to SIG-060): green extends to 38s, red compresses to 17s.
-      HUF detects at step 3, damps corridor B at step 4, and network C(â„‹) recovers by step 7.
+      HUF detects at step 3, damps corridor B at step 4, and network C(ℋ) recovers by step 7.
     </p>
 
     <div class="sim-wrap">
@@ -475,19 +475,19 @@ footer {
           <tr>
             <th>Step</th>
             <th>Event</th>
-            <th>Î±* (Corr-A, green)</th>
-            <th>Î±* (Corr-B, green)</th>
+            <th>α* (Corr-A, green)</th>
+            <th>α* (Corr-B, green)</th>
             <th>P_r (Corr-B)</th>
             <th>Anomalies flagged</th>
-            <th>C(â„‹) global</th>
+            <th>C(ℋ) global</th>
             <th>items_90pct</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>0</td><td>Nominal state</td><td>â€”</td><td>â€”</td><td>0.00</td><td>0</td><td>â€”</td><td>8</td></tr>
+          <tr><td>0</td><td>Nominal state</td><td>—</td><td>—</td><td>0.00</td><td>0</td><td>—</td><td>8</td></tr>
           <tr><td>1</td><td>Normal ops</td><td class="val-green">0.54</td><td class="val-green">0.53</td><td>0.00</td><td>0</td><td class="val-green">0.948</td><td>9</td></tr>
           <tr><td>2</td><td>Normal ops</td><td class="val-green">0.53</td><td class="val-green">0.53</td><td>0.02</td><td>1</td><td class="val-green">0.946</td><td>9</td></tr>
-          <tr><td>3</td><td style="color:var(--red)">Fault: green=38s â†‘</td><td class="val-green">0.53</td><td class="val-red">0.28</td><td class="val-red">0.27</td><td class="val-red">11</td><td class="val-amber">0.931</td><td>7</td></tr>
+          <tr><td>3</td><td style="color:var(--red)">Fault: green=38s ↑</td><td class="val-green">0.53</td><td class="val-red">0.28</td><td class="val-red">0.27</td><td class="val-red">11</td><td class="val-amber">0.931</td><td>7</td></tr>
           <tr><td>4</td><td>HUF damps Corr-B</td><td class="val-green">0.54</td><td class="val-amber">0.32</td><td class="val-amber">0.20</td><td class="val-amber">8</td><td class="val-amber">0.935</td><td>8</td></tr>
           <tr><td>5</td><td>Partial recovery</td><td class="val-green">0.53</td><td class="val-amber">0.38</td><td class="val-amber">0.15</td><td class="val-amber">5</td><td class="val-green">0.939</td><td>9</td></tr>
           <tr><td>6</td><td>Continued recovery</td><td class="val-green">0.53</td><td class="val-green">0.44</td><td>0.08</td><td>2</td><td class="val-green">0.940</td><td>9</td></tr>
@@ -501,7 +501,7 @@ footer {
 
     <div class="result-row">
       <div class="result-card">
-        <div class="rc-label">Final C(â„‹)</div>
+        <div class="rc-label">Final C(ℋ)</div>
         <div class="rc-val green">0.943</div>
         <div class="rc-delta">+18.1% vs no-HUF (0.799)</div>
       </div>
@@ -511,7 +511,7 @@ footer {
         <div class="rc-delta">95/100 fault cases correct</div>
       </div>
       <div class="result-card">
-        <div class="rc-label">Î±* at fault (Corr-B)</div>
+        <div class="rc-label">α* at fault (Corr-B)</div>
         <div class="rc-val amber">0.28</div>
         <div class="rc-delta">Damped: low inheritance</div>
       </div>
@@ -529,52 +529,52 @@ footer {
   </section>
 
   <section id="fit">
-    <div class="section-num">05 â€” FIT</div>
+    <div class="section-num">05 — FIT</div>
     <h2>ARCHITECTURE FITNESS</h2>
     <div class="fit-bar">
       <div class="fit-row">
-        <span class="fit-label">Signal network â†’ DAG hierarchy</span>
+        <span class="fit-label">Signal network → DAG hierarchy</span>
         <div class="fit-track"><div class="fit-fill" style="width:96%"></div></div>
         <span class="fit-pct">96%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">Phase timing deviation â†’ e_v embeddings</span>
+        <span class="fit-label">Phase timing deviation → e_v embeddings</span>
         <div class="fit-track"><div class="fit-fill" style="width:94%"></div></div>
         <span class="fit-pct">94%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">Phase compliance penalty P_r â†’ J_r term</span>
+        <span class="fit-label">Phase compliance penalty P_r → J_r term</span>
         <div class="fit-track"><div class="fit-fill" style="width:91%"></div></div>
         <span class="fit-pct">91%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">Euclidean detection â†’ timing fault localization</span>
+        <span class="fit-label">Euclidean detection → timing fault localization</span>
         <div class="fit-track"><div class="fit-fill" style="width:95%"></div></div>
         <span class="fit-pct">95%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">JSONL log â†’ signal controller audit trail</span>
+        <span class="fit-label">JSONL log → signal controller audit trail</span>
         <div class="fit-track"><div class="fit-fill" style="width:88%"></div></div>
         <span class="fit-pct">88%</span>
       </div>
     </div>
     <p>
-      <strong>Overall fit: 93%.</strong> The traffic case is HUF's anomaly-localization template â€” the primary
+      <strong>Overall fit: 93%.</strong> The traffic case is HUF's anomaly-localization template — the primary
       demonstration that HUF finds <em>where</em> drift is, not just that it exists. The hierarchical structure
-      (intersection â†’ corridor â†’ zone) gives multi-level localization, and the phase compliance penalty directly
-      translates an engineering spec (nominal timing Â± threshold) into a mathematical objective term.
+      (intersection → corridor → zone) gives multi-level localization, and the phase compliance penalty directly
+      translates an engineering spec (nominal timing ± threshold) into a mathematical objective term.
     </p>
   </section>
 
   <section id="code">
-    <div class="section-num">06 â€” CODE</div>
+    <div class="section-num">06 — CODE</div>
     <h2>PYTHON REFERENCE RUN</h2>
 
-<pre><span class="cm"># huf_traffic_phase.py â€” HUF worked example: traffic signal anomaly localization</span>
+<pre><span class="cm"># huf_traffic_phase.py — HUF worked example: traffic signal anomaly localization</span>
 <span class="kw">import</span> <span class="var">numpy</span> <span class="kw">as</span> <span class="var">np</span>
 <span class="kw">import</span> <span class="var">json</span>
 
-<span class="cm"># â”€â”€â”€ 1. Signal network setup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 1. Signal network setup ──────────────────────────────────────────────────</span>
 <span class="var">N_SIGNALS</span> = <span class="num">100</span>
 <span class="var">CORRIDORS</span> = {
     <span class="st">'A'</span>: <span class="fn">list</span>(<span class="fn">range</span>(<span class="num">0</span>, <span class="num">40</span>)),
@@ -591,7 +591,7 @@ footer {
 <span class="var">timings</span> = <span class="var">NOMINAL</span> + <span class="var">rng</span>.<span class="fn">normal</span>(<span class="num">0</span>, <span class="num">1.0</span>, (<span class="var">N_SIGNALS</span>, <span class="num">3</span>))
 <span class="var">e_prev</span> = (<span class="var">timings</span> - <span class="var">NOMINAL</span>).<span class="fn">copy</span>()  <span class="cm"># deviation vectors</span>
 
-<span class="cm"># â”€â”€â”€ 2. HUF objectives â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 2. HUF objectives ────────────────────────────────────────────────────────</span>
 <span class="kw">def</span> <span class="fn">phase_penalty</span>(<span class="var">e_v</span>):
     <span class="var">excess</span> = <span class="fn">np.maximum</span>(<span class="num">0</span>, <span class="fn">np.abs</span>(<span class="var">e_v</span>) - <span class="var">THRESHOLDS</span>) / <span class="var">NOMINAL</span>
     <span class="kw">return</span> <span class="fn">float</span>(<span class="fn">np.mean</span>(<span class="var">excess</span>))
@@ -599,7 +599,7 @@ footer {
 <span class="kw">def</span> <span class="fn">objective_J</span>(<span class="var">alpha</span>, <span class="var">C_r</span>, <span class="var">rho_r</span>, <span class="var">P_r</span>, <span class="var">lam</span>=<span class="num">0.1</span>, <span class="var">pi_</span>=<span class="num">0.20</span>):
     <span class="kw">return</span> (<span class="num">1</span>-<span class="var">C_r</span>) + <span class="var">lam</span>*<span class="fn">np.var</span>(<span class="var">rho_r</span>) + <span class="var">pi_</span>*<span class="var">P_r</span>
 
-<span class="cm"># â”€â”€â”€ 3. 10-step fault simulation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 3. 10-step fault simulation ──────────────────────────────────────────────</span>
 <span class="var">log</span> = []
 <span class="kw">for</span> <span class="var">step</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">11</span>):
     <span class="cm"># Inject fault at step 3: Corridor B green extends to 38s</span>
@@ -636,9 +636,9 @@ footer {
     <span class="var">C_g</span> = <span class="fn">np.mean</span>(<span class="var">C_vals</span>)
     <span class="var">log</span>.<span class="fn">append</span>({<span class="st">'step'</span>: <span class="var">step</span>, <span class="st">'C_global'</span>: <span class="fn">round</span>(<span class="var">C_g</span>, <span class="num">4</span>),
                <span class="st">'anomalies'</span>: <span class="fn">len</span>(<span class="var">anomalies</span>), <span class="st">'alpha_B'</span>: <span class="fn">round</span>(<span class="var">corridor_alphas</span>[<span class="st">'B'</span>], <span class="num">3</span>)})
-    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Step {step}: C(â„‹)={C_g:.4f}  anomalies={len(anomalies)}  Î±*(B)={corridor_alphas['B']:.2f}"</span>)
+    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Step {step}: C(ℋ)={C_g:.4f}  anomalies={len(anomalies)}  α*(B)={corridor_alphas['B']:.2f}"</span>)
 
-<span class="cm"># â”€â”€â”€ 4. Export JSONL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 4. Export JSONL ─────────────────────────────────────────────────────────</span>
 <span class="kw">with</span> <span class="fn">open</span>(<span class="st">'traffic_huf_run.jsonl'</span>, <span class="st">'w'</span>) <span class="kw">as</span> <span class="var">f</span>:
     <span class="kw">for</span> <span class="var">r</span> <span class="kw">in</span> <span class="var">log</span>: <span class="var">f</span>.<span class="fn">write</span>(<span class="var">json</span>.<span class="fn">dumps</span>(<span class="var">r</span>) + <span class="st">'\n'</span>)
 <span class="fn">print</span>(<span class="st">"Exported: traffic_huf_run.jsonl"</span>)</pre>
@@ -648,10 +648,9 @@ footer {
 </main>
 
 <footer>
-  <span>HUF v1.1.8 Â· Case: Traffic Phase Worked Example Â· Urban Traffic Logs Â· PeterHiggins19/huf_core</span>
-  <span style="color:var(--green)">C(â„‹) = 0.943 Â· Detection = 95%</span>
+  <span>HUF v1.1.8 · Case: Traffic Phase Worked Example · Urban Traffic Logs · PeterHiggins19/huf_core_github_v1.1.8_no_inputs</span>
+  <span style="color:var(--green)">C(ℋ) = 0.943 · Detection = 95%</span>
 </footer>
 
 </body>
 </html>
-

@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planck LFI 70 GHz â€” HUF Case Study</title>
+<title>Planck LFI 70 GHz — HUF Case Study</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Barlow:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -318,15 +318,15 @@ footer {
   <a href="#simulation">Simulation</a>
   <a href="#code">Code</a>
   <div class="nav-sep"></div>
-  <span class="nav-tag">PLANCK Â· LFI Â· 70 GHz</span>
+  <span class="nav-tag">PLANCK · LFI · 70 GHz</span>
 </nav>
 
 <div class="hero">
-  <div class="hero-eyebrow">HUF Case Study Â· Scientific Â· ESA Dataset</div>
+  <div class="hero-eyebrow">HUF Case Study · Scientific · ESA Dataset</div>
   <h1>Planck Satellite<br><em>LFI 70 GHz</em></h1>
-  <div class="hero-sub">Cosmic Microwave Background Â· Hierarchical Coherence Validation</div>
+  <div class="hero-sub">Cosmic Microwave Background · Hierarchical Coherence Validation</div>
   <p class="hero-desc">
-    Applying HUF normalization to ESA's Planck satellite frequency maps â€” treating LFI channels as hierarchical regimes
+    Applying HUF normalization to ESA's Planck satellite frequency maps — treating LFI channels as hierarchical regimes
     and validating coherence across 1,000 sky temperature measurements. The first real-data proof that HUF converges
     on cosmic-scale drift.
   </p>
@@ -348,14 +348,14 @@ footer {
     </div>
     <div class="datum">
       <span class="datum-val">9 bands</span>
-      <div class="datum-label">30 â€“ 353 GHz</div>
+      <div class="datum-label">30 – 353 GHz</div>
     </div>
     <div class="datum">
       <span class="datum-val">0.968</span>
-      <div class="datum-label">Post-HUF C(â„‹)</div>
+      <div class="datum-label">Post-HUF C(ℋ)</div>
     </div>
     <div class="datum">
-      <span class="datum-val">âˆ’27%</span>
+      <span class="datum-val">−27%</span>
       <div class="datum-label">Drift reduction</div>
     </div>
   </div>
@@ -364,7 +364,7 @@ footer {
 <main>
 
   <section id="context">
-    <div class="section-eyebrow">01 â€” Context</div>
+    <div class="section-eyebrow">01 — Context</div>
     <h2>Why the Planck CMB?</h2>
     <p>
       The ESA Planck satellite produced the most precise maps of the Cosmic Microwave Background ever recorded.
@@ -375,8 +375,8 @@ footer {
     <p>
       This multi-frequency hierarchy is a natural HUF target: the channels form a DAG where each band is a
       <strong style="color:var(--text)">regime</strong> whose embeddings (temperature maps) must be normalized relative
-      to a parent sky model. Drift between channels â€” introduced by foreground contamination, calibration residuals,
-      and bandpass mismatch â€” maps directly to HUF's coherence degradation signal.
+      to a parent sky model. Drift between channels — introduced by foreground contamination, calibration residuals,
+      and bandpass mismatch — maps directly to HUF's coherence degradation signal.
     </p>
 
     <div class="freq-grid">
@@ -390,7 +390,7 @@ footer {
       </div>
       <div class="freq-item focal">
         <span class="freq-ghz">70 GHz</span>
-        <div class="freq-desc">PRIMARY â€” LFI focal plane</div>
+        <div class="freq-desc">PRIMARY — LFI focal plane</div>
       </div>
       <div class="freq-item">
         <span class="freq-ghz">100 GHz</span>
@@ -412,7 +412,7 @@ footer {
   </section>
 
   <section id="data">
-    <div class="section-eyebrow">02 â€” Dataset</div>
+    <div class="section-eyebrow">02 — Dataset</div>
     <h2>Real-Data Structure</h2>
     <p>
       The reference run uses 1,000 sky pixels drawn from the Planck 2018 public release, clustered into 7 frequency
@@ -423,23 +423,23 @@ footer {
     <div class="card-grid">
       <div class="card">
         <div class="card-label">Finite Elements</div>
-        <h3>Sky pixels v âˆˆ â„‹</h3>
+        <h3>Sky pixels v ∈ ℋ</h3>
         <p>1,000 HEALPix sky positions, each with a T_v measurement per LFI/HFI band. These are the atomic units HUF tracks.</p>
       </div>
       <div class="card">
         <div class="card-label">Regimes</div>
         <h3>7 frequency channels</h3>
-        <p>Each LFI/HFI band is a regime r with its own parent normalization Î¼_r, Ïƒ_r, and dependency weights w_vr.</p>
+        <p>Each LFI/HFI band is a regime r with its own parent normalization μ_r, σ_r, and dependency weights w_vr.</p>
       </div>
       <div class="card">
         <div class="card-label">Unity Budget</div>
-        <h3>Î£Ï = 1.0</h3>
+        <h3>Σρ = 1.0</h3>
         <p>Post-normalization softmax masses over all pixels sum to exactly 1. No energy is created or destroyed across channels.</p>
       </div>
       <div class="card">
         <div class="card-label">Drift Source</div>
         <h3>Calibration residuals</h3>
-        <p>Gain drift (â‰ˆ0.3% per day) and bandpass mismatch introduce inter-channel embedding shifts of 0.012â€“0.025 K RMS.</p>
+        <p>Gain drift (≈0.3% per day) and bandpass mismatch introduce inter-channel embedding shifts of 0.012–0.025 K RMS.</p>
       </div>
     </div>
 
@@ -454,7 +454,7 @@ footer {
         <div class="spec-bar" style="height:45%"></div>
       </div>
       <div class="spectrum-labels">
-        <span>30 GHz</span><span>44 GHz</span><span>70 GHz â† focal</span>
+        <span>30 GHz</span><span>44 GHz</span><span>70 GHz ← focal</span>
         <span>100 GHz</span><span>143 GHz</span><span>217 GHz</span><span>353 GHz</span>
       </div>
     </div>
@@ -464,7 +464,7 @@ footer {
   </section>
 
   <section id="math">
-    <div class="section-eyebrow">03 â€” Mathematical Adaptation</div>
+    <div class="section-eyebrow">03 — Mathematical Adaptation</div>
     <h2>HUF for Frequency Regimes</h2>
     <p>
       Standard HUF is adapted for the CMB hierarchy by treating each frequency band as a regime and introducing a
@@ -472,33 +472,33 @@ footer {
     </p>
 
     <div class="math-box">
-      <div class="eq">N(e_v | p) = (e_v âˆ’ Î¼_p) / Ïƒ_p âŠ™ w_vp</div>
-      <div class="comment">  // normalize each pixel relative to parent channel (Î¼_p, Ïƒ_p from 1000-point CMB stats)</div>
+      <div class="eq">N(e_v | p) = (e_v − μ_p) / σ_p ⊙ w_vp</div>
+      <div class="comment">  // normalize each pixel relative to parent channel (μ_p, σ_p from 1000-point CMB stats)</div>
       <br>
-      <div class="eq">e_v' = N(e_v | p) + Î± Â· e_p'</div>
-      <div class="comment">  // recursive form; Î± = damping between adjacent frequency levels in DAG</div>
+      <div class="eq">e_v' = N(e_v | p) + α · e_p'</div>
+      <div class="comment">  // recursive form; α = damping between adjacent frequency levels in DAG</div>
       <br>
-      <div class="eq">J_r(Î±_r) = (1 âˆ’ C_r) + Î» Â· Var(Ï_local,r) + Ï† Â· F_r</div>
+      <div class="eq">J_r(α_r) = (1 − C_r) + λ · Var(ρ_local,r) + φ · F_r</div>
       <div class="comment">  // per-regime objective; F_r = foreground fraction at frequency r</div>
-      <div class="comment">  // Î» = 0.1 (variance weight), Ï† = 0.08 (foreground penalty)</div>
+      <div class="comment">  // λ = 0.1 (variance weight), φ = 0.08 (foreground penalty)</div>
       <div class="comment">  // F_r: 30GHz=0.30, 44GHz=0.18, 70GHz=0.09, 143GHz=0.04, 353GHz=0.45</div>
       <br>
-      <div class="eq">J(Î±) = Î£_r w_r Â· J_r(Î±_r) + Î³ Â· Cov(Ï_global)</div>
-      <div class="comment">  // global objective; Î³ = 0.05; w_r inversely weighted by foreground fraction</div>
+      <div class="eq">J(α) = Σ_r w_r · J_r(α_r) + γ · Cov(ρ_global)</div>
+      <div class="comment">  // global objective; γ = 0.05; w_r inversely weighted by foreground fraction</div>
       <br>
-      <div class="eq">Î±_r* = argmin_{Î± âˆˆ [0,1]} J_r(Î±_r)</div>
-      <div class="comment">  // per-channel optimal damping; 70 GHz yields Î±* â‰ˆ 0.58 (clean regime, high inheritance)</div>
+      <div class="eq">α_r* = argmin_{α ∈ [0,1]} J_r(α_r)</div>
+      <div class="comment">  // per-channel optimal damping; 70 GHz yields α* ≈ 0.58 (clean regime, high inheritance)</div>
     </div>
 
     <div class="card-grid">
       <div class="card">
         <div class="card-label">Coherence Score</div>
-        <h3>C(â„‹) = 1 âˆ’ (1/|â„‹|) Î£â€–e_v' âˆ’ e_v^(t-1)â€–â‚‚</h3>
+        <h3>C(ℋ) = 1 − (1/|ℋ|) Σ‖e_v' − e_v^(t-1)‖₂</h3>
         <p>Measures stability of CMB temperature embeddings across consecutive normalization steps. Target C &gt; 0.95 for publication-quality maps.</p>
       </div>
       <div class="card">
         <div class="card-label">Foreground Penalty</div>
-        <h3>Ï† Â· F_r in J_r</h3>
+        <h3>φ · F_r in J_r</h3>
         <p>Penalizes regimes with heavy dust, synchrotron, or free-free contamination. Drives adaptive damping to reduce inheritance from dirty channels.</p>
       </div>
       <div class="card">
@@ -510,18 +510,18 @@ footer {
 
     <p>
       <strong style="color:var(--text)">Proof of Convergence (Proof 2 / Appendix A.1):</strong>
-      The objective J_r is convex and bounded on [0,1] Ã— F_r âˆˆ [0,1]. The foreground term Ï†Â·F_r is a non-negative
-      constant in Î±, preserving convexity. The global J is a weighted sum of convex functions, ensuring a unique
+      The objective J_r is convex and bounded on [0,1] × F_r ∈ [0,1]. The foreground term φ·F_r is a non-negative
+      constant in α, preserving convexity. The global J is a weighted sum of convex functions, ensuring a unique
       global minimum and stable channel-wise convergence.
     </p>
   </section>
 
   <section id="simulation">
-    <div class="section-eyebrow">04 â€” Drift Simulation</div>
+    <div class="section-eyebrow">04 — Drift Simulation</div>
     <h2>10-Step Calibration Drift Run</h2>
     <p>
-      Simulates 10 consecutive Planck data-processing epochs. At each step, calibration noise (Gaussian, Ïƒ=0.008 K)
-      is injected into all channels; HUF re-normalizes and updates Î±_r*. A foreground flare occurs at step 5
+      Simulates 10 consecutive Planck data-processing epochs. At each step, calibration noise (Gaussian, σ=0.008 K)
+      is injected into all channels; HUF re-normalizes and updates α_r*. A foreground flare occurs at step 5
       (F_30GHz temporarily rises to 0.45), triggering an alert and adaptive re-damping.
     </p>
 
@@ -531,21 +531,21 @@ footer {
           <tr>
             <th>Step</th>
             <th>Event</th>
-            <th>Î±* (70 GHz)</th>
-            <th>Î±* (353 GHz)</th>
-            <th>Ï_post (peak pixel)</th>
+            <th>α* (70 GHz)</th>
+            <th>α* (353 GHz)</th>
+            <th>ρ_post (peak pixel)</th>
             <th>C_local (70 GHz)</th>
-            <th>C(â„‹) global</th>
+            <th>C(ℋ) global</th>
             <th>kb_eroded</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>0</td><td>â€”</td><td>â€”</td><td>â€”</td><td>0.0112</td><td>â€”</td><td>â€”</td><td>â€”</td></tr>
+          <tr><td>0</td><td>—</td><td>—</td><td>—</td><td>0.0112</td><td>—</td><td>—</td><td>—</td></tr>
           <tr><td>1</td><td>Calibration noise</td><td class="val-hi">0.58</td><td>0.42</td><td>0.0109</td><td class="val-good">0.961</td><td class="val-good">0.962</td><td>0</td></tr>
           <tr><td>2</td><td>Calibration noise</td><td class="val-hi">0.57</td><td>0.43</td><td>0.0108</td><td class="val-good">0.959</td><td class="val-good">0.960</td><td>0</td></tr>
           <tr><td>3</td><td>Bandpass shift</td><td class="val-hi">0.55</td><td>0.43</td><td>0.0106</td><td class="val-good">0.955</td><td class="val-good">0.957</td><td>0</td></tr>
           <tr><td>4</td><td>Bandpass shift</td><td>0.54</td><td>0.44</td><td>0.0105</td><td>0.951</td><td>0.953</td><td>0</td></tr>
-          <tr><td>5</td><td style="color:var(--alert)">30 GHz flare â†‘</td><td>0.60</td><td class="val-warn">0.36</td><td>0.0103</td><td>0.948</td><td>0.947</td><td>2</td></tr>
+          <tr><td>5</td><td style="color:var(--alert)">30 GHz flare ↑</td><td>0.60</td><td class="val-warn">0.36</td><td>0.0103</td><td>0.948</td><td>0.947</td><td>2</td></tr>
           <tr><td>6</td><td>Post-flare adapt</td><td class="val-hi">0.61</td><td>0.38</td><td>0.0104</td><td>0.953</td><td>0.952</td><td>0</td></tr>
           <tr><td>7</td><td>Steady state</td><td class="val-hi">0.59</td><td>0.41</td><td>0.0105</td><td class="val-good">0.957</td><td class="val-good">0.958</td><td>0</td></tr>
           <tr><td>8</td><td>Steady state</td><td class="val-hi">0.58</td><td>0.42</td><td>0.0106</td><td class="val-good">0.960</td><td class="val-good">0.962</td><td>0</td></tr>
@@ -557,19 +557,19 @@ footer {
 
     <div class="result-row">
       <div class="result-card highlight">
-        <div class="rc-label">Final C(â„‹)</div>
+        <div class="rc-label">Final C(ℋ)</div>
         <div class="rc-val">0.968</div>
         <div class="rc-delta">+24.1% vs pre-HUF baseline (0.780)</div>
       </div>
       <div class="result-card">
         <div class="rc-label">Drift reduction</div>
-        <div class="rc-val">âˆ’27%</div>
+        <div class="rc-val">−27%</div>
         <div class="rc-delta">Calibration noise impact mitigated</div>
       </div>
       <div class="result-card">
-        <div class="rc-label">70 GHz Î±*</div>
+        <div class="rc-label">70 GHz α*</div>
         <div class="rc-val">0.58</div>
-        <div class="rc-delta">High inheritance â€” clean regime</div>
+        <div class="rc-delta">High inheritance — clean regime</div>
       </div>
       <div class="result-card">
         <div class="rc-label">items_to_cover_90pct</div>
@@ -584,19 +584,19 @@ footer {
     </div>
 
     <p>
-      Key finding: the 30 GHz foreground flare at step 5 is immediately detected and mitigated â€” Î±* for the
+      Key finding: the 30 GHz foreground flare at step 5 is immediately detected and mitigated — α* for the
       353 GHz dust regime drops from 0.42 to 0.36, reducing dust contamination inheritance. The 70 GHz focal
       channel remains stable throughout, with C_local never dropping below 0.948.
     </p>
   </section>
 
   <section id="math-fit">
-    <div class="section-eyebrow">05 â€” HUF Fit</div>
+    <div class="section-eyebrow">05 — HUF Fit</div>
     <h2>Architecture Fitness</h2>
 
     <div class="fit-bar">
       <div class="fit-row">
-        <span class="fit-label">Hierarchical channel structure â†’ regimes</span>
+        <span class="fit-label">Hierarchical channel structure → regimes</span>
         <div class="fit-track"><div class="fit-fill" style="width:98%"></div></div>
         <span class="fit-pct">98%</span>
       </div>
@@ -606,12 +606,12 @@ footer {
         <span class="fit-pct">100%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">Foreground penalty â†’ F_r term in J_r</span>
+        <span class="fit-label">Foreground penalty → F_r term in J_r</span>
         <div class="fit-track"><div class="fit-fill" style="width:95%"></div></div>
         <span class="fit-pct">95%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">Calibration drift â†’ Cosine detection</span>
+        <span class="fit-label">Calibration drift → Cosine detection</span>
         <div class="fit-track"><div class="fit-fill" style="width:92%"></div></div>
         <span class="fit-pct">92%</span>
       </div>
@@ -631,18 +631,18 @@ footer {
   </section>
 
   <section id="code">
-    <div class="section-eyebrow">06 â€” Implementation</div>
+    <div class="section-eyebrow">06 — Implementation</div>
     <h2>Python Reference Run</h2>
     <p>
       The Planck case ships with HUF as a reference run. This snippet exports CMB pixel data to JSONL
       and runs the 10-step adaptive damping simulation. Requires <code style="font-family:var(--font-mono);font-size:0.85em;color:var(--plasma)">huf_core</code>, <code style="font-family:var(--font-mono);font-size:0.85em;color:var(--plasma)">numpy</code>, and optionally <code style="font-family:var(--font-mono);font-size:0.85em;color:var(--plasma)">healpy</code>.
     </p>
 
-<pre><span class="cm"># huf_planck_70ghz.py â€” HUF reference run: Planck LFI 70 GHz</span>
+<pre><span class="cm"># huf_planck_70ghz.py — HUF reference run: Planck LFI 70 GHz</span>
 <span class="kw">import</span> <span class="var">numpy</span> <span class="kw">as</span> <span class="var">np</span>
 <span class="kw">import</span> <span class="var">json</span>
 
-<span class="cm"># â”€â”€â”€ 1. Synthetic CMB data (replace with healpy.read_map for real Planck data) â”€â”€â”€â”€</span>
+<span class="cm"># ─── 1. Synthetic CMB data (replace with healpy.read_map for real Planck data) ────</span>
 <span class="var">rng</span> = <span class="fn">np.random.default_rng</span>(<span class="num">42</span>)
 <span class="var">n_pixels</span> = <span class="num">1000</span>
 <span class="var">T_CMB</span> = <span class="num">2.725</span>                     <span class="cm"># K, CMB average</span>
@@ -659,7 +659,7 @@ footer {
     <span class="kw">for</span> <span class="var">ch</span> <span class="kw">in</span> <span class="var">channels</span>
 }
 
-<span class="cm"># â”€â”€â”€ 2. HUF normalization operator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 2. HUF normalization operator ────────────────────────────────────────────</span>
 <span class="kw">def</span> <span class="fn">huf_normalize</span>(<span class="var">e_v</span>, <span class="var">mu_p</span>, <span class="var">sig_p</span>, <span class="var">w_vp</span>):
     <span class="kw">return</span> ((<span class="var">e_v</span> - <span class="var">mu_p</span>) / <span class="var">sig_p</span>) * <span class="var">w_vp</span>
 
@@ -669,7 +669,7 @@ footer {
 <span class="kw">def</span> <span class="fn">objective_J</span>(<span class="var">alpha</span>, <span class="var">C_r</span>, <span class="var">rho_local</span>, <span class="var">F</span>, <span class="var">lam</span>=<span class="num">0.1</span>, <span class="var">phi</span>=<span class="num">0.08</span>):
     <span class="kw">return</span> (<span class="num">1</span> - <span class="var">C_r</span>) + <span class="var">lam</span> * <span class="fn">np.var</span>(<span class="var">rho_local</span>) + <span class="var">phi</span> * <span class="var">F</span>
 
-<span class="cm"># â”€â”€â”€ 3. 10-step adaptive simulation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 3. 10-step adaptive simulation ───────────────────────────────────────────</span>
 <span class="var">results</span> = []
 <span class="var">alpha_prev</span> = {<span class="var">ch</span>: <span class="num">0.5</span> <span class="kw">for</span> <span class="var">ch</span> <span class="kw">in</span> <span class="var">channels</span>}
 <span class="var">e_prev</span> = {<span class="var">ch</span>: <span class="var">T_maps</span>[<span class="var">ch</span>].<span class="fn">copy</span>() <span class="kw">for</span> <span class="var">ch</span> <span class="kw">in</span> <span class="var">channels</span>}
@@ -688,7 +688,7 @@ footer {
         <span class="var">e_norm</span> = <span class="fn">huf_normalize</span>(<span class="var">e_curr</span>, <span class="var">mu_p</span>, <span class="var">sig_p</span>, <span class="num">1.0</span>)
         <span class="var">C_r</span> = <span class="fn">coherence</span>(<span class="var">e_norm</span>, <span class="var">e_prev</span>[<span class="var">ch</span>])
 
-        <span class="cm"># Scan Î± in [0,1], minimise J_r</span>
+        <span class="cm"># Scan α in [0,1], minimise J_r</span>
         <span class="var">best_a</span>, <span class="var">best_J</span> = <span class="num">0.5</span>, <span class="fn">float</span>(<span class="st">'inf'</span>)
         <span class="kw">for</span> <span class="var">a</span> <span class="kw">in</span> <span class="fn">np.linspace</span>(<span class="num">0.0</span>, <span class="num">1.0</span>, <span class="num">21</span>):
             <span class="var">e_cand</span> = <span class="var">e_norm</span> + <span class="var">a</span> * <span class="var">e_prev</span>[<span class="var">ch</span>]
@@ -703,9 +703,9 @@ footer {
     <span class="var">C_global</span> = <span class="fn">np.mean</span>(<span class="fn">list</span>(<span class="var">C_locals</span>.<span class="fn">values</span>()))
     <span class="var">results</span>.<span class="fn">append</span>({<span class="st">'step'</span>: <span class="var">step</span>, <span class="st">'C_global'</span>: <span class="var">C_global</span>,
                    <span class="st">'alpha_70'</span>: <span class="var">alphas_new</span>[<span class="num">70</span>], <span class="st">'F_30'</span>: <span class="var">F_r</span>[<span class="num">30</span>]})
-    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Step {step}: C(â„‹)={C_global:.4f}  Î±*(70GHz)={alphas_new[70]:.2f}  F_30={F_r[30]:.2f}"</span>)
+    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Step {step}: C(ℋ)={C_global:.4f}  α*(70GHz)={alphas_new[70]:.2f}  F_30={F_r[30]:.2f}"</span>)
 
-<span class="cm"># â”€â”€â”€ 4. Export JSONL provenance log â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 4. Export JSONL provenance log ───────────────────────────────────────────</span>
 <span class="kw">with</span> <span class="fn">open</span>(<span class="st">'planck_huf_run.jsonl'</span>, <span class="st">'w'</span>) <span class="kw">as</span> <span class="var">f</span>:
     <span class="kw">for</span> <span class="var">r</span> <span class="kw">in</span> <span class="var">results</span>:
         <span class="var">f</span>.<span class="fn">write</span>(<span class="var">json</span>.<span class="fn">dumps</span>(<span class="var">r</span>) + <span class="st">'\n'</span>)
@@ -725,7 +725,7 @@ footer {
       <div class="card">
         <div class="card-label">JSONL output</div>
         <h3>Audit log per step</h3>
-        <p>Each line records step, C(â„‹), per-channel Î±*, foreground fractions, items_to_cover_90pct, and any discards.</p>
+        <p>Each line records step, C(ℋ), per-channel α*, foreground fractions, items_to_cover_90pct, and any discards.</p>
       </div>
     </div>
   </section>
@@ -733,10 +733,9 @@ footer {
 </main>
 
 <footer>
-  <span>HUF v1.1.8 Â· Case: Planck LFI 70 GHz Â· ESA 2018 Dataset Â· PeterHiggins19/huf_core</span>
-  <span style="color:var(--gold)">C(â„‹) = 0.968</span>
+  <span>HUF v1.1.8 · Case: Planck LFI 70 GHz · ESA 2018 Dataset · PeterHiggins19/huf_core_github_v1.1.8_no_inputs</span>
+  <span style="color:var(--gold)">C(ℋ) = 0.968</span>
 </footer>
 
 </body>
 </html>
-

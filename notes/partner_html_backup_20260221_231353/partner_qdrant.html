@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUF Ã— Qdrant â€” Partner Integration Package</title>
+<title>HUF × Qdrant — Partner Integration Package</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -92,7 +92,7 @@ body { background:var(--bg); color:var(--text); font-family:'Syne',sans-serif; l
 .pen-ded { background:rgba(45,198,83,0.1);color:var(--dedicated); }
 .tier-features { margin-top:1rem; }
 .tier-features li { font-size:0.82rem;color:var(--muted);list-style:none;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.04); }
-.tier-features li::before { content:'â†’ ';color:var(--accent); }
+.tier-features li::before { content:'→ ';color:var(--accent); }
 
 /* TRANSITION FLOW */
 .flow { display:flex;align-items:stretch;gap:0;margin-bottom:2rem; }
@@ -151,14 +151,14 @@ footer .brand { font-family:'IBM Plex Mono',monospace;color:var(--accent); }
 <body>
 
 <div class="hero">
-  <div class="partner-badge">â¬¡ HUF PARTNER PACKAGE â€” QDRANT</div>
+  <div class="partner-badge">⬡ HUF PARTNER PACKAGE — QDRANT</div>
   <h1>Qdrant<br><span>Integration & Case Package</span></h1>
-  <p class="subtitle">Tiered sharding with Fallback/Dedicated states and bidirectional promotion/demotion API â€” mapped to HUF tier-conditioned damping and transition stability proofs.</p>
+  <p class="subtitle">Tiered sharding with Fallback/Dedicated states and bidirectional promotion/demotion API — mapped to HUF tier-conditioned damping and transition stability proofs.</p>
   <div class="chips">
-    <span class="chip chip-next">â—Ž Next Target</span>
+    <span class="chip chip-next">◎ Next Target</span>
     <span class="chip chip-fit">94% Partner Fit</span>
-    <span class="chip chip-promote">â†‘ Promotion API</span>
-    <span class="chip chip-demote">â†“ Demotion API</span>
+    <span class="chip chip-promote">↑ Promotion API</span>
+    <span class="chip chip-demote">↓ Demotion API</span>
   </div>
 </div>
 
@@ -178,9 +178,9 @@ footer .brand { font-family:'IBM Plex Mono',monospace;color:var(--accent); }
 
   <div class="metrics-row">
     <div class="metric"><div class="metric-val">94%</div><div class="metric-label">Partner Fit Score</div></div>
-    <div class="metric"><div class="metric-val">0.926</div><div class="metric-label">Cumulative C(â„‹)</div></div>
+    <div class="metric"><div class="metric-val">0.926</div><div class="metric-label">Cumulative C(ℋ)</div></div>
     <div class="metric"><div class="metric-val">+2.0%</div><div class="metric-label">vs. No Demotion</div></div>
-    <div class="metric"><div class="metric-val">âˆ’13.5%</div><div class="metric-label">kb Erosion (10-step)</div></div>
+    <div class="metric"><div class="metric-val">−13.5%</div><div class="metric-label">kb Erosion (10-step)</div></div>
   </div>
 
   <!-- ARCHITECTURE FIT -->
@@ -188,15 +188,15 @@ footer .brand { font-family:'IBM Plex Mono',monospace;color:var(--accent); }
     <div class="section-header"><span class="section-num">01</span><h2>Architecture Fit</h2></div>
     <div class="card-grid">
       <div class="card">
-        <h3>Qdrant Concepts â†’ HUF Primitives</h3>
+        <h3>Qdrant Concepts → HUF Primitives</h3>
         <ul>
-          <li><strong>Fallback Shard</strong> â†’ HUF WARM regime (shared, small tenants)</li>
-          <li><strong>Dedicated Shard</strong> â†’ HUF HOT regime (isolated, large tenants)</li>
-          <li><strong>group_id filter</strong> â†’ Regime partition key</li>
-          <li><strong>Tier (Fallback/Dedicated)</strong> â†’ T(s_r) penalty in J_r(Î±_r)</li>
-          <li><strong>Score / distance</strong> â†’ HUF score field (score = 1 âˆ’ distance)</li>
-          <li><strong>Promotion event</strong> â†’ Migration penalty M(s_r)=0.15</li>
-          <li><strong>Demotion event</strong> â†’ Demotion penalty M_d(s_r)=0.10</li>
+          <li><strong>Fallback Shard</strong> → HUF WARM regime (shared, small tenants)</li>
+          <li><strong>Dedicated Shard</strong> → HUF HOT regime (isolated, large tenants)</li>
+          <li><strong>group_id filter</strong> → Regime partition key</li>
+          <li><strong>Tier (Fallback/Dedicated)</strong> → T(s_r) penalty in J_r(α_r)</li>
+          <li><strong>Score / distance</strong> → HUF score field (score = 1 − distance)</li>
+          <li><strong>Promotion event</strong> → Migration penalty M(s_r)=0.15</li>
+          <li><strong>Demotion event</strong> → Demotion penalty M_d(s_r)=0.10</li>
         </ul>
       </div>
       <div class="card">
@@ -215,29 +215,29 @@ footer .brand { font-family:'IBM Plex Mono',monospace;color:var(--accent); }
   <!-- TIER MODEL -->
   <section class="section" id="tiers">
     <div class="section-header"><span class="section-num">02</span><h2>Fallback / Dedicated Tier Model</h2></div>
-    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">Qdrant v1.16 introduced tiered multitenancy. Small tenants share a Fallback shard (lower isolation, lower cost). Large tenants get Dedicated shards (full isolation, higher performance). HUF maps each tier to a penalty T(s_r) that influences adaptive damping Î±_r*.</p>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem;">Qdrant v1.16 introduced tiered multitenancy. Small tenants share a Fallback shard (lower isolation, lower cost). Large tenants get Dedicated shards (full isolation, higher performance). HUF maps each tier to a penalty T(s_r) that influences adaptive damping α_r*.</p>
     <div class="tier-grid">
       <div class="tier-card tier-fallback">
         <div class="tier-label fb-c">TIER: SHARED</div>
-        <div class="tier-name fb-c">âŠ• Fallback</div>
+        <div class="tier-name fb-c">⊕ Fallback</div>
         <div class="tier-desc">Shared shard pool for small/new tenants. Lower isolation, reduced resource allocation. Used as default until promotion threshold.</div>
         <div><span class="tier-penalty pen-fb">T(s_r) = 0.10</span></div>
         <ul class="tier-features">
           <li>Multiple tenants per shard</li>
           <li>Limited query isolation</li>
-          <li>Lower Î±* (conservative inheritance)</li>
+          <li>Lower α* (conservative inheritance)</li>
           <li>Trigger promotion when regime mass &gt; 0.15</li>
         </ul>
       </div>
       <div class="tier-card tier-dedicated">
         <div class="tier-label ded-c">TIER: ISOLATED</div>
-        <div class="tier-name ded-c">â—ˆ Dedicated</div>
+        <div class="tier-name ded-c">◈ Dedicated</div>
         <div class="tier-desc">Dedicated shard per tenant. Full isolation, optimal query performance. Assigned via create_shard_key after promotion.</div>
         <div><span class="tier-penalty pen-ded">T(s_r) = 0.00</span></div>
         <ul class="tier-features">
           <li>Single tenant per shard</li>
           <li>Full query isolation</li>
-          <li>Higher Î±* (strong inheritance)</li>
+          <li>Higher α* (strong inheritance)</li>
           <li>Trigger demotion when mass falls &lt; 0.05</li>
         </ul>
       </div>
@@ -246,7 +246,7 @@ footer .brand { font-family:'IBM Plex Mono',monospace;color:var(--accent); }
 
   <!-- PROMOTION API -->
   <section class="section" id="promotion">
-    <div class="section-header"><span class="section-num">03</span><h2>Promotion API (Fallback â†’ Dedicated)</h2></div>
+    <div class="section-header"><span class="section-num">03</span><h2>Promotion API (Fallback → Dedicated)</h2></div>
 
     <div class="flow">
       <div class="flow-node">
@@ -254,13 +254,13 @@ footer .brand { font-family:'IBM Plex Mono',monospace;color:var(--accent); }
         <div class="fn-name fb-c">Fallback Shard</div>
         <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem">T(s_r) = 0.10</div>
       </div>
-      <div class="flow-arrow">â†’</div>
+      <div class="flow-arrow">→</div>
       <div class="flow-node" style="background:rgba(86,207,225,0.05);border-color:rgba(86,207,225,0.2);">
         <div class="fn-label td-promo">DURING MIGRATION</div>
         <div class="fn-name td-promo">Replicating</div>
         <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem">M(s_r) = 0.15</div>
       </div>
-      <div class="flow-arrow">â†’</div>
+      <div class="flow-arrow">→</div>
       <div class="flow-node" style="background:rgba(45,198,83,0.05);border-color:rgba(45,198,83,0.2);">
         <div class="fn-label ded-c">TO</div>
         <div class="fn-name ded-c">Dedicated Shard</div>
@@ -270,7 +270,7 @@ footer .brand { font-family:'IBM Plex Mono',monospace;color:var(--accent); }
 
     <div class="code-block">
       <div class="code-header">
-        <span class="code-label">qdrant_promote.py â€” Promotion with HUF transition penalty</span>
+        <span class="code-label">qdrant_promote.py — Promotion with HUF transition penalty</span>
         <span class="code-lang">Python</span>
       </div>
       <pre><span class="k">from</span> qdrant_client <span class="k">import</span> QdrantClient, models
@@ -291,7 +291,7 @@ client.create_shard_key(
     shards_number=<span class="num">2</span>
 )
 
-<span class="c"># Step 3: HUF trigger â€” promote when regime mass > threshold</span>
+<span class="c"># Step 3: HUF trigger — promote when regime mass > threshold</span>
 <span class="k">def</span> <span class="f">huf_trigger_promotion</span>(regime_rho, threshold=<span class="num">0.15</span>, tenant_id=<span class="s">"user_1"</span>):
     <span class="k">if</span> regime_rho > threshold:
         <span class="c"># Create dedicated shard for this tenant</span>
@@ -317,7 +317,7 @@ client.create_shard_key(
                 )
             )
         )
-        <span class="f">print</span>(<span class="s">f"Promoted {tenant_id}: T drops 0.10 â†’ 0.00 (after migration)"</span>)
+        <span class="f">print</span>(<span class="s">f"Promoted {tenant_id}: T drops 0.10 → 0.00 (after migration)"</span>)
         <span class="k">return</span> <span class="s">"PROMOTED"</span>
     <span class="k">return</span> <span class="s">"FALLBACK"</span></pre>
     </div>
@@ -325,7 +325,7 @@ client.create_shard_key(
 
   <!-- DEMOTION API -->
   <section class="section" id="demotion">
-    <div class="section-header"><span class="section-num">04</span><h2>Demotion API (Dedicated â†’ Fallback)</h2></div>
+    <div class="section-header"><span class="section-num">04</span><h2>Demotion API (Dedicated → Fallback)</h2></div>
 
     <div class="flow">
       <div class="flow-node" style="background:rgba(45,198,83,0.05);border-color:rgba(45,198,83,0.2);">
@@ -333,13 +333,13 @@ client.create_shard_key(
         <div class="fn-name ded-c">Dedicated Shard</div>
         <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem">T(s_r) = 0.00</div>
       </div>
-      <div class="flow-arrow demote">â†’</div>
+      <div class="flow-arrow demote">→</div>
       <div class="flow-node" style="background:rgba(255,159,28,0.05);border-color:rgba(255,159,28,0.2);">
         <div class="fn-label td-dem">DURING MIGRATION</div>
         <div class="fn-name td-dem">Reverse Replicating</div>
         <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem">M_d(s_r) = 0.10</div>
       </div>
-      <div class="flow-arrow demote">â†’</div>
+      <div class="flow-arrow demote">→</div>
       <div class="flow-node">
         <div class="fn-label fb-c">TO</div>
         <div class="fn-name fb-c">Fallback Shard</div>
@@ -349,19 +349,19 @@ client.create_shard_key(
 
     <div class="code-block">
       <div class="code-header">
-        <span class="code-label">qdrant_demote.py â€” Demotion with reverse replication + shard cleanup</span>
+        <span class="code-label">qdrant_demote.py — Demotion with reverse replication + shard cleanup</span>
         <span class="code-lang">Python</span>
       </div>
       <pre><span class="k">def</span> <span class="f">huf_trigger_demotion</span>(regime_rho, threshold=<span class="num">0.05</span>, tenant_id=<span class="s">"user_1"</span>):
     <span class="s">"""Demote tenant back to fallback when regime mass drops below threshold."""</span>
     <span class="k">if</span> regime_rho < threshold:
-        <span class="c"># Step 1: Reverse replicate dedicated â†’ fallback</span>
+        <span class="c"># Step 1: Reverse replicate dedicated → fallback</span>
         <span class="c"># During this: M_d(s_r) = 0.10 applied to J_r</span>
         client.cluster_collection_update(
             collection_name=<span class="s">"knowledge_base"</span>,
             cluster_operation=models.ReplicatePointsOperation(
                 replicate_points=models.ReplicatePoints(
-                    from_shard_key=tenant_id,     <span class="c"># dedicated â†’ fallback</span>
+                    from_shard_key=tenant_id,     <span class="c"># dedicated → fallback</span>
                     to_shard_key=<span class="s">"default"</span>,
                     filter=models.Filter(must=[
                         models.FieldCondition(
@@ -377,7 +377,7 @@ client.create_shard_key(
             collection_name=<span class="s">"knowledge_base"</span>,
             shard_key=tenant_id
         )
-        <span class="f">print</span>(<span class="s">f"Demoted {tenant_id}: T rises 0.00 â†’ 0.10"</span>)
+        <span class="f">print</span>(<span class="s">f"Demoted {tenant_id}: T rises 0.00 → 0.10"</span>)
         <span class="k">return</span> <span class="s">"DEMOTED"</span>
     <span class="k">return</span> <span class="s">"DEDICATED"</span></pre>
     </div>
@@ -389,25 +389,25 @@ client.create_shard_key(
 
     <div class="math-box">
       <div class="formula">Per-Regime Objective (Tier-aware):</div>
-      <div class="formula">J_r(Î±_r) = (1 âˆ’ C_r) + Î»Â·Var(Ï_local,r) + Î²Â·T(s_r)</div>
-      <div class="explain">T(Fallback)=0.10 | T(Dedicated)=0.00 | Î»=0.1, Î²=0.05</div>
+      <div class="formula">J_r(α_r) = (1 − C_r) + λ·Var(ρ_local,r) + β·T(s_r)</div>
+      <div class="explain">T(Fallback)=0.10 | T(Dedicated)=0.00 | λ=0.1, β=0.05</div>
     </div>
 
     <div class="math-box">
       <div class="formula">During Promotion Event (migration penalty):</div>
-      <div class="formula">J_r(Î±_r) = (1 âˆ’ C_r) + Î»Â·Var(Ï_local,r) + Î²Â·M(s_r)</div>
+      <div class="formula">J_r(α_r) = (1 − C_r) + λ·Var(ρ_local,r) + β·M(s_r)</div>
       <div class="explain">M(s_r) = 0.15 (elevated penalty during replicate_points)</div>
     </div>
 
     <div class="math-box">
       <div class="formula">During Demotion Event (reverse migration):</div>
-      <div class="formula">J_r(Î±_r) = (1 âˆ’ C_r) + Î»Â·Var(Ï_local,r) + Î²Â·M_d(s_r)</div>
+      <div class="formula">J_r(α_r) = (1 − C_r) + λ·Var(ρ_local,r) + β·M_d(s_r)</div>
       <div class="explain">M_d(s_r) = 0.10 (moderate penalty during reverse replication)</div>
     </div>
 
     <div class="card">
       <h3>Proof of Transition Stability</h3>
-      <p>During promotion event e, M(s_r)=0.15 bounds temporary variance by adding a convex penalty to J_r. By the convergence theorem (Proof 2), J_r remains strictly convex, and the optimizer selects a conservative Î±_r* that minimizes drift during the replication window. Post-migration, T(s_r) drops from 0.10 to 0.00 for Dedicated, and re-normalization restores full mass allocation with Î±_r* increasing to exploit stronger isolation. Symmetrically for demotion, M_d=0.10 bounds the reverse transition, and the post-demotion T=0.10 penalty persists to reflect reduced isolation. Inductive stability holds across any sequence of promotions and demotions. âˆŽ</p>
+      <p>During promotion event e, M(s_r)=0.15 bounds temporary variance by adding a convex penalty to J_r. By the convergence theorem (Proof 2), J_r remains strictly convex, and the optimizer selects a conservative α_r* that minimizes drift during the replication window. Post-migration, T(s_r) drops from 0.10 to 0.00 for Dedicated, and re-normalization restores full mass allocation with α_r* increasing to exploit stronger isolation. Symmetrically for demotion, M_d=0.10 bounds the reverse transition, and the post-demotion T=0.10 penalty persists to reflect reduced isolation. Inductive stability holds across any sequence of promotions and demotions. ∎</p>
     </div>
   </section>
 
@@ -415,28 +415,28 @@ client.create_shard_key(
   <section class="section" id="simulation">
     <div class="section-header"><span class="section-num">06</span><h2>10-Step Drift Simulation with Promotions</h2></div>
 
-    <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem;">Promotion event at step 4 (Fallback â†’ Dedicated). Demotion event at step 8 (Dedicated â†’ Fallback). Migration penalty M=0.15 applied at step 4, M_d=0.10 at step 8.</p>
+    <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem;">Promotion event at step 4 (Fallback → Dedicated). Demotion event at step 8 (Dedicated → Fallback). Migration penalty M=0.15 applied at step 4, M_d=0.10 at step 8.</p>
 
     <div class="card" style="overflow:auto">
       <table class="sim-table">
         <thead>
           <tr>
-            <th>STEP</th><th>TIER</th><th>T/M penalty</th><th>Î±* (kb)</th>
-            <th>Ï_post (kb)</th><th>C_local</th><th>EVENT</th>
+            <th>STEP</th><th>TIER</th><th>T/M penalty</th><th>α* (kb)</th>
+            <th>ρ_post (kb)</th><th>C_local</th><th>EVENT</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>0</td><td class="td-fb">Fallback</td><td>0.10</td><td>â€”</td><td class="td-hi">0.628</td><td>â€”</td><td>â€”</td></tr>
-          <tr><td>1</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.48</td><td class="td-hi">0.615</td><td>0.990</td><td>â€”</td></tr>
-          <tr><td>2</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.49</td><td class="td-hi">0.602</td><td>0.989</td><td>â€”</td></tr>
-          <tr><td>3</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.48</td><td>0.591</td><td>0.987</td><td>â€”</td></tr>
-          <tr><td>4</td><td class="td-promo">Migrating</td><td class="td-promo">0.15 â†‘</td><td>0.44</td><td>0.583</td><td>0.985</td><td class="td-promo">â†‘ PROMOTE</td></tr>
-          <tr><td>5</td><td class="td-ded">Dedicated</td><td class="td-ded">0.00</td><td>0.54</td><td class="td-ded">0.578</td><td>0.993</td><td>â€”</td></tr>
-          <tr><td>6</td><td class="td-ded">Dedicated</td><td class="td-ded">0.00</td><td>0.55</td><td class="td-ded">0.570</td><td>0.993</td><td>â€”</td></tr>
-          <tr><td>7</td><td class="td-ded">Dedicated</td><td class="td-ded">0.00</td><td>0.54</td><td class="td-ded">0.562</td><td>0.992</td><td>â€”</td></tr>
-          <tr><td>8</td><td class="td-dem">Migrating</td><td class="td-dem">0.10 â†‘</td><td>0.49</td><td>0.556</td><td>0.989</td><td class="td-dem">â†“ DEMOTE</td></tr>
-          <tr><td>9</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.48</td><td>0.549</td><td>0.991</td><td>â€”</td></tr>
-          <tr><td>10</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.47</td><td>0.543</td><td>0.991</td><td>â€”</td></tr>
+          <tr><td>0</td><td class="td-fb">Fallback</td><td>0.10</td><td>—</td><td class="td-hi">0.628</td><td>—</td><td>—</td></tr>
+          <tr><td>1</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.48</td><td class="td-hi">0.615</td><td>0.990</td><td>—</td></tr>
+          <tr><td>2</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.49</td><td class="td-hi">0.602</td><td>0.989</td><td>—</td></tr>
+          <tr><td>3</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.48</td><td>0.591</td><td>0.987</td><td>—</td></tr>
+          <tr><td>4</td><td class="td-promo">Migrating</td><td class="td-promo">0.15 ↑</td><td>0.44</td><td>0.583</td><td>0.985</td><td class="td-promo">↑ PROMOTE</td></tr>
+          <tr><td>5</td><td class="td-ded">Dedicated</td><td class="td-ded">0.00</td><td>0.54</td><td class="td-ded">0.578</td><td>0.993</td><td>—</td></tr>
+          <tr><td>6</td><td class="td-ded">Dedicated</td><td class="td-ded">0.00</td><td>0.55</td><td class="td-ded">0.570</td><td>0.993</td><td>—</td></tr>
+          <tr><td>7</td><td class="td-ded">Dedicated</td><td class="td-ded">0.00</td><td>0.54</td><td class="td-ded">0.562</td><td>0.992</td><td>—</td></tr>
+          <tr><td>8</td><td class="td-dem">Migrating</td><td class="td-dem">0.10 ↑</td><td>0.49</td><td>0.556</td><td>0.989</td><td class="td-dem">↓ DEMOTE</td></tr>
+          <tr><td>9</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.48</td><td>0.549</td><td>0.991</td><td>—</td></tr>
+          <tr><td>10</td><td class="td-fb">Fallback</td><td>0.10</td><td>0.47</td><td>0.543</td><td>0.991</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
@@ -444,11 +444,11 @@ client.create_shard_key(
     <div class="card-grid" style="margin-top:1.2rem">
       <div class="card">
         <h3>Cumulative Results</h3>
-        <p><strong style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:1.2rem">C(â„‹) = 0.926</strong> (+1.6% non-tiered)<br><strong style="color:var(--dedicated)">Dedicated Î±* = 0.54</strong> | <strong style="color:var(--fallback)">Fallback Î±* = 0.46</strong></p>
+        <p><strong style="color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:1.2rem">C(ℋ) = 0.926</strong> (+1.6% non-tiered)<br><strong style="color:var(--dedicated)">Dedicated α* = 0.54</strong> | <strong style="color:var(--fallback)">Fallback α* = 0.46</strong></p>
       </div>
       <div class="card">
         <h3>Demotion Impact</h3>
-        <p>With demotion (steps 8â€“10), kb erosion is <strong style="color:var(--accent);font-family:'IBM Plex Mono',monospace">âˆ’12.8%</strong> for the demoting regime â€” lower than static fallback alone (+2.0% over 10-step baseline).</p>
+        <p>With demotion (steps 8–10), kb erosion is <strong style="color:var(--accent);font-family:'IBM Plex Mono',monospace">−12.8%</strong> for the demoting regime — lower than static fallback alone (+2.0% over 10-step baseline).</p>
       </div>
     </div>
   </section>
@@ -459,7 +459,7 @@ client.create_shard_key(
 
     <div class="card" style="background:linear-gradient(135deg,rgba(199,125,255,0.06),rgba(86,207,225,0.04));border-color:rgba(199,125,255,0.25);">
       <h3>3-SENTENCE PITCH</h3>
-      <p style="font-size:1.0rem;font-style:italic;line-height:1.8;color:var(--text)">"HUF adds a governance layer to Qdrant's tiered multitenancy: every Fallback/Dedicated shard state maps to an adaptive damping penalty that keeps your retrieval coherence score above 0.92 across tenant transitions. Promotions and demotions trigger automatic re-normalization â€” the migration window gets a temporary M=0.15 penalty so drift can't propagate during replication. The result: 13.5% less knowledge-base erosion and full JSONL provenance for every promotion event."</p>
+      <p style="font-size:1.0rem;font-style:italic;line-height:1.8;color:var(--text)">"HUF adds a governance layer to Qdrant's tiered multitenancy: every Fallback/Dedicated shard state maps to an adaptive damping penalty that keeps your retrieval coherence score above 0.92 across tenant transitions. Promotions and demotions trigger automatic re-normalization — the migration window gets a temporary M=0.15 penalty so drift can't propagate during replication. The result: 13.5% less knowledge-base erosion and full JSONL provenance for every promotion event."</p>
     </div>
 
     <div class="card-grid">
@@ -478,7 +478,7 @@ client.create_shard_key(
             <div class="step-num">2</div>
             <div class="step-body">
               <h4>Discord</h4>
-              <p>#integrations channel â€” share PR + 2-sentence concept</p>
+              <p>#integrations channel — share PR + 2-sentence concept</p>
             </div>
           </div>
           <div class="step">
@@ -493,7 +493,7 @@ client.create_shard_key(
       <div class="card">
         <h3>Key Differentiator vs Other VDBs</h3>
         <p style="margin-bottom:0.8rem">Qdrant is the <strong>only VDB</strong> with bidirectional shard promotion/demotion API. This creates a unique HUF application: <em>reversible governance</em>.</p>
-        <p>HUF models both directions â€” promoting tenants getting stronger inheritance (Î±*â†‘) AND demoting tenants getting conservative damping (Î±*â†“). No other VDB integration supports this bidirectional lifecycle.</p>
+        <p>HUF models both directions — promoting tenants getting stronger inheritance (α*↑) AND demoting tenants getting conservative damping (α*↓). No other VDB integration supports this bidirectional lifecycle.</p>
       </div>
     </div>
   </section>
@@ -501,9 +501,8 @@ client.create_shard_key(
 </div>
 
 <footer>
-  <span>HUF v1.2.1 â€” Peter Higgins â€” PeterHiggins19/huf_core</span>
+  <span>HUF v1.2.1 — Peter Higgins — PeterHiggins19/huf_core_github_v1.1.8_no_inputs</span>
   <span class="brand">QDRANT PARTNER PACKAGE</span>
 </footer>
 </body>
 </html>
-

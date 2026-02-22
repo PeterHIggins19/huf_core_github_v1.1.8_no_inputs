@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Markham Worked Example â€” HUF Case Study</title>
+<title>Markham Worked Example — HUF Case Study</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -259,16 +259,16 @@ footer {
   <a href="#simulation">Simulation</a>
   <a href="#code">Code</a>
   <div class="nav-sep"></div>
-  <span class="nav-badge">MARKHAM Â· MUNICIPAL Â· v1.1.8</span>
+  <span class="nav-badge">MARKHAM · MUNICIPAL · v1.1.8</span>
 </nav>
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-stamp">HUF Case Study Â· Municipal Governance Â· Public Data</div>
+    <div class="hero-stamp">HUF Case Study · Municipal Governance · Public Data</div>
     <h1>City of Markham<br><em>Worked Example</em></h1>
-    <div class="hero-sub">Municipal Budget Coherence Â· Infrastructure Regime Analysis</div>
+    <div class="hero-sub">Municipal Budget Coherence · Infrastructure Regime Analysis</div>
     <p class="hero-desc">
-      A fully worked example applying HUF to the City of Markham's public budget data â€” treating infrastructure
+      A fully worked example applying HUF to the City of Markham's public budget data — treating infrastructure
       spending categories as regimes, detecting drift in budget execution, and producing auditable JSONL provenance
       for every fiscal allocation.
     </p>
@@ -295,10 +295,10 @@ footer {
     </div>
     <div class="budget-cell">
       <span class="budget-val">0.958</span>
-      <div class="budget-label">Post-HUF C(â„‹)</div>
+      <div class="budget-label">Post-HUF C(ℋ)</div>
     </div>
     <div class="budget-cell">
-      <span class="budget-val">âˆ’21%</span>
+      <span class="budget-val">−21%</span>
       <div class="budget-label">Budget drift</div>
     </div>
   </div>
@@ -307,7 +307,7 @@ footer {
 <main>
 
   <section id="context">
-    <div class="section-rule">01 â€” Context</div>
+    <div class="section-rule">01 — Context</div>
     <h2>Municipal Budget as a Hierarchical System</h2>
     <p>
       Markham's 2023 capital budget allocates $500M across infrastructure categories including roads, parks,
@@ -317,7 +317,7 @@ footer {
     </p>
     <p>
       Without normalization, budget mass concentrates in a small number of large projects. By Q3, roads and
-      transit typically absorb 70â€“80% of committed capital despite representing only 50% of approved line items.
+      transit typically absorb 70–80% of committed capital despite representing only 50% of approved line items.
       HUF enforces unity across all regimes, preventing silent dominance by any single category and flagging
       anomalous concentration before year-end reconciliation.
     </p>
@@ -326,12 +326,12 @@ footer {
       <div class="budget-cat roads">
         <div class="cat-amount">$15M</div>
         <div class="cat-name">Road Infrastructure</div>
-        <div class="cat-detail">50km Â· repaving + signals</div>
+        <div class="cat-detail">50km · repaving + signals</div>
       </div>
       <div class="budget-cat parks">
         <div class="cat-amount">$10M</div>
         <div class="cat-name">Parks & Recreation</div>
-        <div class="cat-detail">20 parks Â· 50 kmÂ² total area</div>
+        <div class="cat-detail">20 parks · 50 km² total area</div>
       </div>
       <div class="budget-cat transit">
         <div class="cat-amount">$18M</div>
@@ -352,7 +352,7 @@ footer {
   </section>
 
   <section id="data">
-    <div class="section-rule">02 â€” Dataset</div>
+    <div class="section-rule">02 — Dataset</div>
     <h2>Budget Data Structure</h2>
     <p>
       Data is drawn from City of Markham official reports (2023 capital budget, infrastructure project registries,
@@ -369,17 +369,17 @@ footer {
       <div class="card">
         <div class="card-label">Regimes</div>
         <h3>5 spending categories</h3>
-        <p>Roads, Parks, Transit, Water, Community Facilities. Regimes partition the budget without overlap â€” unity sum = $500M = 1.0 normalized.</p>
+        <p>Roads, Parks, Transit, Water, Community Facilities. Regimes partition the budget without overlap — unity sum = $500M = 1.0 normalized.</p>
       </div>
       <div class="card">
         <div class="card-label">Drift Source</div>
         <h3>Mid-year deferrals</h3>
-        <p>Projects deferred from Q2 to Q4 create mass imbalance. Roads category shows 8â€“14% overrun vs. plan; parks shows 6â€“10% underrun.</p>
+        <p>Projects deferred from Q2 to Q4 create mass imbalance. Roads category shows 8–14% overrun vs. plan; parks shows 6–10% underrun.</p>
       </div>
       <div class="card">
         <div class="card-label">Artifacts Required</div>
         <h3>JSONL audit log</h3>
-        <p>HUF emits per-step retained set (approved projects above Ï threshold), discarded set (deferred/flagged), and budget variance per regime.</p>
+        <p>HUF emits per-step retained set (approved projects above ρ threshold), discarded set (deferred/flagged), and budget variance per regime.</p>
       </div>
     </div>
 
@@ -391,7 +391,7 @@ footer {
   </section>
 
   <section id="math">
-    <div class="section-rule">03 â€” Mathematical Adaptation</div>
+    <div class="section-rule">03 — Mathematical Adaptation</div>
     <h2>HUF for Budget Regimes</h2>
     <p>
       The standard HUF objective is adapted with a <strong>budget equity term</strong> E_r that penalizes
@@ -400,45 +400,45 @@ footer {
     </p>
 
     <div class="math-box">
-      <div class="eq">N(e_v | p) = (e_v âˆ’ Î¼_p) / Ïƒ_p âŠ™ w_vp</div>
+      <div class="eq">N(e_v | p) = (e_v − μ_p) / σ_p ⊙ w_vp</div>
       <div class="cm">  // e_v = log(dollars_v / budget_category), normalized per category statistics</div>
       <br>
-      <div class="eq">e_v' = N(e_v | p) + Î± Â· e_p'</div>
-      <div class="cm">  // Î± = damping across category hierarchy (e.g., roads â†’ infrastructure â†’ capital)</div>
+      <div class="eq">e_v' = N(e_v | p) + α · e_p'</div>
+      <div class="cm">  // α = damping across category hierarchy (e.g., roads → infrastructure → capital)</div>
       <br>
-      <div class="eq">J_r(Î±_r) = (1 âˆ’ C_r) + Î» Â· Var(Ï_local,r) + Îµ Â· |Ï_r âˆ’ Ï_r^approved|</div>
-      <div class="cm">  // Î» = 0.1, Îµ = 0.15 (equity penalty coefficient)</div>
-      <div class="cm">  // Ï_r^approved = approved budget fraction: Roads=0.30, Parks=0.20, Transit=0.36, Water=0.24, Comm=0.16</div>
+      <div class="eq">J_r(α_r) = (1 − C_r) + λ · Var(ρ_local,r) + ε · |ρ_r − ρ_r^approved|</div>
+      <div class="cm">  // λ = 0.1, ε = 0.15 (equity penalty coefficient)</div>
+      <div class="cm">  // ρ_r^approved = approved budget fraction: Roads=0.30, Parks=0.20, Transit=0.36, Water=0.24, Comm=0.16</div>
       <br>
-      <div class="eq">J(Î±) = Î£_r w_r Â· J_r(Î±_r) + Î³ Â· Cov(Ï_global)</div>
-      <div class="cm">  // Î³ = 0.05; w_r = approved_fraction_r (larger categories weighted higher)</div>
+      <div class="eq">J(α) = Σ_r w_r · J_r(α_r) + γ · Cov(ρ_global)</div>
+      <div class="cm">  // γ = 0.05; w_r = approved_fraction_r (larger categories weighted higher)</div>
       <br>
-      <div class="eq">items_to_cover_90pct = min k: Î£_{i=1}^{k} Ï_i â‰¥ 0.9</div>
-      <div class="cm">  // concentration metric: pre-HUF = 2 categories dominate; post-HUF = 4â€“5 (fairer spread)</div>
+      <div class="eq">items_to_cover_90pct = min k: Σ_{i=1}^{k} ρ_i ≥ 0.9</div>
+      <div class="cm">  // concentration metric: pre-HUF = 2 categories dominate; post-HUF = 4–5 (fairer spread)</div>
     </div>
 
     <div class="card-grid">
       <div class="card">
         <div class="card-label">Equity Penalty</div>
-        <h3>Îµ Â· |Ï_r âˆ’ Ï_r^approved|</h3>
-        <p>Penalizes regimes that deviate from their Council-approved fraction. Roads running 8% over plan incurs penalty of Îµ Ã— 0.08 = 0.012.</p>
+        <h3>ε · |ρ_r − ρ_r^approved|</h3>
+        <p>Penalizes regimes that deviate from their Council-approved fraction. Roads running 8% over plan incurs penalty of ε × 0.08 = 0.012.</p>
       </div>
       <div class="card">
         <div class="card-label">Detection Trigger</div>
         <h3>Euclidean drift > 0.10</h3>
-        <p>If â€–e_curr âˆ’ e_refâ€– > 0.10 for any category, re-normalization triggers. Typical deferral event produces distance 0.12â€“0.18.</p>
+        <p>If ‖e_curr − e_ref‖ > 0.10 for any category, re-normalization triggers. Typical deferral event produces distance 0.12–0.18.</p>
       </div>
       <div class="card">
         <div class="card-label">Proof</div>
         <h3>Equity term convexity</h3>
-        <p>|Ï_r âˆ’ Ï_r^approved| is convex in Î± (affine composition). Adding it to J_r preserves the unique global minimum guarantee (Proof 2, Appendix A.1).</p>
+        <p>|ρ_r − ρ_r^approved| is convex in α (affine composition). Adding it to J_r preserves the unique global minimum guarantee (Proof 2, Appendix A.1).</p>
       </div>
     </div>
   </section>
 
   <section id="simulation">
-    <div class="section-rule">04 â€” Worked Simulation</div>
-    <h2>10-Step Q2â†’Q4 Budget Execution</h2>
+    <div class="section-rule">04 — Worked Simulation</div>
+    <h2>10-Step Q2→Q4 Budget Execution</h2>
     <p>
       Simulates Q2 through Q4 budget execution (10 two-week periods). Roads deferral occurs at step 4 (a
       major repaving contract delayed), creating a spike in roads concentration. Parks receives
@@ -451,23 +451,23 @@ footer {
           <tr>
             <th>Period</th>
             <th>Event</th>
-            <th>Î±* (Roads)</th>
-            <th>Î±* (Parks)</th>
-            <th>Ï_roads</th>
-            <th>Ï_parks</th>
-            <th>C(â„‹) global</th>
+            <th>α* (Roads)</th>
+            <th>α* (Parks)</th>
+            <th>ρ_roads</th>
+            <th>ρ_parks</th>
+            <th>C(ℋ) global</th>
             <th>items_90pct</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>0</td><td>Budget approved</td><td>â€”</td><td>â€”</td><td>0.300</td><td>0.200</td><td>â€”</td><td>3</td></tr>
+          <tr><td>0</td><td>Budget approved</td><td>—</td><td>—</td><td>0.300</td><td>0.200</td><td>—</td><td>3</td></tr>
           <tr><td>1</td><td>Q2 begin</td><td>0.52</td><td>0.48</td><td>0.308</td><td>0.198</td><td class="val-hi">0.952</td><td>4</td></tr>
           <tr><td>2</td><td>Normal execution</td><td>0.51</td><td>0.49</td><td>0.312</td><td>0.196</td><td class="val-hi">0.953</td><td>4</td></tr>
           <tr><td>3</td><td>Transit approval</td><td>0.52</td><td>0.49</td><td>0.315</td><td>0.194</td><td class="val-hi">0.951</td><td>4</td></tr>
-          <tr><td>4</td><td style="color:var(--mark-red)">Roads deferral â†‘</td><td class="val-warn">0.38</td><td>0.51</td><td class="val-warn">0.338</td><td>0.195</td><td>0.939</td><td>3</td></tr>
+          <tr><td>4</td><td style="color:var(--mark-red)">Roads deferral ↑</td><td class="val-warn">0.38</td><td>0.51</td><td class="val-warn">0.338</td><td>0.195</td><td>0.939</td><td>3</td></tr>
           <tr><td>5</td><td>Post-deferral adapt</td><td>0.42</td><td>0.50</td><td>0.328</td><td>0.196</td><td>0.944</td><td>4</td></tr>
           <tr><td>6</td><td>Q3 begin</td><td>0.48</td><td>0.49</td><td>0.320</td><td>0.198</td><td>0.949</td><td>4</td></tr>
-          <tr><td>7</td><td style="color:var(--mark-green)">Parks supplement â†‘</td><td>0.50</td><td class="val-hi">0.55</td><td>0.315</td><td class="val-hi">0.218</td><td class="val-hi">0.954</td><td>5</td></tr>
+          <tr><td>7</td><td style="color:var(--mark-green)">Parks supplement ↑</td><td>0.50</td><td class="val-hi">0.55</td><td>0.315</td><td class="val-hi">0.218</td><td class="val-hi">0.954</td><td>5</td></tr>
           <tr><td>8</td><td>Post-supplement</td><td>0.51</td><td>0.53</td><td>0.312</td><td>0.212</td><td class="val-hi">0.956</td><td>5</td></tr>
           <tr><td>9</td><td>Q4 begin</td><td>0.52</td><td>0.51</td><td>0.308</td><td>0.208</td><td class="val-hi">0.957</td><td>4</td></tr>
           <tr><td>10</td><td>Year-end</td><td>0.52</td><td>0.50</td><td>0.305</td><td>0.204</td><td class="val-hi">0.958</td><td>4</td></tr>
@@ -477,66 +477,66 @@ footer {
 
     <div class="result-row">
       <div class="result-card">
-        <div class="rc-label">Final C(â„‹)</div>
+        <div class="rc-label">Final C(ℋ)</div>
         <div class="rc-val">0.958</div>
         <div class="rc-delta good">+19.5% vs pre-HUF (0.802)</div>
       </div>
       <div class="result-card">
         <div class="rc-label">Budget drift</div>
-        <div class="rc-val">âˆ’21%</div>
+        <div class="rc-val">−21%</div>
         <div class="rc-delta">Roads deviation from approved plan</div>
       </div>
       <div class="result-card">
         <div class="rc-label">items_to_cover_90pct</div>
-        <div class="rc-val">4â€“5</div>
+        <div class="rc-val">4–5</div>
         <div class="rc-delta good">Up from 2 (pre-HUF concentration)</div>
       </div>
       <div class="result-card">
-        <div class="rc-label">Roads Î±* at deferral</div>
+        <div class="rc-label">Roads α* at deferral</div>
         <div class="rc-val">0.38</div>
         <div class="rc-delta">Reduced inheritance during event</div>
       </div>
       <div class="result-card">
-        <div class="rc-label">Parks Î±* at supplement</div>
+        <div class="rc-label">Parks α* at supplement</div>
         <div class="rc-val">0.55</div>
         <div class="rc-delta">Increased inheritance for new approval</div>
       </div>
     </div>
 
     <p>
-      The roads deferral at step 4 immediately reduces Roads Î±* to 0.38, limiting propagation of the over-concentrated
-      signal. The parks supplemental at step 7 boosts Parks Î±* to 0.55, correctly absorbing the new allocation into
+      The roads deferral at step 4 immediately reduces Roads α* to 0.38, limiting propagation of the over-concentrated
+      signal. The parks supplemental at step 7 boosts Parks α* to 0.55, correctly absorbing the new allocation into
       the hierarchy. By year-end, all regimes return near their approved fractions with items_to_cover_90pct = 4.
     </p>
   </section>
 
   <section id="fit">
-    <div class="section-rule">05 â€” HUF Architecture Fit</div>
+    <div class="section-rule">05 — HUF Architecture Fit</div>
     <h2>Why Municipal Budgets Fit HUF</h2>
 
     <div style="margin:1.5rem 0;">
       <div class="fit-row">
-        <span class="fit-label">Budget categories â†’ regimes (clean partition)</span>
+        <span class="fit-label">Budget categories → regimes (clean partition)</span>
         <div class="fit-track"><div class="fit-fill" style="width:100%"></div></div>
         <span class="fit-pct">100%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">Approved fractions â†’ Ï_r^approved reference</span>
+        <span class="fit-label">Approved fractions → ρ_r^approved reference</span>
         <div class="fit-track"><div class="fit-fill" style="width:97%"></div></div>
         <span class="fit-pct">97%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">Mid-year deferrals â†’ equity penalty trigger</span>
+        <span class="fit-label">Mid-year deferrals → equity penalty trigger</span>
         <div class="fit-track"><div class="fit-fill" style="width:94%"></div></div>
         <span class="fit-pct">94%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">JSONL audit â†’ council accountability artifact</span>
+        <span class="fit-label">JSONL audit → council accountability artifact</span>
         <div class="fit-track"><div class="fit-fill" style="width:93%"></div></div>
         <span class="fit-pct">93%</span>
       </div>
       <div class="fit-row">
-        <span class="fit-label">items_to_cover_90pct â†’ concentration alert</span>
+        <span class="fit-label">items_to_cover_90pct → concentration alert</span>
         <div class="fit-track"><div class="fit-fill" style="width:90%"></div></div>
         <span class="fit-pct">90%</span>
       </div>
@@ -551,7 +551,7 @@ footer {
   </section>
 
   <section id="code">
-    <div class="section-rule">06 â€” Implementation</div>
+    <div class="section-rule">06 — Implementation</div>
     <h2>Python Reference Run</h2>
     <p>
       The Markham worked example ships with the HUF repository as a self-contained run. Budget data is
@@ -559,17 +559,17 @@ footer {
       J_r objective for each spending category.
     </p>
 
-<pre><span class="cm"># huf_markham.py â€” HUF worked example: City of Markham municipal budget</span>
+<pre><span class="cm"># huf_markham.py — HUF worked example: City of Markham municipal budget</span>
 <span class="kw">import</span> <span class="var">numpy</span> <span class="kw">as</span> <span class="var">np</span>
 <span class="kw">import</span> <span class="var">json</span>
 
-<span class="cm"># â”€â”€â”€ 1. Budget data (from Markham 2023 capital plan) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 1. Budget data (from Markham 2023 capital plan) ──────────────────────────</span>
 <span class="var">TOTAL_BUDGET</span> = <span class="num">500e6</span>  <span class="cm"># $500M</span>
 
 <span class="cm"># Regime definitions: {name: (approved_amount, data_points_count)}</span>
 <span class="var">REGIMES</span> = {
     <span class="st">'roads'</span>:      (<span class="num">15e6</span>, <span class="num">50</span>),    <span class="cm"># 50 km, ~50 project segments</span>
-    <span class="st">'parks'</span>:      (<span class="num">10e6</span>, <span class="num">20</span>),    <span class="cm"># 20 parks, 50 kmÂ²</span>
+    <span class="st">'parks'</span>:      (<span class="num">10e6</span>, <span class="num">20</span>),    <span class="cm"># 20 parks, 50 km²</span>
     <span class="st">'transit'</span>:    (<span class="num">18e6</span>, <span class="num">15</span>),    <span class="cm"># BRT corridors + shelters</span>
     <span class="st">'water'</span>:      (<span class="num">12e6</span>, <span class="num">30</span>),    <span class="cm"># pipe renewal segments</span>
     <span class="st">'community'</span>:  (<span class="num">8e6</span>, <span class="num">8</span>),     <span class="cm"># library + rec centre projects</span>
@@ -584,7 +584,7 @@ footer {
     <span class="var">items</span> *= (<span class="num">1</span> + <span class="var">rng</span>.<span class="fn">normal</span>(<span class="num">0</span>, <span class="var">noise</span>, <span class="var">n</span>))
     <span class="kw">return</span> <span class="fn">np.abs</span>(<span class="var">items</span>)
 
-<span class="cm"># â”€â”€â”€ 2. HUF objectives â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 2. HUF objectives ────────────────────────────────────────────────────────</span>
 <span class="kw">def</span> <span class="fn">huf_normalize</span>(<span class="var">e</span>):
     <span class="kw">return</span> (<span class="var">e</span> - <span class="var">e</span>.<span class="fn">mean</span>()) / (<span class="var">e</span>.<span class="fn">std</span>() + <span class="num">1e-8</span>)
 
@@ -592,7 +592,7 @@ footer {
                 <span class="var">lam</span>=<span class="num">0.1</span>, <span class="var">eps</span>=<span class="num">0.15</span>):
     <span class="kw">return</span> (<span class="num">1</span> - <span class="var">C_r</span>) + <span class="var">lam</span>*<span class="fn">np.var</span>(<span class="var">rho_r</span>) + <span class="var">eps</span>*<span class="fn">abs</span>(<span class="var">rho_r</span>.<span class="fn">sum</span>() - <span class="var">rho_r_approved</span>)
 
-<span class="cm"># â”€â”€â”€ 3. 10-step execution simulation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 3. 10-step execution simulation ──────────────────────────────────────────</span>
 <span class="var">all_items</span> = {<span class="var">r</span>: <span class="fn">generate_budget_items</span>(<span class="var">r</span>, *<span class="var">REGIMES</span>[<span class="var">r</span>]) <span class="kw">for</span> <span class="var">r</span> <span class="kw">in</span> <span class="var">REGIMES</span>}
 <span class="var">e_prev</span> = {<span class="var">r</span>: <span class="fn">huf_normalize</span>(<span class="fn">np.log1p</span>(<span class="var">all_items</span>[<span class="var">r</span>])) <span class="kw">for</span> <span class="var">r</span> <span class="kw">in</span> <span class="var">REGIMES</span>}
 
@@ -622,9 +622,9 @@ footer {
         <span class="var">e_prev</span>[<span class="var">r</span>] = <span class="var">e_curr</span> + <span class="var">best_a</span> * <span class="var">e_prev</span>[<span class="var">r</span>]
 
     <span class="var">C_global</span> = <span class="fn">np.mean</span>(<span class="var">C_vals</span>)
-    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Step {step}: C(â„‹)={C_global:.4f}  Î±*(roads)={alpha_vals['roads']:.2f}  Î±*(parks)={alpha_vals['parks']:.2f}"</span>)
+    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Step {step}: C(ℋ)={C_global:.4f}  α*(roads)={alpha_vals['roads']:.2f}  α*(parks)={alpha_vals['parks']:.2f}"</span>)
 
-<span class="cm"># â”€â”€â”€ 4. JSONL provenance â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€</span>
+<span class="cm"># ─── 4. JSONL provenance ──────────────────────────────────────────────────────</span>
 <span class="kw">with</span> <span class="fn">open</span>(<span class="st">'markham_huf_audit.jsonl'</span>, <span class="st">'w'</span>) <span class="kw">as</span> <span class="var">f</span>:
     <span class="kw">for</span> <span class="var">r</span>, <span class="var">items</span> <span class="kw">in</span> <span class="var">all_items</span>.<span class="fn">items</span>():
         <span class="kw">for</span> <span class="var">i</span>, <span class="var">amt</span> <span class="kw">in</span> <span class="fn">enumerate</span>(<span class="var">items</span>):
@@ -645,10 +645,9 @@ footer {
 </main>
 
 <footer>
-  <span>HUF v1.1.8 Â· Case: City of Markham Worked Example Â· Public Budget Data 2023 Â· PeterHiggins19/huf_core</span>
-  <span>C(â„‹) = 0.958</span>
+  <span>HUF v1.1.8 · Case: City of Markham Worked Example · Public Budget Data 2023 · PeterHiggins19/huf_core_github_v1.1.8_no_inputs</span>
+  <span>C(ℋ) = 0.958</span>
 </footer>
 
 </body>
 </html>
-
