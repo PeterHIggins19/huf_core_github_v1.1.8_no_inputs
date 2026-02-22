@@ -1,4 +1,4 @@
-# HUF Core (v1.1.8)
+﻿# HUF Core (v1.1.8)
 
 **HUF is an artifact-first compression + audit framework for long-tail distributions** (budgets, logs, exceptions).
 
@@ -16,7 +16,7 @@ Docs site: https://peterhiggins19.github.io/huf_core/
 
 ## 2 'minute long-tail demo (Windows/Conda copy/paste)
 
-**What this demonstrates:** the same dataset can look stable in the baseline view, but become **more concentrated** in an exception-only view â€" the practical long-tail story.
+**What this demonstrates:** the same dataset can look stable in the baseline view, but become **more concentrated** in an exception-only view -- the practical long-tail story.
 
 You will run:
 
@@ -39,7 +39,7 @@ After it finishes, look for a line like:
 
 - `PROOF: items_to_cover_90pct 37 -> 12`
 
-Thatâ€™s the â€œrepeatable numberâ€ people cite: exception views often tighten into fewer items.
+That's the "repeatable number" people cite: exception views often tighten into fewer items.
 
 Want the quick dashboard on any folder?
 
@@ -47,7 +47,7 @@ Want the quick dashboard on any folder?
 .\.venv\Scripts\python scripts/inspect_huf_artifacts.py --out out/traffic_anomaly_demo
 ```
 
-**Why this works (accounting mapping):** baseline P&L â†' exception-only P&L â†' ranked variance review.  
+**Why this works (accounting mapping):** baseline P&L -> exception-only P&L -> ranked variance review.  
 See: `docs/long_tail_accounting_lens.md`
 
 ---
@@ -78,5 +78,6 @@ If you see a warning about MkDocs 2.0, re-install the pinned versions:
 ```powershell
 .\.venv\Scripts\python -m pip install "mkdocs==1.6.1" "mkdocs-material==9.7.2"
 ```
+
 
 
