@@ -1,4 +1,4 @@
-# HUF Field Guide — Architecture, Artifacts, and Domain Map
+﻿# HUF Field Guide — Architecture, Artifacts, and Domain Map
 
 > **Higgins Unity Framework (HUF)** is a normalization-invariant **audit layer** for hierarchical mixtures (regimes/tenants/sources).  
 > It grew out of wavefront-control work in multi-driver acoustic systems and later proved useful as a general-purpose way to **track where the mass went** across hierarchies.
@@ -40,7 +40,7 @@ The “counter‑intuitive” part is intentional: **discarding tail mass and th
 
 ---
 
-## 2. Origin story: wavefront control → audit layers
+## 2. Origin story: wavefront control → audit layers {#2-origin-story-wavefront-control--audit-layers}
 
 HUF wasn’t invented as “a library feature.” It emerged from experimental work in **multi-driver wavefront control**, where many drivers must combine into a coherent field without any one driver silently dominating the energy budget.
 
@@ -312,3 +312,4 @@ Docs (local):
 ---
 
 *Docs: https://peterhiggins19.github.io/huf_core/ · Repo: https://github.com/PeterHiggins19/huf_core*
+
