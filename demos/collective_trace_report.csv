@@ -1,4 +1,4 @@
-cycle	agent	contribution	operator_weight	retained_discarded	artifact_produced	notes
+cycle,	agent,	contribution,	operator_weight,	retained_discarded,	artifact_produced	notes
 1 - First dispersal	Grok	Croatia site data verification + mathematical elaborations (sections 10.16-10.24)	0.15	Retained â€” citations only	RSIS site data table	Useful data layer. Narrative sections discarded. Grok pattern confirmed: scope lock required.
 1 - First dispersal	Gemini	Three friction points: normalization too abstract / artifact vocabulary alienating / pilot rationale mismatches core problem	0.3	Retained in full	Transboundary gravity framing for Croatia pilot	Highest signal in round 1. Produced the single most important rewrite: EU data portal rationale replaced by ecological governance framing.
 1 - First dispersal	ChatGPT	Seven failure points including proposal smell in pilot section	0.3	Retained â€” minimum wording shifts only	Four minimum wording shifts applied to primer	Correctly identified register problem. Shifts: proposedâ†’candidate / would runâ†’can be structured / primary pathwayâ†’potential pathway.
