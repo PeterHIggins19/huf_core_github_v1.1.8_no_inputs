@@ -1,27 +1,18 @@
-# HUF Demos
+# Ramsar Partner Case (Scaffold)
 
-These demos are small, runnable examples that generate review-first artifacts (tables/logs) you can inspect and share.
+**Status:** Scaffold only (no partner data committed).  
+**Policy:** No data enters this folder without operator sign-off.
 
-Wiki index: https://github.com/PeterHiggins19/huf_core/wiki  
-Docs site: https://peterhiggins19.github.io/huf_core/
+## Directory layout
 
----
+- `data/raw/` — source inputs (operator-authorized only)
+- `data/processed/` — derived datasets (reproducible)
+- `code/` — pipelines, transforms, loaders
+- `docs/` — case notes, mappings, partner-facing drafts (if needed)
+- `traces/` — trace artifacts for the case
+- `tests/` — unit checks / reproducibility guards
 
-## Demo list
+## Phase gate (slow-and-steady)
 
-### 1) Food Guide demo (Bread the HUF Way -- Real Data Extension)
-
-- Script: `food_guide_demo.py`
-- Wiki: https://github.com/PeterHiggins19/huf_core/wiki/Bread-the-HUF-Way-Real-Data-Extension
-
-**What it shows**
-- Treat a portfolio of items (recipes) as a mixture.
-- Define regimes (macros), normalize shares, and emit simple artifacts that make drift/concentration legible.
-
-**Run**
-```powershell
-python demos/food_guide_demo.py
-```
-
-### 2) Collective trace report (Ramsar primer development)
-- Artifact: `collective_trace_report.csv` — Wiki: https://github.com/PeterHiggins19/huf_core/wiki/Collective-Trace-Report-Ramsar-Primer-Development
+- Phase A/B/C happen in wiki + drafts.
+- Phase D (data) opens only after partner approval and internal signoff.
