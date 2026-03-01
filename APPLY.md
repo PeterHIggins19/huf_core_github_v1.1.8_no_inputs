@@ -1,23 +1,14 @@
-# Make-all-live patch (March 1, 2026)
+# Patch: Fix MkDocs strict warnings from docs/index.md
 
-This patch:
-- Updates `mkdocs.yml` nav to include **Learning** and **Books** (and removes orphan warnings).
-- Adds HUF headers (two-line coding) to core docs pages provided here.
-- Adds `scripts/apply_huf_headers.py` to add headers across `docs/learning/**` and `docs/books/**` (manual run).
-- Updates `scripts/doc_inventory.py` (placeholder DOC_ID ignored).
+This replaces `docs/index.md` with a version that:
+- removes invalid `docs/...` link prefixes
+- converts non-doc-file links (scripts, START_HERE_*.bat/.command/.sh) to external GitHub links
+- adds HUF two-line header (as YAML comments)
 
-## Apply order
-1) Paste over files in this zip to repo root.
-2) Run header normalization (optional but recommended before publishing everything):
-   ```powershell
-   .\.venv\Scripts\python scripts\apply_huf_headers.py --root docs --write
-   ```
-3) Regenerate manifest:
-   ```powershell
-   .\.venv\Scripts\python scripts\doc_inventory.py --root . --write --merge
-   ```
-4) Verify docs:
-   ```powershell
-   .\.venv\Scripts\python -m mkdocs build --strict
-   ```
+Apply:
+- paste `docs/index.md` over your repo `docs/index.md`
 
+Then:
+```powershell
+.\.venv\Scripts\python -m mkdocs build --strict
+```
