@@ -1,2 +1,0 @@
-# Partner HTML backups created by patch scripts
-notes/partner_html_backup_*/
