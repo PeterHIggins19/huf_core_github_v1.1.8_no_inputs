@@ -1,0 +1,6 @@
+# --- HUF local-only management (do not commit) ---
+notes/_private/
+notes/_private/**
+# Optional: if you want inbox to remain local-only, uncomment:
+# notes/current_documents/inbox/
+# notes/current_documents/inbox/**
