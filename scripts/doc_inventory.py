@@ -14,7 +14,10 @@ Line 2:
 
 Writes notes/_org/doc_manifest.json
 
-This is intended to be run manually until structure stabilizes.
+Designed to be run manually while the corpus is still moving.
+
+Fix (Mar 1, 2026):
+- Ignore placeholder template headers like "<DOC_ID>" to avoid false collisions.
 """
 
 from __future__ import annotations
@@ -46,6 +49,17 @@ DOCX_EXTS = {".docx"}
 H1_PAT = re.compile(r"^\s*(?:#\s*)?(?://\s*)?(?:/\*\s*)?(?:\*\s*)?HUF-DOC:\s*(.+?)\s*$")
 H2_PAT = re.compile(r"^\s*(?:#\s*)?(?://\s*)?(?:\*\s*)?CODES:\s*(.+?)\s*$")
 PIPE_SPLIT = re.compile(r"\s*\|\s*")
+
+def _is_placeholder_doc_id(doc_id: str) -> bool:
+    d = doc_id.strip()
+    if not d:
+        return True
+    # ignore template placeholders like "<DOC_ID>"
+    if d.startswith("<") and d.endswith(">"):
+        return True
+    if "DOC_ID" in d:
+        return True
+    return False
 
 def _parse_kv_segments(line: str) -> Dict[str, str]:
     parts = [p.strip() for p in PIPE_SPLIT.split(line.strip()) if p.strip()]
@@ -130,8 +144,9 @@ def _scan_text_file(path: Path) -> Optional[Dict[str, Any]]:
 
     h1 = _parse_kv_segments(h1_val)
     doc_id = h1.get("_first", "").strip()
-    if not doc_id:
+    if _is_placeholder_doc_id(doc_id):
         return None
+
     codes = _parse_codes_line(codes_val)
 
     return {
@@ -175,8 +190,9 @@ def _scan_docx_file(path: Path) -> Optional[Dict[str, Any]]:
 
     h1 = _parse_kv_segments(line1)
     doc_id = h1.get("_first", "").strip()
-    if not doc_id:
+    if _is_placeholder_doc_id(doc_id):
         return None
+
     codes = _parse_codes_line(line2)
 
     return {
