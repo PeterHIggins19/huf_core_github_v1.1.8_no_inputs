@@ -1,0 +1,17 @@
+{
+  "id": "07_advanced_math",
+  "title": "Advanced Math",
+  "level": 7,
+  "prereqs": [],
+  "outcomes": [],
+  "status": "draft",
+  "weights": {
+    "op": 0.8,
+    "tool": 0.2,
+    "peer": 0.0
+  },
+  "caps": {
+    "op_min": 0.51,
+    "tool_max": 0.49
+  }
+}
