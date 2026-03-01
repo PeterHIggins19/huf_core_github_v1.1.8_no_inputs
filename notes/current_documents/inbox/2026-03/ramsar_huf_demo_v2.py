@@ -1,6 +1,3 @@
-# HUF-DOC: HUF.DRAFT.SOFTWARE.SCRIPT.RAMSAR_HUF_DEMO | HUF:1.1.8 | DOC:v2 | STATUS:draft | LANE:draft | RO:Peter Higgins
-# CODES: SOFTWARE, DEMO, RAMSAR | ART: CM, AS, TR, EB | EVID:E2 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:demos/ramsar_huf_demo.py
-
 """
 Ramsar HUF Translation Wrapper — v2
 30-minute demonstration script for Croatia RSIS pilot

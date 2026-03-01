@@ -1,0 +1,93 @@
+{
+  "version": "1.2",
+  "doc_id_format": "HUF.<LANE>.<DOMAIN>.<TYPE>.<SLUG>",
+  "lanes": [
+    "DRAFT",
+    "REL",
+    "LEGACY"
+  ],
+  "domains": [
+    "ORG",
+    "LRN",
+    "BOOK",
+    "CASE",
+    "PARTNER",
+    "WIKI",
+    "SOFTWARE"
+  ],
+  "types": [
+    "POLICY",
+    "INDEX",
+    "MODULE",
+    "MANUSCRIPT",
+    "PRIMER",
+    "LETTER",
+    "EXHIBIT",
+    "NOTE",
+    "TEMPLATE",
+    "TRACE",
+    "PACKAGE",
+    "SCRIPT",
+    "DATA",
+    "CODE"
+  ],
+  "artifact_codes": {
+    "CM": "Coherence Map",
+    "AS": "Active Set",
+    "TR": "Trace Report",
+    "EB": "Error Budget"
+  },
+  "evidence_levels": [
+    "E0",
+    "E1",
+    "E2",
+    "E3",
+    "E4"
+  ],
+  "posture_codes": [
+    "DEF",
+    "OP",
+    "INT",
+    "THM"
+  ],
+  "status_values": [
+    "draft",
+    "reviewed",
+    "release",
+    "deprecated"
+  ],
+  "weight_caps": {
+    "op_min": 0.51,
+    "tool_max": 0.49
+  },
+  "weight_presets": {
+    "beginner": {
+      "op": 0.8,
+      "tool": 0.2,
+      "peer": 0.0
+    },
+    "team": {
+      "op": 0.65,
+      "tool": 0.2,
+      "peer": 0.15
+    },
+    "mature_experimental": {
+      "op": 0.51,
+      "tool": 0.49,
+      "peer": 0.0
+    }
+  },
+  "issued_doc_ids": [
+    "HUF.DRAFT.BOOK.MANUSCRIPT.ADVANCED_MATH",
+    "HUF.DRAFT.SOFTWARE.SCRIPT.RAMSAR_HUF_DEMO",
+    "HUF.REL.BOOK.INDEX.BOOKS",
+    "HUF.REL.LRN.INDEX.LEARNING_TRACK",
+    "HUF.REL.ORG.NOTE.AI_USE_STANDARD",
+    "HUF.REL.ORG.POLICY.DOC_GOVERNANCE",
+    "HUF.REL.SOFTWARE.INDEX.DEMOS",
+    "HUF.REL.WIKI.NOTE.WIKI_FOURTH_MONITORING_CATEGORY_EXPANDED",
+    "HUF.REL.WIKI.NOTE.WIKI_HUF_TAXONOMY_COMPLETE",
+    "HUF.REL.WIKI.NOTE.WIKI_MANUFACTURING_ELECTRONICS_ASSEMBLY",
+    "HUF.REL.WIKI.NOTE.WIKI_OPERATOR_ENTRY_POINTS"
+  ]
+}

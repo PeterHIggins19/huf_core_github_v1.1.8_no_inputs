@@ -1,0 +1,2 @@
+HUF-DOC: <DOC_ID> | HUF:<HUF_VERSION> | DOC:<DOC_VERSION> | STATUS:<status> | LANE:<lane> | RO:<operator>
+CODES: <tags> | ART: CM, AS, TR, EB | EVID:E0-E4 | POSTURE: DEF/OP/INT/THM | WEIGHTS: OP=.. TOOL=.. PEER=.. | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:<canonical_path>

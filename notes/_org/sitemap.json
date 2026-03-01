@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "governance": {
+    "doc_governance": "notes/_org/doc_governance.md",
+    "ai_use_standard": "notes/_org/ai_use_standard.md",
+    "doc_id_registry": "notes/_org/doc_id_registry.json",
+    "doc_manifest": "notes/_org/doc_manifest.json",
+    "templates": "notes/_org/templates/"
+  },
+  "lanes": {
+    "inbox": "notes/current_documents/inbox/",
+    "staged": "notes/current_documents/staged/",
+    "release": [
+      "docs/",
+      "cases/",
+      "demos/",
+      "notes/_org/"
+    ],
+    "legacy": "notes/legacy/"
+  },
+  "volumes": {
+    "vol_1": "Orientation + Field Guide (wiki + learning 00)",
+    "vol_2": "Handbook (operator manual)",
+    "vol_3": "Software + demos",
+    "vol_4": "Formal core (foundations)",
+    "vol_5": "Advanced math compendium",
+    "vol_6": "Cases",
+    "vol_7": "Partner pilots (Ramsar)",
+    "vol_8": "Governance + roadmap"
+  },
+  "pointers": {
+    "learning_track": "docs/learning/index.md",
+    "books_index": "docs/books/index.md",
+    "demos_index": "demos/README.md",
+    "ramsar_case": "cases/ramsar_case/README.md",
+    "wiki_mirror": "notes/wiki_pages/"
+  }
+}
