@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
     
     
       
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#learning-track-graduated" class="md-skip">
+        <a href="#learning-dashboard" class="md-skip">
           Skip to content
         </a>
       
@@ -3377,8 +3377,53 @@
   
   
   
-    
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning dashboard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Learning dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklist-operator-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checklist (operator gate)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-track-graduated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning Track (Graduated)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -3446,6 +3491,100 @@
   
 
 
+<h2 id="learning-dashboard">Learning dashboard<a class="headerlink" href="#learning-dashboard" title="Permanent link">&para;</a></h2>
+<p><strong>Progress legend:</strong> 🟡 draft · 🔵 reviewed · 🟢 release · ⚫ deprecated<br />
+<strong>How this page stays honest:</strong> module status should match <code>docs/learning/**/module.json</code>. When you promote a module, update <code>status</code> there first.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th style="text-align: right;">Status</th>
+<th>Prereqs</th>
+<th>Overview</th>
+<th>Quiz</th>
+<th>Answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00 Orientation</td>
+<td style="text-align: right;">🟡</td>
+<td>—</td>
+<td><a href="00_orientation/">Start</a></td>
+<td><a href="00_orientation/quiz/">Quiz</a></td>
+<td><a href="00_orientation/answers/">Answers</a></td>
+</tr>
+<tr>
+<td>01 Foundations</td>
+<td style="text-align: right;">🟡</td>
+<td>00</td>
+<td><a href="01_foundations/">Start</a></td>
+<td><a href="01_foundations/quiz/">Quiz</a></td>
+<td><a href="01_foundations/answers/">Answers</a></td>
+</tr>
+<tr>
+<td>02 Formal Core</td>
+<td style="text-align: right;">🟡</td>
+<td>01</td>
+<td><a href="02_formal_core/">Start</a></td>
+<td><a href="02_formal_core/quiz/">Quiz</a></td>
+<td><a href="02_formal_core/answers/">Answers</a></td>
+</tr>
+<tr>
+<td>03 Artifacts</td>
+<td style="text-align: right;">🟡</td>
+<td>02</td>
+<td><a href="03_artifacts/">Start</a></td>
+<td><a href="03_artifacts/quiz/">Quiz</a></td>
+<td><a href="03_artifacts/answers/">Answers</a></td>
+</tr>
+<tr>
+<td>04 Running Examples</td>
+<td style="text-align: right;">🟡</td>
+<td>03</td>
+<td><a href="04_running_examples/">Start</a></td>
+<td><a href="04_running_examples/quiz/">Quiz</a></td>
+<td><a href="04_running_examples/answers/">Answers</a></td>
+</tr>
+<tr>
+<td>05 Case Studies</td>
+<td style="text-align: right;">🟡</td>
+<td>04</td>
+<td><a href="05_case_studies/">Start</a></td>
+<td><a href="05_case_studies/quiz/">Quiz</a></td>
+<td><a href="05_case_studies/answers/">Answers</a></td>
+</tr>
+<tr>
+<td>06 Partner Pilots</td>
+<td style="text-align: right;">🟡</td>
+<td>05</td>
+<td><a href="06_partner_pilots/">Start</a></td>
+<td><a href="06_partner_pilots/quiz/">Quiz</a></td>
+<td><a href="06_partner_pilots/answers/">Answers</a></td>
+</tr>
+<tr>
+<td>07 Advanced Math</td>
+<td style="text-align: right;">🟡</td>
+<td>06</td>
+<td><a href="07_advanced_math/">Start</a></td>
+<td><a href="07_advanced_math/quiz/">Quiz</a></td>
+<td><a href="07_advanced_math/answers/">Answers</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="checklist-operator-gate">Checklist (operator gate)<a class="headerlink" href="#checklist-operator-gate" title="Permanent link">&para;</a></h3>
+<p>Use this as a lightweight “done / not done” tracker.<br />
+When you tick a box here, also update the module’s <code>module.json</code> (<code>status: reviewed</code> or <code>status: release</code>) so the dashboard stays consistent.</p>
+<ul>
+<li>[ ] <strong>00 Orientation</strong> — I can explain CM/AS/TR/EB in plain language and run one example.</li>
+<li>[ ] <strong>01 Foundations</strong> — I can define regimes, mass accounting, retention, and normalization invariance.</li>
+<li>[ ] <strong>02 Formal Core</strong> — I can state the formal core claims vs interpretive extensions (and label them).</li>
+<li>[ ] <strong>03 Artifacts</strong> — I can read CM/AS/TR/EB and explain “why it stayed / what was discarded”.</li>
+<li>[ ] <strong>04 Running Examples</strong> — I can run Markham/Traffic/Planck demos and interpret outputs.</li>
+<li>[ ] <strong>05 Case Studies</strong> — I can map a real case narrative to artifacts + reproducible commands.</li>
+<li>[ ] <strong>06 Partner Pilots</strong> — I can explain scope boundaries for partner work (audit layer, not domain modeling).</li>
+<li>[ ] <strong>07 Advanced Math</strong> — I can connect the advanced math text back to core definitions and artifacts.</li>
+</ul>
 <h1 id="learning-track-graduated">Learning Track (Graduated)<a class="headerlink" href="#learning-track-graduated" title="Permanent link">&para;</a></h1>
 <p>This is the structured learning path for HUF, arranged from orientation to advanced mathematics.</p>
 <p>What this track is:
