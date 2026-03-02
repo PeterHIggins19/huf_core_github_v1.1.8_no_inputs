@@ -1,6 +1,16 @@
 HUF-DOC: HUF.REL.BOOK.PAGE.REFERENCE | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
 CODES: BOOK, REFERENCE | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/huf_reference.md
 
+<!-- HUF_CURRENT_SOURCE_START -->
+!!! note "Current source-of-truth"
+    The authoritative working copy for **HUF Reference** is maintained under `notes/current_documents/staged/` and supersedes older variants.
+    
+    - Source (DOCX): https://github.com/PeterHiggins19/huf_core/blob/main/notes/current_documents/staged/HUF.DRAFT.BOOK.MANUSCRIPT.HUF_COMPLETE_REFERENCE_FEB2026/HUF_Complete_Reference_Feb2026.docx
+    
+    This page is the public Markdown edition used for the documentation site.
+<!-- HUF_CURRENT_SOURCE_END -->
+
+
 # HUF Reference (Skeptic Appendix) — v1.3.0
 
 > Build date: 2026-02-21  
@@ -53,4 +63,3 @@ Recommended phrasing:
 - “HUF is a normalization-invariant audit layer for regime dominance and concentration.”
 - “We use sphere embedding of simplex distributions to visualize and analyze mixture stability.”
 - “We discuss sheaf/topos analogies as interpretive correspondences, not equivalences.”
-

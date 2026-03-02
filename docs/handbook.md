@@ -1,6 +1,16 @@
 HUF-DOC: HUF.REL.BOOK.PAGE.HANDBOOK | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
 CODES: BOOK, HANDBOOK | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/handbook.md
 
+<!-- HUF_CURRENT_SOURCE_START -->
+!!! note "Current source-of-truth"
+    The authoritative working copy for **HUF Handbook** is maintained under `notes/current_documents/staged/` and supersedes older variants.
+    
+    - Source (DOCX): https://github.com/PeterHiggins19/huf_core/blob/main/notes/current_documents/staged/HUF.LEGACY.BOOK.MANUSCRIPT.HUF_HANDBOOK_V1_2_0/HUF_Handbook_v1.2.0.docx
+    
+    This page is the public Markdown edition used for the documentation site.
+<!-- HUF_CURRENT_SOURCE_END -->
+
+
 # HUF Handbook (Clean Edition) — v1.3.0
 
 > Build date: 2026-02-21  
@@ -105,4 +115,3 @@ Recommendation: use the provided scripts in scripts/ and examples/ rather than p
 ## Troubleshooting
 MkDocs warning about “MkDocs 2.0 incompatible with Material” means your MkDocs major version and the theme version are mismatched. If you use Material, prefer the pinned versions in this repo’s docs requirements. If you upgrade MkDocs, upgrade the theme accordingly (or switch generators).
 If documentation pages exist but are “not included in nav”, run scripts/docs_hygiene.py (it normalizes nav and updates the catalog).
-

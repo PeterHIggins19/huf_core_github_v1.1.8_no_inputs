@@ -11,13 +11,22 @@ This section is the **stable, public library** of HUF long-form documents.
 
 ---
 
+## Current sources (authoritative working copies)
+
+These links point to the authoritative working copies under `notes/current_documents/staged/`.
+
+| Book | Current source |
+|---|---|
+| HUF Handbook | https://github.com/PeterHiggins19/huf_core/blob/main/notes/current_documents/staged/HUF.LEGACY.BOOK.MANUSCRIPT.HUF_HANDBOOK_V1_2_0/HUF_Handbook_v1.2.0.docx |
+| HUF Reference | https://github.com/PeterHiggins19/huf_core/blob/main/notes/current_documents/staged/HUF.DRAFT.BOOK.MANUSCRIPT.HUF_COMPLETE_REFERENCE_FEB2026/HUF_Complete_Reference_Feb2026.docx |
+
 ## Quick pick (what to read first)
 
 | If you want… | Read |
 |---|---|
 | A technical map of “what HUF is” without overclaiming | **[HUF Field Guide](../field_guide.md)** |
-| To run HUF and interpret outputs | **[HUF Handbook (v1.3.0)](../handbook.md)** |
-| A definitions-first reference you can cite internally | **[HUF Reference (v1.3.0)](../huf_reference.md)** |
+| To run HUF and interpret outputs | **[HUF Handbook (current)](../handbook.md)** |
+| A definitions-first reference you can cite internally | **[HUF Reference (current)](../huf_reference.md)** |
 | Disclosure + conservative claims posture | **[Ethics & disclosure](../ethics.md)** |
 | The motivating essay (interpretive) | **[The Trap of Coherence](../trap_of_coherence.md)** |
 
@@ -34,12 +43,12 @@ This section is the **stable, public library** of HUF long-form documents.
   Purpose: AI-assisted drafting disclosure, scope boundaries, reproducibility posture.
 
 ### Level 2 — Operator manual (run the system)
-- **[HUF Handbook (v1.3.0)](../handbook.md)**  
+- **[HUF Handbook (current)](../handbook.md)**  
   Purpose: step-by-step “run it / read artifacts / troubleshoot”.  
   Audience: operators, analysts, engineers.
 
 ### Level 3 — Reference (definitions + nomenclature)
-- **[HUF Reference (v1.3.0)](../huf_reference.md)**  
+- **[HUF Reference (current)](../huf_reference.md)**  
   Purpose: stable definitions, symbols, and conservative claims you can point to.
 
 ### Level 4 — Advanced mathematics (draft, expanding)
