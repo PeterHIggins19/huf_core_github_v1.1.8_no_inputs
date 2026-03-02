@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.PARTNER.PAGE.PARTNERS_CASE_STUDIES_MARKHAM_WORKED_EXAMPLE | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: PARTNER, CASE_STUDY | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/partners/case_studies/markham_worked_example.md
+
 # City of Markham worked example
 
 > A fully worked example applying HUF to the City of Markham's public budget data — treating infrastructure

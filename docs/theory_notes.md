@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.DOCS.PAGE.THEORY_NOTES | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: RESEARCH | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/theory_notes.md
+
 # Theory Notes (HUF / UBH)
 
 **Updated:** 2026-02-17

@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.PARTNER.PAGE.PARTNERS_INTEGRATIONS_PUBLIC_SECTOR_ACCOUNTING_LENS | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: PARTNER, INTEGRATION | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/partners/integrations/public_sector_accounting_lens.md
+
 # Public sector accounting lens
 
 > HUF applies the accounting lens to public sector AI and data systems — treating every budget line, policy document, and service category as a finite element with traceable mass that sums to unity.

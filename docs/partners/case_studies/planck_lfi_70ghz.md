@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.PARTNER.PAGE.PARTNERS_CASE_STUDIES_PLANCK_LFI_70GHZ | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: PARTNER, CASE_STUDY | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/partners/case_studies/planck_lfi_70ghz.md
+
 # Planck LFI 70 GHz reference run
 
 > Applying HUF normalization to ESA's Planck satellite frequency maps — treating LFI channels as hierarchical regimes

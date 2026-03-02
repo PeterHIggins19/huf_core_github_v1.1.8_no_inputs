@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.BOOK.PAGE.WIKI_TRAP_OF_COHERENCE | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: BOOK, MOTIVATION | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/wiki_trap_of_coherence.md
+
 # The Trap of Coherence
 ### On what we discovered when we tried to route around HUF
 

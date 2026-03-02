@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.PARTNER.PAGE.PARTNERS_CASE_STUDIES_PARTNER_RAMSAR_PILOT | HUF:1.1.8 | DOC:v0.1.0 | STATUS:draft | LANE:release | RO:Peter Higgins
+CODES: PARTNER, CASE_STUDY | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/partners/case_studies/partner_ramsar_pilot.md
+
 # HUF × Ramsar Convention — Wetland Governance Pilot
 
 **Partner:** Convention on Wetlands · ramsar.org  

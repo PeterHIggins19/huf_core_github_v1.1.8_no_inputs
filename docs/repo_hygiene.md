@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.DOCS.PAGE.REPO_HYGIENE | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: DOCS | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/repo_hygiene.md
+
 # Repo hygiene (clean commits)
 
 If you publish `site/` (MkDocs output) or `out/` (run artifacts) into git, GitHub will treat the repo like a static site

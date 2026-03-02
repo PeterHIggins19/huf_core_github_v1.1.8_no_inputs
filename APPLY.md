@@ -1,14 +1,15 @@
-# Patch: Fix MkDocs strict warnings from docs/index.md
+# Paste-over patch: docs clean + mkdocs nav + HUF headers
 
-This replaces `docs/index.md` with a version that:
-- removes invalid `docs/...` link prefixes
-- converts non-doc-file links (scripts, START_HERE_*.bat/.command/.sh) to external GitHub links
-- adds HUF two-line header (as YAML comments)
+This patch:
+- Adds HUF two-line headers to all docs pages missing them (keeps existing headers)
+- Fixes Field Guide anchor mismatch (double hyphen -> single)
+- Updates mkdocs.yml nav so Learning + Books (and everything else) appears on the site
+- Includes scripts/doc_inventory.py (placeholder DOC_ID ignored)
 
 Apply:
-- paste `docs/index.md` over your repo `docs/index.md`
+1) Paste all contents of this zip into repo root (merge/overwrite).
+2) Run:
+   .\.venv\Scripts\python -m mkdocs build --strict
 
-Then:
-```powershell
-.\.venv\Scripts\python -m mkdocs build --strict
-```
+If you want to regenerate the manifest after:
+   .\.venv\Scripts\python scripts\doc_inventory.py --root . --write --merge

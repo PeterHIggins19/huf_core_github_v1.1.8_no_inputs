@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.BOOK.PAGE.FIELD_GUIDE | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: BOOK, FIELD_GUIDE | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/field_guide.md
+
 ﻿# HUF Field Guide — Architecture, Artifacts, and Domain Map
 
 > **Higgins Unity Framework (HUF)** is a normalization-invariant **audit layer** for hierarchical mixtures (regimes/tenants/sources).  
@@ -14,7 +17,7 @@
 ## Contents
 
 1. [What HUF does in one paragraph](#1-what-huf-does-in-one-paragraph)  
-2. [Origin story: wavefront control → audit layers](#2-origin-story-wavefront-control--audit-layers)  
+2. [Origin story: wavefront control → audit layers](#2-origin-story-wavefront-control-audit-layers)  
 3. [Core architecture (conceptual pipeline)](#3-core-architecture-conceptual-pipeline)  
 4. [Artifacts (what every run emits)](#4-artifacts-what-every-run-emits)  
 5. [Mathematical core (minimal, safe)](#5-mathematical-core-minimal-safe)  
@@ -40,7 +43,7 @@ The “counter‑intuitive” part is intentional: **discarding tail mass and th
 
 ---
 
-## 2. Origin story: wavefront control → audit layers {#2-origin-story-wavefront-control--audit-layers}
+## 2. Origin story: wavefront control → audit layers {#2-origin-story-wavefront-control-audit-layers}
 
 HUF wasn’t invented as “a library feature.” It emerged from experimental work in **multi-driver wavefront control**, where many drivers must combine into a coherent field without any one driver silently dominating the energy budget.
 

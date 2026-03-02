@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.DOCS.PAGE.JUPYTER_DEMOS | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: DOCS | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/jupyter_demos.md
+
 # Jupyter demos (optional)
 
 Jupyter is optional. It’s useful when you want to **read and summarize artifacts** interactively.

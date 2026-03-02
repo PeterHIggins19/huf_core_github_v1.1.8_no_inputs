@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.PARTNER.PAGE.PARTNERS_INTEGRATIONS_EVALUATION_PLATFORMS | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: PARTNER, INTEGRATION | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/partners/integrations/evaluation_platforms.md
+
 # Evaluation platforms
 
 > HUF adds a composition audit layer to RAG evaluation suites — tracking source diversity, mass concentration, and coherence drift across eval runs so quality regressions are caught before deployment.

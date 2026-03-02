@@ -61,66 +61,59 @@ nav:
 
   - Learning:
       - Overview: learning/index.md
-
       - "00 Orientation":
           - Overview: learning/00_orientation/index.md
           - Quiz: learning/00_orientation/quiz.md
           - Answers: learning/00_orientation/answers.md
-
       - "01 Foundations":
           - Overview: learning/01_foundations/index.md
           - Quiz: learning/01_foundations/quiz.md
           - Answers: learning/01_foundations/answers.md
-
       - "02 Formal core":
           - Overview: learning/02_formal_core/index.md
           - Quiz: learning/02_formal_core/quiz.md
           - Answers: learning/02_formal_core/answers.md
-
       - "03 Artifacts":
           - Overview: learning/03_artifacts/index.md
           - Quiz: learning/03_artifacts/quiz.md
           - Answers: learning/03_artifacts/answers.md
-
       - "04 Running examples":
           - Overview: learning/04_running_examples/index.md
           - Quiz: learning/04_running_examples/quiz.md
           - Answers: learning/04_running_examples/answers.md
-
       - "05 Case studies":
           - Overview: learning/05_case_studies/index.md
           - Quiz: learning/05_case_studies/quiz.md
           - Answers: learning/05_case_studies/answers.md
-
       - "06 Partner pilots":
           - Overview: learning/06_partner_pilots/index.md
           - Quiz: learning/06_partner_pilots/quiz.md
           - Answers: learning/06_partner_pilots/answers.md
-
       - "07 Advanced math":
           - Overview: learning/07_advanced_math/index.md
           - Quiz: learning/07_advanced_math/quiz.md
           - Answers: learning/07_advanced_math/answers.md
-
       - Legacy (single page): learning_path.md
 
   - Books:
       - Overview: books/index.md
-      - Advanced Mathematics (draft): books/advanced_mathematics/index.md
-      - HUF Handbook (v1.3.0): handbook.md
-      - HUF Reference (v1.3.0): huf_reference.md
-      - The Trap of Coherence: trap_of_coherence.md
-      - "The Trap of Coherence (wiki mirror)": wiki_trap_of_coherence.md
+      - Advanced Mathematics: books/advanced_mathematics/index.md
+      - HUF Handbook: handbook.md
+      - HUF Reference: huf_reference.md
       - HUF Field Guide: field_guide.md
+      - The Trap of Coherence: trap_of_coherence.md
+      - The Trap of Coherence (wiki mirror): wiki_trap_of_coherence.md
       - Ethics & disclosure: ethics.md
 
   - Start here:
-      - Running examples (Windows/macOS/Linux): running_examples.md
-      - PowerShell vs Python (Windows-safe): windows_powershell_vs_python.md
       - Developer start: start_here.md
-      - Zero GitHub knowledge: get_started_zero_github.md
-      - Get started (README-style): get_started_readme.md
-      - Data sources & fetching: data_sources.md
+      - Running examples: running_examples.md
+      - Windows PowerShell vs Python: windows_powershell_vs_python.md
+      - Quickstart (GUI): gui_quickstart.md
+      - Get started (README): get_started_readme.md
+      - Get started (zero GitHub): get_started_zero_github.md
+      - GitHub for beginners: github_for_beginners.md
+      - Data sources: data_sources.md
 
   - Science:
       - Overview: science/index.md
@@ -128,15 +121,26 @@ nav:
   - Civic:
       - Overview: civic/index.md
 
-  - Cases:
-      - Included cases (catalog): partners/case_studies/index.md
-      - Planck LFI 70 GHz: partners/case_studies/planck_lfi_70ghz.md
-      - City of Markham: partners/case_studies/markham_worked_example.md
-      - Traffic phase anomaly: partners/case_studies/traffic_phase.md
+  - Partners:
+      - Overview: partners/index.md
+      - Integrations:
+          - Weaviate: partners/integrations/weaviate.md
+          - Qdrant: partners/integrations/qdrant.md
+          - Pinecone: partners/integrations/pinecone.md
+          - LangChain & LlamaIndex: partners/integrations/langchain_llamaindex.md
+          - Evaluation platforms: partners/integrations/evaluation_platforms.md
+          - Public sector accounting lens: partners/integrations/public_sector_accounting_lens.md
+          - Science validation (Planck): partners/integrations/science_planck_validation.md
+      - Case studies:
+          - Catalog: partners/case_studies/index.md
+          - Ramsar pilot (draft): partners/case_studies/partner_ramsar_pilot.md
+          - Traffic phase anomaly: partners/case_studies/traffic_phase.md
+          - City of Markham: partners/case_studies/markham_worked_example.md
+          - Planck LFI 70 GHz: partners/case_studies/planck_lfi_70ghz.md
 
   - Adapters:
       - Vector DB coherence: vector_db_coherence.md
-      - Vector DB coherence (one-page brief): vector_db_coherence_one_pager.md
+      - Vector DB coherence (one-page): vector_db_coherence_one_pager.md
 
   - Research:
       - Mathematical form and function: huf_math_form_and_function.md
@@ -147,31 +151,8 @@ nav:
   - Documentation:
       - Docs inventory: docs_inventory.md
       - Reference manual: reference_manual.md
-      - CLI command lists + terminology: cli_huf_reference.md
+      - CLI reference: cli_huf_reference.md
       - Troubleshooting: troubleshooting.md
-      - Repo hygiene (clean commits): repo_hygiene.md
-      - GUI quickstart: gui_quickstart.md
-      - GitHub for beginners: github_for_beginners.md
+      - Repo hygiene: repo_hygiene.md
       - Contributing: contributing.md
-
-  - Partners:
-      - Overview: partners/index.md
-
-      - Integrations:
-          - Weaviate: partners/integrations/weaviate.md
-          - Qdrant: partners/integrations/qdrant.md
-          - Pinecone: partners/integrations/pinecone.md
-          - LangChain & LlamaIndex: partners/integrations/langchain_llamaindex.md
-          - Evaluation platforms: partners/integrations/evaluation_platforms.md
-          - Public sector accounting lens: partners/integrations/public_sector_accounting_lens.md
-          - "Science validation: Planck": partners/integrations/science_planck_validation.md
-
-      - Case studies:
-          - Catalog: partners/case_studies/index.md
-          - Ramsar pilot (draft): partners/case_studies/partner_ramsar_pilot.md
-          - Traffic phase anomaly: partners/case_studies/traffic_phase.md
-          - City of Markham: partners/case_studies/markham_worked_example.md
-          - Planck LFI 70 GHz: partners/case_studies/planck_lfi_70ghz.md
-
-  - Optional:
       - Jupyter demos: jupyter_demos.md

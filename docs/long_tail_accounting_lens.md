@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.DOCS.PAGE.LONG_TAIL_ACCOUNTING_LENS | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: RESEARCH | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/long_tail_accounting_lens.md
+
 # Long tail (accounting lens)
 
 **Two-line disambiguation (for skimmers):**

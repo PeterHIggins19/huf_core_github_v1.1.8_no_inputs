@@ -1,3 +1,6 @@
+HUF-DOC: HUF.REL.DOCS.PAGE.RUNNING_EXAMPLES | HUF:1.1.8 | DOC:v0.1.0 | STATUS:release | LANE:release | RO:Peter Higgins
+CODES: DOCS, RUN | ART: CM, AS, TR, EB | EVID:E2 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:docs/running_examples.md
+
 # Running examples on Windows, macOS, and Linux
 
 This project is **cross‑platform**, but the *shell syntax* is not. Most “it broke when I pasted it” problems come from mixing:
