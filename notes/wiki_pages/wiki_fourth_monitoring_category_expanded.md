@@ -1,5 +1,5 @@
-HUF-DOC: HUF.REL.WIKI.NOTE.WIKI_FOURTH_MONITORING_CATEGORY_EXPANDED | HUF:1.1.8 | DOC:v0.0.0 | STATUS:release | LANE:release | RO:Peter Higgins
-CODES: WIKI | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:notes/wiki_pages/wiki_fourth_monitoring_category_expanded.md
+HUF-DOC: HUF.DRAFT.WIKI.NOTE.WIKI_FOURTH_MONITORING_CATEGORY_EXPANDED | HUF:1.1.8 | DOC:v0.1.0 | STATUS:draft | LANE:DRAFT | RO:Peter Higgins
+CODES: WIKI | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:notes/current_documents/staged/HUF.DRAFT.WIKI.NOTE.WIKI_FOURTH_MONITORING_CATEGORY_EXPANDED/wiki_fourth_monitoring_category_expanded.md
 
 # The Fourth Monitoring Category — Expanded
 ## Self-Referential Non-Invasive Governance State Observation

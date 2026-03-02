@@ -1,5 +1,5 @@
-HUF-DOC: HUF.REL.WIKI.NOTE.WIKI_OPERATOR_ENTRY_POINTS | HUF:1.1.8 | DOC:v0.0.0 | STATUS:release | LANE:release | RO:Peter Higgins
-CODES: WIKI | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:notes/wiki_pages/wiki_operator_entry_points.md
+HUF-DOC: HUF.DRAFT.WIKI.NOTE.WIKI_OPERATOR_ENTRY_POINTS | HUF:1.1.8 | DOC:v0.1.0 | STATUS:draft | LANE:DRAFT | RO:Peter Higgins
+CODES: WIKI | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:notes/current_documents/staged/HUF.DRAFT.WIKI.NOTE.WIKI_OPERATOR_ENTRY_POINTS/wiki_operator_entry_points.md
 
 # HUF Entry Points — Operator Professional Profile and Industry Access Paths
 *Collective record — February 2026*

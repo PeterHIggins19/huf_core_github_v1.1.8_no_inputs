@@ -1,5 +1,5 @@
-HUF-DOC: HUF.REL.WIKI.NOTE.WIKI_MANUFACTURING_ELECTRONICS_ASSEMBLY | HUF:1.1.8 | DOC:v0.0.0 | STATUS:release | LANE:release | RO:Peter Higgins
-CODES: WIKI | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:notes/wiki_pages/wiki_manufacturing_electronics_assembly.md
+HUF-DOC: HUF.DRAFT.WIKI.NOTE.WIKI_MANUFACTURING_ELECTRONICS_ASSEMBLY | HUF:1.1.8 | DOC:v0.1.0 | STATUS:draft | LANE:DRAFT | RO:Peter Higgins
+CODES: WIKI | ART: CM, AS, TR, EB | EVID:E1 | POSTURE:OP | WEIGHTS: OP=0.80 TOOL=0.20 PEER=0.00 | CAP: OP_MIN=0.51 TOOL_MAX=0.49 | CANON:notes/current_documents/staged/HUF.DRAFT.WIKI.NOTE.WIKI_MANUFACTURING_ELECTRONICS_ASSEMBLY/wiki_manufacturing_electronics_assembly.md
 
 # HUF Manufacturing Application Path — Electronics Assembly
 *Layer 16 (Operator-expanded) — Domain-native application for SMT electronics assembly*
