@@ -1,0 +1,188 @@
+{
+  "batch": "Current Documents",
+  "date": "2026-03-01",
+  "huf_version": "1.1.8",
+  "count": 29,
+  "routing": [
+    {
+      "file": "appendix_d1_inserts_v3.docx",
+      "doc_id": "HUF.DRAFT.CASE.NOTE.APPENDIX_D1_INSERTS_V3",
+      "kind": "docx",
+      "recommended_destination": "cases/<case>/docs/exhibits/ (when promoting)"
+    },
+    {
+      "file": "Book1.xlsx",
+      "doc_id": "HUF.DRAFT.CASE.DATA.BOOK1",
+      "kind": "xlsx",
+      "recommended_destination": "cases/<case>/data/ (if publishable) else notes/_private/"
+    },
+    {
+      "file": "CLAUDE_INSTRUCTIONS.md",
+      "doc_id": "HUF.DRAFT.ORG.NOTE.CLAUDE_INSTRUCTIONS",
+      "kind": "markdown",
+      "recommended_destination": "notes/current_documents/staged/"
+    },
+    {
+      "file": "HUF_Advanced_Mathematics_Handbook_v0.2.0_DRAFT.docx",
+      "doc_id": "HUF.DRAFT.BOOK.MANUSCRIPT.HUF_ADVANCED_MATHEMATICS_HANDBOOK_V0_2_0_DRAFT",
+      "kind": "docx",
+      "recommended_destination": "docs/books/advanced_mathematics/index.md (Markdown) + keep DOCX in notes/current_documents/"
+    },
+    {
+      "file": "HUF_Advanced_Mathematics_Handbook_v0.2.0_DRAFT.md",
+      "doc_id": "HUF.DRAFT.BOOK.MANUSCRIPT.HUF_ADVANCED_MATHEMATICS_HANDBOOK_V0_2_0_DRAFT",
+      "kind": "markdown",
+      "recommended_destination": "docs/books/advanced_mathematics/index.md (Markdown) + keep DOCX in notes/current_documents/"
+    },
+    {
+      "file": "HUF_Appendix_D_Case_Study_D1_Exhibit_A_v2.docx",
+      "doc_id": "HUF.DRAFT.CASE.EXHIBIT.HUF_APPENDIX_D_CASE_STUDY_D1_EXHIBIT_A_V2",
+      "kind": "docx",
+      "recommended_destination": "cases/<case>/docs/exhibits/ (when promoting)"
+    },
+    {
+      "file": "HUF_Complete_Reference_Feb2026.docx",
+      "doc_id": "HUF.DRAFT.BOOK.MANUSCRIPT.HUF_COMPLETE_REFERENCE_FEB2026",
+      "kind": "docx",
+      "recommended_destination": "notes/current_documents/ (source) then convert to docs/huf_reference.md when ready"
+    },
+    {
+      "file": "HUF_Governance_Explainer_v1.0_Mar2026.docx",
+      "doc_id": "HUF.DRAFT.ORG.NOTE.HUF_GOVERNANCE_EXPLAINER_V1_0_MAR2026",
+      "kind": "docx",
+      "recommended_destination": "notes/_org/ (if it is governance policy) or docs/documentation/ (if public)"
+    },
+    {
+      "file": "HUF_Governance_Package_v1.0_Mar2026.zip",
+      "doc_id": "HUF.DRAFT.ORG.PACKAGE.HUF_GOVERNANCE_PACKAGE_V1_0_MAR2026",
+      "kind": "zip",
+      "recommended_destination": "notes/_private/ or notes/current_documents/inbox/"
+    },
+    {
+      "file": "huf_governance_state_observer.docx",
+      "doc_id": "HUF.DRAFT.BOOK.MANUSCRIPT.HUF_GOVERNANCE_STATE_OBSERVER",
+      "kind": "docx",
+      "recommended_destination": "docs/books/formal_core/ (after consolidation) or keep as source"
+    },
+    {
+      "file": "HUF_Handbook_v1.2.0.docx",
+      "doc_id": "HUF.LEGACY.BOOK.MANUSCRIPT.HUF_HANDBOOK_V1_2_0",
+      "kind": "docx",
+      "recommended_destination": "notes/current_documents/ (source) then convert to docs/handbook.md when ready"
+    },
+    {
+      "file": "huf_mathematical_foundations.docx",
+      "doc_id": "HUF.DRAFT.BOOK.MANUSCRIPT.HUF_MATHEMATICAL_FOUNDATIONS",
+      "kind": "docx",
+      "recommended_destination": "docs/books/formal_core/ (after consolidation) or keep as source"
+    },
+    {
+      "file": "HUF_Mathematics_v0.1.0_DRAFT.docx",
+      "doc_id": "HUF.DRAFT.BOOK.MANUSCRIPT.HUF_MATHEMATICS_V0_1_0_DRAFT",
+      "kind": "docx",
+      "recommended_destination": "notes/current_documents/ (source) then select canonical for docs/books/"
+    },
+    {
+      "file": "huf_math_foundations_v2_1.docx",
+      "doc_id": "HUF.DRAFT.BOOK.MANUSCRIPT.HUF_MATH_FOUNDATIONS_V2_1",
+      "kind": "docx",
+      "recommended_destination": "docs/books/formal_core/ (after consolidation) or keep as source"
+    },
+    {
+      "file": "HUF_Operator_Decision_Log_v1_1.docx",
+      "doc_id": "HUF.LEGACY.ORG.TRACE.HUF_OPERATOR_DECISION_LOG_V1_1",
+      "kind": "docx",
+      "recommended_destination": "notes/_org/ (optional) or keep as trace under notes/current_documents/"
+    },
+    {
+      "file": "HUF_Operator_Decision_Log_v1_2.docx",
+      "doc_id": "HUF.RELEASE.ORG.TRACE.HUF_OPERATOR_DECISION_LOG_V1_2",
+      "kind": "docx",
+      "recommended_destination": "notes/_org/ (optional) or keep as trace under notes/current_documents/"
+    },
+    {
+      "file": "HUF_Project_Analysis_March2026.docx",
+      "doc_id": "HUF.DRAFT.ORG.NOTE.HUF_PROJECT_ANALYSIS_MARCH2026",
+      "kind": "docx",
+      "recommended_destination": "notes/current_documents/ then decide if becomes docs/research/"
+    },
+    {
+      "file": "HUF_Ramsar_Croatia_Package_Feb2026.docx",
+      "doc_id": "HUF.DRAFT.PARTNER.PACKAGE.HUF_RAMSAR_CROATIA_PACKAGE_FEB2026",
+      "kind": "docx",
+      "recommended_destination": "cases/ramsar_case/docs/package/"
+    },
+    {
+      "file": "HUF_Vol3_CaseStudyD2_ExhibitB_framework.docx",
+      "doc_id": "HUF.DRAFT.CASE.EXHIBIT.HUF_VOL3_CASESTUDYD2_EXHIBITB_FRAMEWORK",
+      "kind": "docx",
+      "recommended_destination": "cases/<case>/docs/exhibits/ (when promoting)"
+    },
+    {
+      "file": "HUF_Vol3_CaseStudyD2_ExhibitB_v1.docx",
+      "doc_id": "HUF.DRAFT.CASE.EXHIBIT.HUF_VOL3_CASESTUDYD2_EXHIBITB_V1",
+      "kind": "docx",
+      "recommended_destination": "cases/<case>/docs/exhibits/ (when promoting)"
+    },
+    {
+      "file": "ramsar_contact_letter_v15.docx",
+      "doc_id": "HUF.DRAFT.PARTNER.LETTER.RAMSAR_CONTACT_LETTER_V15",
+      "kind": "docx",
+      "recommended_destination": "cases/ramsar_case/docs/letters/"
+    },
+    {
+      "file": "ramsar_contact_primer_v12.docx",
+      "doc_id": "HUF.DRAFT.PARTNER.PRIMER.RAMSAR_CONTACT_PRIMER_V12",
+      "kind": "docx",
+      "recommended_destination": "cases/ramsar_case/docs/primer/ (and wiki link later)"
+    },
+    {
+      "file": "ramsar_huf_demo_v2.py",
+      "doc_id": "HUF.DRAFT.PARTNER.NOTE.RAMSAR_HUF_DEMO_V2",
+      "kind": "python",
+      "recommended_destination": "cases/ramsar_case/"
+    },
+    {
+      "file": "wiki_fourth_monitoring_category_expanded.md",
+      "doc_id": "HUF.DRAFT.WIKI.NOTE.WIKI_FOURTH_MONITORING_CATEGORY_EXPANDED",
+      "kind": "markdown",
+      "recommended_destination": "notes/wiki_pages/ (or docs/research/ if you want it public)"
+    },
+    {
+      "file": "wiki_huf_taxonomy_complete.md",
+      "doc_id": "HUF.DRAFT.WIKI.NOTE.WIKI_HUF_TAXONOMY_COMPLETE",
+      "kind": "markdown",
+      "recommended_destination": "notes/wiki_pages/ (or docs/research/ if you want it public)"
+    },
+    {
+      "file": "wiki_manufacturing_electronics_assembly.md",
+      "doc_id": "HUF.DRAFT.WIKI.NOTE.WIKI_MANUFACTURING_ELECTRONICS_ASSEMBLY",
+      "kind": "markdown",
+      "recommended_destination": "notes/wiki_pages/ (or docs/research/ if you want it public)"
+    },
+    {
+      "file": "wiki_operator_entry_points.md",
+      "doc_id": "HUF.DRAFT.WIKI.NOTE.WIKI_OPERATOR_ENTRY_POINTS",
+      "kind": "markdown",
+      "recommended_destination": "notes/wiki_pages/ (or docs/research/ if you want it public)"
+    },
+    {
+      "file": "huf code/huf_diagnostic.jsx",
+      "doc_id": "HUF.DRAFT.SOFTWARE.CODE.HUF_DIAGNOSTIC",
+      "kind": "jsx",
+      "recommended_destination": "notes/code_snippets/ or a future ui/ package"
+    },
+    {
+      "file": "huf code/huf_todo.jsx",
+      "doc_id": "HUF.DRAFT.SOFTWARE.CODE.HUF_TODO",
+      "kind": "jsx",
+      "recommended_destination": "notes/code_snippets/ or a future ui/ package"
+    }
+  ],
+  "notes": [
+    "All originals copied to notes/current_documents/inbox/2026-03 (unchanged).",
+    "All staged copies placed under notes/current_documents/staged/<DOC_ID>/ with HUF two-line coding headers added.",
+    "DOCX files were modified only in staged copies; inbox originals are untouched.",
+    "Recommended destinations are guidance for future promotion into release lane (docs/, cases/, demos/)."
+  ]
+}
